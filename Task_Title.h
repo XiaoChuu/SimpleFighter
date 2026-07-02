@@ -60,6 +60,8 @@ namespace  Title
 		int seVol = 100;
 
 		long tVol = 100;
+		int srcSet;
+		int timer;
 
 		DG::Font::SP TestFont;
 	};

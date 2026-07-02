@@ -16,13 +16,16 @@ namespace  Title
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		this->img = DG::Image::Create("./data/image/titleback.png");
+		this->TitleLogo01 = DG::Image::Create("./data/image/StartKey.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-
+		this->img.reset();
+		this->TitleLogo01.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -38,6 +41,8 @@ namespace  Title
 		this->controller = ge->in1;
 		this->render2D_Priority[1] = 0.5f;
 		int RenderTime = 0;
+		this->timer = 0;
+		this->srcSet = 0;
 
 		ge->stage = 1;
 
@@ -45,30 +50,7 @@ namespace  Title
 		//デバッグ用フォントの準備
 		this->TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
-		//音楽ファイルの読み込み
-		//BGM
-		// BGMの利用するファイルは曲の長さによってサイズが変わります。
-		// 一般的にWavは中身が波形データと呼ばれるサイズが大きなデータにります。
-		// 一方mp3はネットなどでの扱いを想定した圧縮形式です。
-		// BGMを用いる場合はmp3形式のファイルを利用しましょう。
-		// ちなみにこのサンプルのファイルは
-		// 再生時間1：30ほぼの曲で
-		// mp3 = 4.3MB wav = 19MBです。
-		bgm::LoadFile("bgm1", "./data/sound/bgm/弾むキモチ_2.mp3");
-		bgm::Play("bgm1");
-
-		//se
-		// seは効果音です。
-		// bgmとの最大の違いはひとつの音楽ファイルの同時再生に対応していることです。
-		// seはwavファイルしか扱うことが出来ません。mp3はエラーになります。
-		// 同時再生の必要がないものはBGM
-		// 同時再生が必要なものはseと使い分けてください。
-	  // またこのサンプルのような日本語ファイル名はやめた方が良いです。
-		// 読み込みエラーの元になります。
-		se::LoadFile("se1","./data/sound/se/「すごいすごい」.wav");
-
-//		se::LoadFile("se2", "./data/sound/se/「頑張ったね」.mp3");これはエラー wavじゃないとダメ
-		se::LoadFile("se2", "./data/sound/se/「頑張ったね」.wav");
+		
 
 		//★タスクの生成
 		return  true;
@@ -78,7 +60,6 @@ namespace  Title
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		bgm::Stop("bgm1");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			Game::Object::Create(true);
 		}
@@ -107,13 +88,17 @@ namespace  Title
 			this->Kill();
 		}
 
-		if (input & 0x0002) {
-			se::Play("se1");
+		if (timer >= 0 && timer < 30) {
+			++timer;
+			srcSet = 0;
 		}
-		if (input & 0x0004) {
-			se::Play("se2");
+		else if (timer >= 30 && timer < 60) {
+			++timer;
+			srcSet = 91;
 		}
-
+		else {
+			timer = 0;
+		}
 
 		return;
 
@@ -122,9 +107,14 @@ namespace  Title
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		TestFont->Draw(ML::Box2D(0, 0, ge->screen2DWidth, ge->screen2DHeight),
-			"TITLE"
-		);
+		ML::Box2D  draw_BG(0, 0, 1280, 720);
+		ML::Box2D  src_BG(0, 0, 1920, 1080);
+		this->res->img->Draw(draw_BG, src_BG);
+
+		ML::Box2D  draw_PRS(342, 380, 596, 91);
+		ML::Box2D  src_PRS(0, 0, 596, 91);
+		src_PRS.Offset(0, srcSet);
+		this->res->TitleLogo01->Draw(draw_PRS, src_PRS);
 	}
 	
 
