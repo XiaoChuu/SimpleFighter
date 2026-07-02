@@ -8,6 +8,9 @@
 
 #include  "Task_Ending.h"
 
+bool onePWin;
+bool twoPWin;
+
 namespace  Game
 {
 	Resource::WP  Resource::instance;
@@ -33,7 +36,7 @@ namespace  Game
 		this->res = Resource::Create();
 
 		//★データ初期化
-		
+		onePWin = true;
 		//デバッグ用フォントの準備
 		this->TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 

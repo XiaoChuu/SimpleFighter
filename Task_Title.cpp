@@ -60,6 +60,7 @@ namespace  Title
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
+
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			Game::Object::Create(true);
 		}

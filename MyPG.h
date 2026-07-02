@@ -10,6 +10,9 @@
 
 #include "task_Effect00.h"
 
+extern bool onePWin;
+extern bool twoPWin;
+
 //-----------------------------------------------------------------------------------------------
 namespace  MyPG
 {
@@ -91,6 +94,8 @@ namespace  MyPG
 		bool			AttackFlag; //攻撃フラグ
 
 		bool			TransparentFlag; //透明フラグ
+
+		
 
 
 		//----------------------------------------------

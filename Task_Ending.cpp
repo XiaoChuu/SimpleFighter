@@ -13,12 +13,20 @@ namespace  Ending
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		this->img = DG::Image::Create("./data/image/titleback.png");
+		this->TitleLogo01 = DG::Image::Create("./data/image/StartKey.png");
+		this->win01 = DG::Image::Create("./data/image/1pwin.png");
+		this->win02 = DG::Image::Create("./data/image/2pwin.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		this->img.reset();
+		this->TitleLogo01.reset();
+		this->win01.reset();
+		this->win02.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -31,7 +39,9 @@ namespace  Ending
 		this->res = Resource::Create();
 
 		//★データ初期化
-		this->logoPosY = 270;
+		this->timer1 = 0;
+		this->timer2 = 0;
+		this->srcSet = 0;
 
 		//★タスクの生成
 
@@ -65,20 +75,45 @@ namespace  Ending
 			this->Kill();
 		}
 
-		if (inp.B1.down) {
-			ML::Vec2 p;
-			ge->CreateEffect(0,p);
-		}
-		if (inp.B2.down) {
-			ML::Vec2 p((const float)GetRandom(0, 300), (const float)GetRandom(0, 300));
-			ge->CreateEffect((int)GetRandom(0,8), p);
+		timer1++;
 
+		if (timer2 >= 0 && timer2 < 30) {
+			++timer2;
+			srcSet = 0;
+		}
+		else if (timer2 >= 30 && timer2 < 60) {
+			++timer2;
+			srcSet = 91;
+		}
+		else {
+			timer2 = 0;
 		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		ML::Box2D  draw_BG(0, 0, 1280, 720);
+		ML::Box2D  src_BG(0, 0, 1920, 1080);
+		this->res->img->Draw(draw_BG, src_BG);
+
+		if (timer1 >= 60 && onePWin) {
+			ML::Box2D  draw_WIN(360, 180, 560, 248);
+			ML::Box2D  src_WIN(0, 0, 280, 124);
+			this->res->win01->Draw(draw_WIN, src_WIN);
+		}
+		if (timer1 >= 60 && twoPWin) {
+			ML::Box2D  draw_WIN(360, 180, 560, 248);
+			ML::Box2D  src_WIN(0, 0, 292, 124);
+			this->res->win02->Draw(draw_WIN, src_WIN);
+		}
+
+		if (timer1 >= 150) {
+			ML::Box2D  draw_PRS(342, 380, 596, 91);
+			ML::Box2D  src_PRS(0, 0, 596, 91);
+			src_PRS.Offset(0, srcSet);
+			this->res->TitleLogo01->Draw(draw_PRS, src_PRS);
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
