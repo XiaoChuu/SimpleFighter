@@ -36,12 +36,14 @@ namespace  Player1
 		this->angle = Angle_LR::Right;
 		this->controller = ge->in1;
 		this->motion = Motion::Stand;
-		this->moveSpeed = 5.0f;
+		this->maxSpeed = 5.0f;
+		this->addSpeed = 1.0f;
+		this->decSpeed = 0.5f;
 		this->maxFallSpeed = 10.0f;
 		this->jumpPow = -10.0f;
 		this->gravity = ML::Gravity(32) * 5;
 		this->pos.x = 275;
-		this->pos.y = 500;
+		this->pos.y = 400;
 		//★タスクの生成
 
 		return  true;
@@ -63,17 +65,12 @@ namespace  Player1
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto inp = this->controller->GetState();
-		if (inp.LStick.BL.on)
-		{
-			this->pos.x -= this->moveSpeed;
-		}
-		if (inp.LStick.BR.on)
-		{
-			this->pos.x += this->moveSpeed;
-		}
-		//this->Think();
-		//this->Move();
+		this->moveCnt++;
+		this->animCnt++;
+		this->Think();
+		this->Move();
+		ML::Vec2 est = this->moveVec;
+		this->CheckMove(est);
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -93,6 +90,10 @@ namespace  Player1
 		switch (nm)
 		{
 		case Motion::Stand:
+			if (inp.LStick.BU.on)
+			{
+				nm = Motion::Jump;
+			}
 			if (inp.LStick.BL.on)
 			{
 				nm = Motion::Walk;
@@ -103,6 +104,10 @@ namespace  Player1
 			}
 			break;
 		case Motion::Walk:
+			if (inp.LStick.BU.on)
+			{
+				nm = Motion::Jump;
+			}
 			if (inp.LStick.BL.off && inp.LStick.BR.off)
 			{
 				nm = Motion::Stand;
@@ -113,8 +118,16 @@ namespace  Player1
 		case Motion::AttackKick:
 			break;
 		case Motion::Jump:
+			if (this->moveVec.y >= 0)
+			{
+				nm = Motion::Fall;
+			}
 			break;
 		case Motion::Fall:
+			if (this->CheckFoot() == true)
+			{
+				nm = Motion::Stand;
+			}
 			break;
 		case Motion::Super1:
 			break;
@@ -123,6 +136,8 @@ namespace  Player1
 		case Motion::Super3:
 			break;
 		}
+
+		this->UpdateMotion(nm);
 	}
 
 	void Object::Move()
@@ -130,19 +145,89 @@ namespace  Player1
 		auto inp = this->controller->GetState();
 		BChara::Motion nm = this->motion;
 
+		//重力加速
+		switch (this->motion)
+		{
+		default:
+			if (this->moveVec.y < 0 || this->CheckFoot() == false)
+			{
+				this->moveVec.y = min(this->moveVec.y + this->gravity, this->maxFallSpeed);
+			}
+			else
+			{
+				this->moveVec.y = 0.0f;
+			}
+			break;
+		case Motion::Unnon:
+			break;
+		}
+
+		//移動速度減衰
+		switch (this->motion)
+		{
+		default:
+			if (this->moveVec.x < 0)
+			{
+				this->moveVec.x = min(this->moveVec.x + this->decSpeed, 0);
+			}
+			else
+			{
+				this->moveVec.x = max(this->moveVec.x - this->decSpeed, 0);
+			}
+			break;
+		case Motion::Unnon:
+			break;
+		}
+
 		switch (nm)
 		{
 		case Motion::Stand:
+			if (inp.LStick.BL.on)
+			{
+				this->moveVec.x = -this->maxSpeed;
+			}
+			if (inp.LStick.BR.on)
+			{
+				this->moveVec.x = this->maxSpeed;
+			}
 			break;
 		case Motion::Walk:
+			if (inp.LStick.BL.on)
+			{
+				this->moveVec.x = -this->maxSpeed;
+			}
+			if (inp.LStick.BR.on)
+			{
+				this->moveVec.x = this->maxSpeed;
+			}
 			break;
 		case Motion::AttackPunch:
 			break;
 		case Motion::AttackKick:
 			break;
 		case Motion::Jump:
+			if (inp.LStick.BL.on)
+			{
+				this->moveVec.x = -this->maxSpeed;
+			}
+			if (inp.LStick.BR.on)
+			{
+				this->moveVec.x = this->maxSpeed;
+			}
+			if (this->moveCnt == 0)
+			{
+				this->moveVec.y = this->jumpPow;
+			}
 			break;
 		case Motion::Fall:
+			if (inp.LStick.BL.on)
+			{
+				this->moveVec.x = -this->maxSpeed;
+			}
+			if (inp.LStick.BR.on)
+			{
+				this->moveVec.x = this->maxSpeed;
+			}
 			break;
 		case Motion::Super1:
 			break;

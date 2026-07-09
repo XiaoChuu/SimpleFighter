@@ -36,17 +36,23 @@ public:
 		AttackKick,
 		Jump,
 		Fall,
+		Guard,
+		KO,
 		Super1,
 		Super2,
 		Super3
 	};
 
 	Motion motion;
+	int animCnt;
 	Angle_LR angle;
 	float jumpPow;
 	float maxFallSpeed;
 	float gravity;
-	float moveSpeed;
+	float maxSpeed;
+	float addSpeed;
+	float decSpeed;
+	
 
 	//メンバ変数に最低限の初期化を行う
 	//★★メンバ変数を追加したら必ず初期化も追加する事★★
@@ -58,11 +64,17 @@ public:
 		, motion(Motion::Stand)//angle(0.f)
 		, angle(Angle_LR::Right)
 		, gravity(0)
-		, moveSpeed(0)
+		, maxSpeed(0)
+		, addSpeed(0)
+		, decSpeed(0)
 	{
 	}
 	virtual  ~BChara() {}
 
+	void CheckMove(ML::Vec2& e_);
+	bool CheckHit(const ML::Box2D& hit_);
+	bool CheckFoot();
+	bool UpdateMotion(Motion nm_);
 	
 
 protected:
