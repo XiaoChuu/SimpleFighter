@@ -54,6 +54,7 @@ namespace  Game
 
 		//★データ初期化
 		this->render2D_Priority[1] = 0.8f;
+		this->time = 0;
 		
 		//デバッグ用フォントの準備
 		this->TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
@@ -83,8 +84,9 @@ namespace  Game
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		time++;
 		auto inp = ge->in1->GetState( );
-		if (inp.ST.down) {
+		if (inp.ST.down || time == 5400) {
 			ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
 			ge->CreateEffect(99, ML::Vec2(0, 0));
 		}

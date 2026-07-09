@@ -13,7 +13,7 @@ namespace  Ending
 	//ƒŠƒ\[ƒX‚Ì‰Šú‰»
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/titleback.png");
+		this->img = DG::Image::Create("./data/image/BG.png");
 		this->TitleLogo01 = DG::Image::Create("./data/image/StartKey.png");
 		this->win01 = DG::Image::Create("./data/image/1pwin.png");
 		this->win02 = DG::Image::Create("./data/image/2pwin.png");
@@ -94,7 +94,7 @@ namespace  Ending
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D  draw_BG(0, 0, 1280, 720);
-		ML::Box2D  src_BG(0, 0, 1920, 1080);
+		ML::Box2D  src_BG(0, 0, 1672, 941);
 		this->res->img->Draw(draw_BG, src_BG);
 
 		if (timer1 >= 60 && onePWin) {
