@@ -20,7 +20,33 @@ public:
 	ML::Vec2	moveVec;	//移動ベクトル
 	int			moveCnt;	//行動カウンタ
 	//向き（2D視点）
-	float angle;
+	//float angle;
+	enum class Angle_LR
+	{
+		Left,
+		Right
+	};
+
+	enum class Motion
+	{
+		Unnon = -1,
+		Stand,
+		Walk,
+		AttackPunch,
+		AttackKick,
+		Jump,
+		Fall,
+		Super1,
+		Super2,
+		Super3
+	};
+
+	Motion motion;
+	Angle_LR angle;
+	float jumpPow;
+	float maxFallSpeed;
+	float gravity;
+	float moveSpeed;
 
 	//メンバ変数に最低限の初期化を行う
 	//★★メンバ変数を追加したら必ず初期化も追加する事★★
@@ -29,10 +55,15 @@ public:
 		, hitBase(0, 0, 0, 0)
 		, moveVec(0, 0)
 		, moveCnt(0)
-		, angle(0.f)
+		, motion(Motion::Stand)//angle(0.f)
+		, angle(Angle_LR::Right)
+		, gravity(0)
+		, moveSpeed(0)
 	{
 	}
 	virtual  ~BChara() {}
+
+	
 
 protected:
 	ML::Vec2 MoveSet(int key);

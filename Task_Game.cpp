@@ -3,13 +3,9 @@
 //-------------------------------------------------------------------
 #include  "MyPG.h"
 #include  "Task_Game.h"
-
 #include "randomLib.h"
-
 #include  "Task_Ending.h"
-
-bool onePWin;
-bool twoPWin;
+#include  "Task_player1.h"
 
 namespace  Game
 {
@@ -36,11 +32,13 @@ namespace  Game
 		this->res = Resource::Create();
 
 		//★データ初期化
-		onePWin = true;
+		
 		//デバッグ用フォントの準備
 		this->TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
+		auto p1 = Player1::Object::Create(true);
+
 
 		return  true;
 	}
@@ -79,9 +77,7 @@ namespace  Game
 		int x = GetRandom(-10, 10);
 		int y = GetRandom(-10, 10);
 
-		TestFont->Draw(ML::Box2D(100+x, 100+y, ge->screen2DWidth, ge->screen2DHeight),
-			"Game"
-		);
+		TestFont->Draw(ML::Box2D(100+x, 100+y, ge->screen2DWidth, ge->screen2DHeight),"Game");
 
 	}
 
