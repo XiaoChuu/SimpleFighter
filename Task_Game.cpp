@@ -17,12 +17,30 @@ namespace  Game
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		this->imgHPFull = DG::Image::Create("./data/image/HPBAR_Full.png");
+		this->imgHPEmp = DG::Image::Create("./data/image/HPBAR_Empty.png");
+		this->imgGaugeFull = DG::Image::Create("./data/image/SUPER_BAR_Full.png");
+		this->imgGaugeEmp = DG::Image::Create("./data/image/SUPER_BAR_Empty.png");
+		this->imgGaugeFullR = DG::Image::Create("./data/image/SUPER_BAR_Full_R.png");
+		this->imgGaugeEmpR = DG::Image::Create("./data/image/SUPER_BAR_Empty_R.png");
+		this->imgTimebar = DG::Image::Create("./data/image/TIME_DP.png");
+		this->imgBG = DG::Image::Create("./data/image/BG.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		this->imgHPFull.reset();
+		this->imgHPEmp.reset();
+		this->imgGaugeEmp.reset();
+		this->imgGaugeFull.reset();
+		this->imgGaugeEmpR.reset();
+		this->imgGaugeFullR.reset();
+		this->imgHPEmp.reset();
+		this->imgHPFull.reset();
+		this->imgBG.reset();
+		this->imgTimebar.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -35,6 +53,7 @@ namespace  Game
 		this->res = Resource::Create();
 
 		//★データ初期化
+		this->render2D_Priority[1] = 0.8f;
 		
 		//デバッグ用フォントの準備
 		this->TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
@@ -77,10 +96,39 @@ namespace  Game
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		int x = GetRandom(-10, 10);
-		int y = GetRandom(-10, 10);
+		//背景
+		ML::Box2D  draw_BG(0, 0, 1280, 720);
+		ML::Box2D  src_BG(0, 0, 1672, 941);
+		this->res->imgBG->Draw(draw_BG, src_BG);
 
-		TestFont->Draw(ML::Box2D(100+x, 100+y, ge->screen2DWidth, ge->screen2DHeight),"Game");
+		//HPバー
+		ML::Box2D draw_HP_E(100, 40, 512, 128);
+		ML::Box2D src_HP_E(0, 0, 512, 128);
+		this->res->imgHPEmp->Draw(draw_HP_E, src_HP_E);
+		ML::Box2D draw_HP_F(100, 40, 512, 128);
+		ML::Box2D src_HP_F(0, 0, 512, 128);//仮
+		this->res->imgHPFull->Draw(draw_HP_F, src_HP_F);
+
+		ML::Box2D draw_HP_E2(668, 40, 512, 128);
+		ML::Box2D src_HP_E2(512, 0, -512, 128);
+		this->res->imgHPEmp->Draw(draw_HP_E2, src_HP_E2);
+		ML::Box2D draw_HP_F2(668, 40, 512, 128);
+		ML::Box2D src_HP_F2(512, 0, -512, 128);//仮
+		this->res->imgHPFull->Draw(draw_HP_F2, src_HP_F2);
+
+		//必殺技ゲージ
+		ML::Box2D draw_Gauge_E(100, 584, 256, 48);
+		ML::Box2D src_Gauge_E(0, 0, 512, 96);
+		this->res->imgGaugeEmp->Draw(draw_Gauge_E, src_Gauge_E);
+		ML::Box2D draw_Gauge_F(100, 584, 256, 48);
+		ML::Box2D src_Gauge_F(0, 0, 512, 96);//仮
+		this->res->imgGaugeFull->Draw(draw_Gauge_F, src_Gauge_F);
+		ML::Box2D draw_Gauge_E2(924, 584, 256, 48);
+		ML::Box2D src_Gauge_E2(0, 0, 512, 96);
+		this->res->imgGaugeEmpR->Draw(draw_Gauge_E2, src_Gauge_E2);
+		ML::Box2D draw_Gauge_F2(924, 584, 256, 48);
+		ML::Box2D src_Gauge_F2(0, 0, 512, 96);//仮
+		this->res->imgGaugeFullR->Draw(draw_Gauge_F2, src_Gauge_F2);
 
 	}
 
