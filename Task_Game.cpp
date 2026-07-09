@@ -7,6 +7,9 @@
 #include  "Task_Ending.h"
 #include  "Task_player1.h"
 
+bool onePWin;
+bool twoPWin;
+
 namespace  Game
 {
 	Resource::WP  Resource::instance;
