@@ -19,6 +19,7 @@ public:
 	ML::Box2D   hitBase;	//あたり判定範囲
 	ML::Vec2	moveVec;	//移動ベクトル
 	int			moveCnt;	//行動カウンタ
+	ML::Box2D   attackBox;
 	//向き（2D視点）
 	//float angle;
 	enum class Angle_LR
@@ -44,9 +45,9 @@ public:
 		Hurt,
 		Guard,
 		KO,
-		Super1,
-		Super2,
-		Super3
+		Hadouken,
+		Shoryuken,
+		PowerUP,
 	};
 
 	Motion motion;
@@ -58,6 +59,7 @@ public:
 	float maxSpeed;
 	float addSpeed;
 	float decSpeed;
+	bool isAttacking;
 
 	//メンバ変数に最低限の初期化を行う
 	//★★メンバ変数を追加したら必ず初期化も追加する事★★
@@ -66,6 +68,7 @@ public:
 		, hitBase(0, 0, 0, 0)
 		, moveVec(0, 0)
 		, moveCnt(0)
+		, attackBox(0,0,0,0)
 		, motion(Motion::Stand)//angle(0.f)
 		, angle(Angle_LR::Right)
 		, gravity(0)

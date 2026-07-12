@@ -1,5 +1,5 @@
-//-----------------------------------------------------------------------------
-//ƒLƒƒƒ‰ƒNƒ^”Ä—pƒX[ƒp[ƒNƒ‰ƒX
+ï»¿//-----------------------------------------------------------------------------
+//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿æ±Žç”¨ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹
 //-----------------------------------------------------------------------------
 #include "BChara.h"
 #include  "MyPG.h"
@@ -10,7 +10,7 @@ ML::Vec2 BChara::MoveSet(int key)
 	int table[] = { -1,90,270,-1,180,135,225,-1, 0,45,315 };
 	float spd = 10.5f;
 	ML::Vec2 est;
-	//0‚Í“ÁŽêðŒ
+	//0ã¯ç‰¹æ®Šæ¡ä»¶
 	if (key == 0)
 	{
 		est.x = 0.f;
@@ -35,6 +35,7 @@ bool BChara::UpdateMotion(Motion nm_)
 		this->motion = nm_;
 		this->moveCnt = 0;
 		this->animCnt = 0;
+		return true;
 	}
 }
 
@@ -61,11 +62,11 @@ void BChara::CheckMove(ML::Vec2& e_)
 		ML::Box2D  hit = this->hitBase.OffsetCopy(this->pos);
 		if (true == CheckHit(hit)) 
 		{
-			this->pos.x = preX;		//ˆÚ“®‚ðƒLƒƒƒ“ƒZƒ‹
+			this->pos.x = preX;		//ç§»å‹•ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 			break;
 		}
 	}
-	//cŽ²‚É‘Î‚·‚éˆÚ“®
+	//ç¸¦è»¸ã«å¯¾ã™ã‚‹ç§»å‹•
 	while (e_.y != 0) 
 	{
 		float  preY = this->pos.y;
@@ -87,7 +88,7 @@ void BChara::CheckMove(ML::Vec2& e_)
 		ML::Box2D hit = this->hitBase.OffsetCopy(this->pos);
 		if (true == CheckHit(hit)) 
 		{
-			this->pos.y = preY;		//ˆÚ“®‚ðƒLƒƒƒ“ƒZƒ‹
+			this->pos.y = preY;		//ç§»å‹•ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 			break;
 		}
 	}
@@ -96,7 +97,7 @@ void BChara::CheckMove(ML::Vec2& e_)
 
 bool BChara::CheckHit(const ML::Box2D& hit_)
 {
-	ML::Box2D yuka(0, 550, 1280, 10);
+	ML::Box2D yuka(-10, 550, 1300, 100);
 	return yuka.Hit(hit_);
 }
 

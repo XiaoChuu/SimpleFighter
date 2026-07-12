@@ -96,6 +96,30 @@ namespace  Player1
 		auto inp = this->controller->GetState();
 		BChara::Motion nm = this->motion;
 
+		if (motion == Motion::Stand || motion == Motion::ForwardWalk ||motion == Motion::BackWalk)
+		{
+			if (inp.B1.down) //U:B1 J:B2 I:B3 K:B4 P:L1
+			{
+				nm = Motion::AttackPunch;
+			}
+			else if (inp.B2.down)
+			{
+				nm = Motion::AttackKick;
+			}
+			else if (inp.B3.down)
+			{
+				nm = Motion::Hadouken;
+			}
+			else if (inp.B4.down)
+			{
+				nm = Motion::Shoryuken;
+			}
+			else if (inp.L1.down)
+			{
+				nm = Motion::PowerUP;
+			}	
+		}
+
 		switch (nm)
 		{
 		case Motion::Stand:
@@ -195,8 +219,16 @@ namespace  Player1
 			}
 			break;
 		case Motion::AttackPunch:
+			if (this->moveCnt >= 60)
+			{
+				nm = Motion::Stand;
+			}
 			break;
 		case Motion::AttackKick:
+			if (this->moveCnt >= 45)
+			{
+				nm = Motion::Stand;
+			}
 			break;
 		case Motion::NaturalJump:
 			if (this->moveVec.y >= 0)
@@ -234,11 +266,13 @@ namespace  Player1
 				nm = Motion::Stand;
 			}
 			break;
-		case Motion::Super1:
+		case Motion::Guard:
 			break;
-		case Motion::Super2:
+		case Motion::Hadouken:
 			break;
-		case Motion::Super3:
+		case Motion::Shoryuken:
+			break;
+		case Motion::PowerUP:
 			break;
 		}
 
@@ -343,8 +377,29 @@ namespace  Player1
 			}
 			break;
 		case Motion::AttackPunch:
+			if (this->moveCnt >= 15)
+			{
+				isAttacking = true;
+				this->pos.x += 3.0f;
+				this->attackBox = ML::Box2D(this->hitBase.w, 0, 56, 96);
+				attackBox.Offset(this->pos.x, this->pos.y);
+			}
+			if (this->moveCnt >= 45)
+			{
+				isAttacking = false;
+			}
 			break;
 		case Motion::AttackKick:
+			if (this->moveCnt >= 10)
+			{
+				isAttacking = true;
+				this->attackBox = ML::Box2D(this->hitBase.w, 192, 50, 64);
+				attackBox.Offset(this->pos.x, this->pos.y);
+			}
+			if (this->moveCnt >= 35)
+			{
+				isAttacking = false;
+			}
 			break;
 		case Motion::NaturalJump:
 			if (this->moveCnt == 0)
@@ -403,13 +458,12 @@ namespace  Player1
 			}
 			break;
 		case Motion::Guard:
-
 			break;
-		case Motion::Super1:
+		case Motion::Hadouken:
 			break;
-		case Motion::Super2:
+		case Motion::Shoryuken:
 			break;
-		case Motion::Super3:
+		case Motion::PowerUP:
 			break;
 		}
 	}
@@ -425,6 +479,12 @@ namespace  Player1
 			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(960, 128, 64, 64)}, //Back jump fall
 			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(1024, 128, 64, 64)}, //Natural jump fall
 			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(1088, 128, 64, 64)}, //Forward jump fall
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(192, 128, 64, 64)}, //Punch 1
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(256, 128, 64, 64)}, //Punch 2
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(320, 128, 64, 64)}, //Punch 3
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(896, 0, 64, 64)}, //Kick 1
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(960, 0, 64, 64)}, //Kick 2
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(1024, 0, 64, 64)}, //Kick 3
 		};
 		BChara::DrawInfo rtv;
 		int work;
@@ -453,6 +513,14 @@ namespace  Player1
 		case Motion::BackJump:
 		case Motion::BackFall:
 			rtv = imageTable[3];
+			break;
+		case Motion::AttackPunch:
+			work = (this->animCnt / 20) % 3;
+			rtv = imageTable[work + 6];
+			break;
+		case Motion::AttackKick:
+			work = (this->animCnt / 20) % 3;
+			rtv = imageTable[work + 9];
 			break;
 		}
 

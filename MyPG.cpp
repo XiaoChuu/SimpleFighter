@@ -478,9 +478,9 @@ ge->debugRect(me, DEBUGRECTMODE::RED ,- ge->camera2D.x, -ge->camera2D.y);
 		XI::AnalogAxisKB	rs = { DIK_NUMPAD4, DIK_NUMPAD6, DIK_NUMPAD8, DIK_NUMPAD2 };
 		XI::AnalogTriggerKB  tg = { DIK_E, DIK_R };
 		XI::KeyDatas_KB	 key = {
-			{ DIK_Z, XI::VGP::B1 },{ DIK_X, XI::VGP::B2 },{ DIK_C, XI::VGP::B3 },
-			{ DIK_V, XI::VGP::B4 },{ DIK_A, XI::VGP::SE },{ DIK_S, XI::VGP::ST },
-			{ DIK_Q, XI::VGP::L1 },{ DIK_W, XI::VGP::R1 },
+			{ DIK_U, XI::VGP::B1 },{ DIK_J, XI::VGP::B2 },{ DIK_I, XI::VGP::B3 },
+			{ DIK_K, XI::VGP::B4 },{ DIK_A, XI::VGP::SE },{ DIK_S, XI::VGP::ST },
+			{ DIK_P, XI::VGP::L1 },{ DIK_W, XI::VGP::R1 },
 			{ DIK_D, XI::VGP::L3 },{ DIK_NUMPAD5, XI::VGP::R3 },
 		};
 		//ゲームパッドパラメータ
