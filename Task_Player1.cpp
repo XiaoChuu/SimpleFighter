@@ -1,4 +1,4 @@
-//-------------------------------------------------------------------
+ï»¿//-------------------------------------------------------------------
 //
 //-------------------------------------------------------------------
 #include  "MyPG.h"
@@ -8,63 +8,71 @@ namespace  Player1
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
-	//ƒŠƒ\[ƒX‚Ì‰Šú‰»
+	//ãƒªã‚½ãƒ¼ã‚¹ã®åˆæœŸåŒ–
 	bool  Resource::Initialize()
 	{
-		this->player1Img = DG::Image::Create("./data/image/kariplayer1.png");
+		this->player1Img = DG::Image::Create("./data/image/Player1.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
-	//ƒŠƒ\[ƒX‚Ì‰ğ•ú
+	//ãƒªã‚½ãƒ¼ã‚¹ã®è§£æ”¾
 	bool  Resource::Finalize()
 	{
 		this->player1Img.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
-	//u‰Šú‰»vƒ^ƒXƒN¶¬‚É‚P‰ñ‚¾‚¯s‚¤ˆ—
+	//ã€ŒåˆæœŸåŒ–ã€ã‚¿ã‚¹ã‚¯ç”Ÿæˆæ™‚ã«ï¼‘å›ã ã‘è¡Œã†å‡¦ç†
 	bool  Object::Initialize()
 	{
-		//ƒX[ƒp[ƒNƒ‰ƒX‰Šú‰»
+		//ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹åˆæœŸåŒ–
 		__super::Initialize(defGroupName, defName, true);
-		//ƒŠƒ\[ƒXƒNƒ‰ƒX¶¬orƒŠƒ\[ƒX‹¤—L
+		//ãƒªã‚½ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹ç”Ÿæˆorãƒªã‚½ãƒ¼ã‚¹å…±æœ‰
 		this->res = Resource::Create();
 
-		//šƒf[ƒ^‰Šú‰»
+		//â˜…ãƒ‡ãƒ¼ã‚¿åˆæœŸåŒ–
 		this->render2D_Priority[1] = 0.5f;
-		this->hitBase = ML::Box2D(-75, -150, 150, 300);
+		this->hitBase = ML::Box2D(-48, -92, 96, 184);
 		this->angle = Angle_LR::Right;
 		this->controller = ge->in1;
 		this->motion = Motion::Stand;
-		this->maxSpeed = 5.0f;
+		this->maxSpeed = 3.5f;
 		this->addSpeed = 1.0f;
 		this->decSpeed = 0.5f;
 		this->maxFallSpeed = 10.0f;
-		this->jumpPow = -10.0f;
-		this->gravity = ML::Gravity(32) * 5;
+		this->jumpPow = -15.0f;
+		this->gravity = ML::Gravity(32) * 3;
 		this->pos.x = 275;
 		this->pos.y = 400;
-		//šƒ^ƒXƒN‚Ì¶¬
+		//â˜…ã‚¿ã‚¹ã‚¯ã®ç”Ÿæˆ
 
 		return  true;
 	}
 	//-------------------------------------------------------------------
-	//uI—¹vƒ^ƒXƒNÁ–Å‚É‚P‰ñ‚¾‚¯s‚¤ˆ—
+	//ã€Œçµ‚äº†ã€ã‚¿ã‚¹ã‚¯æ¶ˆæ»…æ™‚ã«ï¼‘å›ã ã‘è¡Œã†å‡¦ç†
 	bool  Object::Finalize()
 	{
-		//šƒf[ƒ^•ƒ^ƒXƒN‰ğ•ú
+		//â˜…ãƒ‡ãƒ¼ã‚¿ï¼†ã‚¿ã‚¹ã‚¯è§£æ”¾
 		
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
-			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
+			//â˜…å¼•ãç¶™ãã‚¿ã‚¹ã‚¯ã®ç”Ÿæˆ
 		}
 
 		return  true;
 	}
 	//-------------------------------------------------------------------
-	//uXVv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
+	//ã€Œæ›´æ–°ã€ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ æ¯ã«è¡Œã†å‡¦ç†
 	void  Object::UpDate()
 	{
+		if (this->pos.x <= 0 + 75)
+		{
+			this->pos.x = 0 + 75;
+		}
+		if (this->pos.x >= 1280 - 75)
+		{
+			this->pos.x = 1280 - 75;
+		}
 		this->moveCnt++;
 		this->animCnt++;
 		this->Think();
@@ -73,13 +81,14 @@ namespace  Player1
 		this->CheckMove(est);
 	}
 	//-------------------------------------------------------------------
-	//u‚Q‚c•`‰æv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
+	//ã€Œï¼’ï¼¤æç”»ã€ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ æ¯ã«è¡Œã†å‡¦ç†
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D Draw(-75, -150, 150, 300);
-		Draw.Offset(this->pos);
-		ML::Box2D Src(0, 0, 64, 64);
-		this->res->player1Img->Draw(Draw, Src);
+		/*ML::Box2D Draw(-128, -128, 256, 256);
+		ML::Box2D Src(0, 0, 64, 64);*/
+		BChara::DrawInfo di = this->Anim();
+		di.draw.Offset(this->pos);
+		this->res->player1Img->Draw(di.draw, di.src);
 	}
 
 	void Object::Think() 
@@ -90,25 +99,97 @@ namespace  Player1
 		switch (nm)
 		{
 		case Motion::Stand:
-			if (inp.LStick.BU.on)
+			if (inp.R1.on) //W:R1 A:SE S:ST D:L3
 			{
-				nm = Motion::Jump;
+				nm = Motion::NaturalJump;
 			}
-			if (inp.LStick.BL.on)
+			if (inp.SE.on)
 			{
-				nm = Motion::Walk;
+				if (this->angle == Angle_LR::Right)
+				{
+					nm = Motion::BackWalk;
+				}
+				else
+				{
+					nm = Motion::ForwardWalk;
+				}
 			}
-			if (inp.LStick.BR.on)
+			if (inp.L3.on)
 			{
-				nm = Motion::Walk;
+				if (this->angle == Angle_LR::Left)
+				{
+					nm = Motion::BackWalk;
+				}
+				else
+				{
+					nm = Motion::ForwardWalk;
+				}
 			}
 			break;
-		case Motion::Walk:
-			if (inp.LStick.BU.on)
+		case Motion::ForwardWalk:
+			if (inp.R1.on && inp.SE.on)
 			{
-				nm = Motion::Jump;
+				if (this->angle == Angle_LR::Left)
+				{
+					nm = Motion::ForwardJump;
+				}
 			}
-			if (inp.LStick.BL.off && inp.LStick.BR.off)
+			if (inp.R1.on && inp.L3.on)
+			{
+				if (this->angle == Angle_LR::Right)
+				{
+					nm = Motion::ForwardJump;
+				}
+			}
+			if (inp.SE.on)
+			{
+				if (this->angle == Angle_LR::Right)
+				{
+					nm = Motion::BackWalk;
+				}
+			}
+			if (inp.L3.on)
+			{
+				if (this->angle == Angle_LR::Left)
+				{
+					nm = Motion::BackWalk;
+				}
+			}
+			if (inp.SE.off && inp.L3.off)
+			{
+				nm = Motion::Stand;
+			}
+			break;
+		case Motion::BackWalk:
+			if (inp.R1.on && inp.SE.on)
+			{
+				if (this->angle == Angle_LR::Right)
+				{
+					nm = Motion::BackJump;
+				}
+			}
+			if (inp.R1.on && inp.L3.on)
+			{
+				if (this->angle == Angle_LR::Left)
+				{
+					nm = Motion::BackJump;
+				}
+			}
+			if (inp.SE.on)
+			{
+				if (this->angle == Angle_LR::Left)
+				{
+					nm = Motion::ForwardWalk;
+				}
+			}
+			if (inp.L3.on)
+			{
+				if (this->angle == Angle_LR::Right)
+				{
+					nm = Motion::ForwardWalk;
+				}
+			}
+			if (inp.SE.off && inp.L3.off)
 			{
 				nm = Motion::Stand;
 			}
@@ -117,13 +198,37 @@ namespace  Player1
 			break;
 		case Motion::AttackKick:
 			break;
-		case Motion::Jump:
+		case Motion::NaturalJump:
 			if (this->moveVec.y >= 0)
 			{
-				nm = Motion::Fall;
+				nm = Motion::NaturalFall;
 			}
 			break;
-		case Motion::Fall:
+		case Motion::ForwardJump:
+			if (this->moveVec.y >= 0)
+			{
+				nm = Motion::ForwardFall;
+			}
+			break;
+		case Motion::BackJump:
+			if (this->moveVec.y >= 0)
+			{
+				nm = Motion::BackFall;
+			}
+			break;
+		case Motion::NaturalFall:
+			if (this->CheckFoot() == true)
+			{
+				nm = Motion::Stand;
+			}
+			break;
+		case Motion::ForwardFall:
+			if (this->CheckFoot() == true)
+			{
+				nm = Motion::Stand;
+			}
+			break;
+		case Motion::BackFall:
 			if (this->CheckFoot() == true)
 			{
 				nm = Motion::Stand;
@@ -145,7 +250,7 @@ namespace  Player1
 		auto inp = this->controller->GetState();
 		BChara::Motion nm = this->motion;
 
-		//d—Í‰Á‘¬
+		//é‡åŠ›åŠ é€Ÿ
 		switch (this->motion)
 		{
 		default:
@@ -162,7 +267,7 @@ namespace  Player1
 			break;
 		}
 
-		//ˆÚ“®‘¬“xŒ¸Š
+		//ç§»å‹•é€Ÿåº¦æ¸›è¡°
 		switch (this->motion)
 		{
 		default:
@@ -182,52 +287,123 @@ namespace  Player1
 		switch (nm)
 		{
 		case Motion::Stand:
-			if (inp.LStick.BL.on)
+			if (inp.SE.on)
 			{
-				this->moveVec.x = -this->maxSpeed;
+				if (this->angle == Angle_LR::Right)
+				{
+					this->moveVec.x = -this->maxSpeed;
+				}
+				else
+				{
+					this->moveVec.x = this->maxSpeed;
+				}
 			}
-			if (inp.LStick.BR.on)
+			if (inp.L3.on)
 			{
-				this->moveVec.x = this->maxSpeed;
+				if (this->angle == Angle_LR::Left)
+				{
+					this->moveVec.x = -this->maxSpeed;
+				}
+				else
+				{
+					this->moveVec.x = this->maxSpeed;
+				}
 			}
 			break;
-		case Motion::Walk:
-			if (inp.LStick.BL.on)
+		case Motion::ForwardWalk:
+			if (inp.SE.on)
 			{
-				this->moveVec.x = -this->maxSpeed;
+				if (this->angle == Angle_LR::Left)
+				{
+					this->moveVec.x = -this->maxSpeed;
+				}
 			}
-			if (inp.LStick.BR.on)
+			if (inp.L3.on)
 			{
-				this->moveVec.x = this->maxSpeed;
+				if (this->angle == Angle_LR::Right)
+				{
+					this->moveVec.x = this->maxSpeed;
+				}
+			}
+			break;
+		case Motion::BackWalk:
+			if (inp.SE.on)
+			{
+				if (this->angle == Angle_LR::Right)
+				{
+					this->moveVec.x = -this->maxSpeed;
+				}
+			}
+			if (inp.L3.on)
+			{
+				if (this->angle == Angle_LR::Left)
+				{
+					this->moveVec.x = -this->maxSpeed;
+				}
 			}
 			break;
 		case Motion::AttackPunch:
 			break;
 		case Motion::AttackKick:
 			break;
-		case Motion::Jump:
-			if (inp.LStick.BL.on)
-			{
-				this->moveVec.x = -this->maxSpeed;
-			}
-			if (inp.LStick.BR.on)
-			{
-				this->moveVec.x = this->maxSpeed;
-			}
+		case Motion::NaturalJump:
 			if (this->moveCnt == 0)
 			{
 				this->moveVec.y = this->jumpPow;
 			}
 			break;
-		case Motion::Fall:
-			if (inp.LStick.BL.on)
+		case Motion::ForwardJump:
+			if (this->moveCnt == 0)
 			{
-				this->moveVec.x = -this->maxSpeed;
+				this->moveVec.y = this->jumpPow;
 			}
-			if (inp.LStick.BR.on)
+			if (this->angle == Angle_LR::Right)
 			{
 				this->moveVec.x = this->maxSpeed;
 			}
+			else
+			{
+				this->moveVec.x = -this->maxSpeed;
+			}
+			break;
+		case Motion::BackJump:
+			if (this->moveCnt == 0)
+			{
+				this->moveVec.y = this->jumpPow;
+			}
+			if (this->angle == Angle_LR::Left)
+			{
+				this->moveVec.x = this->maxSpeed;
+			}
+			else
+			{
+				this->moveVec.x = -this->maxSpeed;
+			}
+			break;
+		case Motion::NaturalFall:
+			break;
+		case Motion::ForwardFall:
+			if (this->angle == Angle_LR::Right)
+			{
+				this->moveVec.x = this->maxSpeed;
+			}
+			else
+			{
+				this->moveVec.x = -this->maxSpeed;
+			}
+			break;
+		case Motion::BackFall:
+			if (this->angle == Angle_LR::Left)
+			{
+				this->moveVec.x = this->maxSpeed;
+			}
+			else
+			{
+				this->moveVec.x = -this->maxSpeed;
+			}
+			break;
+		case Motion::Guard:
+
 			break;
 		case Motion::Super1:
 			break;
@@ -238,22 +414,72 @@ namespace  Player1
 		}
 	}
 
-	//šššššššššššššššššššššššššššššššššššššššššš
-	//ˆÈ‰º‚ÍŠî–{“I‚É•ÏX•s—v‚Èƒƒ\ƒbƒh
-	//šššššššššššššššššššššššššššššššššššššššššš
+	//Animation
+	BChara::DrawInfo Object::Anim() 
+	{
+		BChara::DrawInfo imageTable[] =
+		{
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(0, 0, 64, 64)},//Stand
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(64, 64, 64, 64)},//ForwardWalk
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(0, 64, 64, 64)},//BackWalk
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(960, 128, 64, 64)}, //Back jump fall
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(1024, 128, 64, 64)}, //Natural jump fall
+			{ML::Box2D(-128, -128, 256, 256),ML::Box2D(1088, 128, 64, 64)}, //Forward jump fall
+		};
+		BChara::DrawInfo rtv;
+		int work;
+		switch (this->motion)
+		{
+		default:
+			rtv = imageTable[0];
+			break;
+		case Motion::Stand:
+			rtv = imageTable[0];
+			break;
+		case Motion::ForwardWalk:
+			rtv = imageTable[1];
+			break;
+		case Motion::BackWalk:
+			rtv = imageTable[2];
+			break;
+		case Motion::NaturalJump:
+		case Motion::NaturalFall:
+			rtv = imageTable[4];
+			break;
+		case Motion::ForwardJump:
+		case Motion::ForwardFall:
+			rtv = imageTable[5];
+			break;
+		case Motion::BackJump:
+		case Motion::BackFall:
+			rtv = imageTable[3];
+			break;
+		}
+
+		if (this->angle == Angle_LR::Left)
+		{
+			rtv.draw.x = -rtv.draw.x;
+			rtv.draw.w = -rtv.draw.w;
+		}
+		return rtv;
+	}
+
+	//â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
+	//ä»¥ä¸‹ã¯åŸºæœ¬çš„ã«å¤‰æ›´ä¸è¦ãªãƒ¡ã‚½ãƒƒãƒ‰
+	//â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
 	//-------------------------------------------------------------------
-	//ƒ^ƒXƒN¶¬‘‹Œû
+	//ã‚¿ã‚¹ã‚¯ç”Ÿæˆçª“å£
 	Object::SP  Object::Create(bool  flagGameEnginePushBack_)
 	{
 		Object::SP  ob = Object::SP(new  Object());
 		if (ob) {
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
-				ge->PushBack(ob);//ƒQ[ƒ€ƒGƒ“ƒWƒ“‚É“o˜^
+				ge->PushBack(ob);//ã‚²ãƒ¼ãƒ ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²
 				
 			}
 			if (!ob->B_Initialize()) {
-				ob->Kill();//ƒCƒjƒVƒƒƒ‰ƒCƒY‚É¸”s‚µ‚½‚çKill
+				ob->Kill();//ã‚¤ãƒ‹ã‚·ãƒ£ãƒ©ã‚¤ã‚ºã«å¤±æ•—ã—ãŸã‚‰Kill
 			}
 			return  ob;
 		}
@@ -274,7 +500,7 @@ namespace  Player1
 	//-------------------------------------------------------------------
 	Object::Object() {	}
 	//-------------------------------------------------------------------
-	//ƒŠƒ\[ƒXƒNƒ‰ƒX‚Ì¶¬
+	//ãƒªã‚½ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹ã®ç”Ÿæˆ
 	Resource::SP  Resource::Create()
 	{
 		if (auto sp = instance.lock()) {

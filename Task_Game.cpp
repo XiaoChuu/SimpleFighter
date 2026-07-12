@@ -1,5 +1,5 @@
-//-------------------------------------------------------------------
-//ƒQ[ƒ€–{•Ò
+ï»¿//-------------------------------------------------------------------
+//ã‚²ãƒ¼ãƒ æœ¬ç·¨
 //-------------------------------------------------------------------
 #include  "MyPG.h"
 #include  "Task_Game.h"
@@ -14,7 +14,7 @@ namespace  Game
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
-	//ƒŠƒ\[ƒX‚Ì‰Šú‰»
+	//ãƒªã‚½ãƒ¼ã‚¹ã®åˆæœŸåŒ–
 	bool  Resource::Initialize()
 	{
 		this->imgHPFull = DG::Image::Create("./data/image/HPBAR_Full.png");
@@ -28,7 +28,7 @@ namespace  Game
 		return true;
 	}
 	//-------------------------------------------------------------------
-	//ƒŠƒ\[ƒX‚Ì‰ğ•ú
+	//ãƒªã‚½ãƒ¼ã‚¹ã®è§£æ”¾
 	bool  Resource::Finalize()
 	{
 		this->imgHPFull.reset();
@@ -44,50 +44,50 @@ namespace  Game
 		return true;
 	}
 	//-------------------------------------------------------------------
-	//u‰Šú‰»vƒ^ƒXƒN¶¬‚É‚P‰ñ‚¾‚¯s‚¤ˆ—
+	//ã€ŒåˆæœŸåŒ–ã€ã‚¿ã‚¹ã‚¯ç”Ÿæˆæ™‚ã«ï¼‘å›ã ã‘è¡Œã†å‡¦ç†
 	bool  Object::Initialize()
 	{
-		//ƒX[ƒp[ƒNƒ‰ƒX‰Šú‰»
+		//ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹åˆæœŸåŒ–
 		__super::Initialize(defGroupName, defName, true);
-		//ƒŠƒ\[ƒXƒNƒ‰ƒX¶¬orƒŠƒ\[ƒX‹¤—L
+		//ãƒªã‚½ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹ç”Ÿæˆorãƒªã‚½ãƒ¼ã‚¹å…±æœ‰
 		this->res = Resource::Create();
 
-		//šƒf[ƒ^‰Šú‰»
+		//â˜…ãƒ‡ãƒ¼ã‚¿åˆæœŸåŒ–
 		this->render2D_Priority[1] = 0.8f;
 		this->time = 0;
 		
-		//ƒfƒoƒbƒO—pƒtƒHƒ“ƒg‚Ì€”õ
-		this->TestFont = DG::Font::Create("‚l‚r ƒSƒVƒbƒN", 30, 30);
+		//ãƒ‡ãƒãƒƒã‚°ç”¨ãƒ•ã‚©ãƒ³ãƒˆã®æº–å‚™
+		this->TestFont = DG::Font::Create("ï¼­ï¼³ ã‚´ã‚·ãƒƒã‚¯", 30, 30);
 
-		//šƒ^ƒXƒN‚Ì¶¬
+		//â˜…ã‚¿ã‚¹ã‚¯ã®ç”Ÿæˆ
 		auto p1 = Player1::Object::Create(true);
 
 
 		return  true;
 	}
 	//-------------------------------------------------------------------
-	//uI—¹vƒ^ƒXƒNÁ–Å‚É‚P‰ñ‚¾‚¯s‚¤ˆ—
+	//ã€Œçµ‚äº†ã€ã‚¿ã‚¹ã‚¯æ¶ˆæ»…æ™‚ã«ï¼‘å›ã ã‘è¡Œã†å‡¦ç†
 	bool  Object::Finalize()
 	{
-		//šƒf[ƒ^•ƒ^ƒXƒN‰ğ•ú
-		ge->KillAll_G("–{•Ò");
+		//â˜…ãƒ‡ãƒ¼ã‚¿ï¼†ã‚¿ã‚¹ã‚¯è§£æ”¾
+		ge->KillAll_G("æœ¬ç·¨");
 
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
-			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
+			//â˜…å¼•ãç¶™ãã‚¿ã‚¹ã‚¯ã®ç”Ÿæˆ
 			auto next = Ending::Object::Create(true);
 		}
 
 		return  true;
 	}
 	//-------------------------------------------------------------------
-	//uXVv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
+	//ã€Œæ›´æ–°ã€ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ æ¯ã«è¡Œã†å‡¦ç†
 	void  Object::UpDate()
 	{
 		time++;
 		auto inp = ge->in1->GetState( );
-		if (inp.ST.down || time == 5400) {
-			ge->StartCounter("test", 45); //ƒtƒF[ƒh‚Í90ƒtƒŒ[ƒ€‚È‚Ì‚Å”¼•ª‚Ì45‚ÅØ‚è‘Ö‚¦
+		if (time == 5400) {
+			ge->StartCounter("test", 45); //ãƒ•ã‚§ãƒ¼ãƒ‰ã¯90ãƒ•ãƒ¬ãƒ¼ãƒ ãªã®ã§åŠåˆ†ã®45ã§åˆ‡ã‚Šæ›¿ãˆ
 			ge->CreateEffect(99, ML::Vec2(0, 0));
 		}
 		if (ge->getCounterFlag("test") == ge->LIMIT) {
@@ -95,60 +95,60 @@ namespace  Game
 		}
 	}
 	//-------------------------------------------------------------------
-	//u‚Q‚c•`‰æv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
+	//ã€Œï¼’ï¼¤æç”»ã€ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ æ¯ã«è¡Œã†å‡¦ç†
 	void  Object::Render2D_AF()
 	{
-		//”wŒi
+		//èƒŒæ™¯
 		ML::Box2D  draw_BG(0, 0, 1280, 720);
 		ML::Box2D  src_BG(0, 0, 1672, 941);
 		this->res->imgBG->Draw(draw_BG, src_BG);
 
-		//HPƒo[
+		//HPãƒãƒ¼
 		ML::Box2D draw_HP_E(100, 40, 512, 128);
 		ML::Box2D src_HP_E(0, 0, 512, 128);
 		this->res->imgHPEmp->Draw(draw_HP_E, src_HP_E);
 		ML::Box2D draw_HP_F(100, 40, 512, 128);
-		ML::Box2D src_HP_F(0, 0, 512, 128);//‰¼
+		ML::Box2D src_HP_F(0, 0, 512, 128);//ä»®
 		this->res->imgHPFull->Draw(draw_HP_F, src_HP_F);
 
 		ML::Box2D draw_HP_E2(668, 40, 512, 128);
 		ML::Box2D src_HP_E2(512, 0, -512, 128);
 		this->res->imgHPEmp->Draw(draw_HP_E2, src_HP_E2);
 		ML::Box2D draw_HP_F2(668, 40, 512, 128);
-		ML::Box2D src_HP_F2(512, 0, -512, 128);//‰¼
+		ML::Box2D src_HP_F2(512, 0, -512, 128);//ä»®
 		this->res->imgHPFull->Draw(draw_HP_F2, src_HP_F2);
 
-		//•KE‹ZƒQ[ƒW
+		//å¿…æ®ºæŠ€ã‚²ãƒ¼ã‚¸
 		ML::Box2D draw_Gauge_E(100, 584, 256, 48);
 		ML::Box2D src_Gauge_E(0, 0, 512, 96);
 		this->res->imgGaugeEmp->Draw(draw_Gauge_E, src_Gauge_E);
 		ML::Box2D draw_Gauge_F(100, 584, 256, 48);
-		ML::Box2D src_Gauge_F(0, 0, 512, 96);//‰¼
+		ML::Box2D src_Gauge_F(0, 0, 512, 96);//ä»®
 		this->res->imgGaugeFull->Draw(draw_Gauge_F, src_Gauge_F);
 		ML::Box2D draw_Gauge_E2(924, 584, 256, 48);
 		ML::Box2D src_Gauge_E2(0, 0, 512, 96);
 		this->res->imgGaugeEmpR->Draw(draw_Gauge_E2, src_Gauge_E2);
 		ML::Box2D draw_Gauge_F2(924, 584, 256, 48);
-		ML::Box2D src_Gauge_F2(0, 0, 512, 96);//‰¼
+		ML::Box2D src_Gauge_F2(0, 0, 512, 96);//ä»®
 		this->res->imgGaugeFullR->Draw(draw_Gauge_F2, src_Gauge_F2);
 
 	}
 
-	//šššššššššššššššššššššššššššššššššššššššššš
-	//ˆÈ‰º‚ÍŠî–{“I‚É•ÏX•s—v‚Èƒƒ\ƒbƒh
-	//šššššššššššššššššššššššššššššššššššššššššš
+	//â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
+	//ä»¥ä¸‹ã¯åŸºæœ¬çš„ã«å¤‰æ›´ä¸è¦ãªãƒ¡ã‚½ãƒƒãƒ‰
+	//â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
 	//-------------------------------------------------------------------
-	//ƒ^ƒXƒN¶¬‘‹Œû
+	//ã‚¿ã‚¹ã‚¯ç”Ÿæˆçª“å£
 	Object::SP  Object::Create(bool  flagGameEnginePushBack_)
 	{
 		Object::SP  ob = Object::SP(new  Object());
 		if (ob) {
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
-				ge->PushBack(ob);//ƒQ[ƒ€ƒGƒ“ƒWƒ“‚É“o˜^
+				ge->PushBack(ob);//ã‚²ãƒ¼ãƒ ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²
 			}
 			if (!ob->B_Initialize()) {
-				ob->Kill();//ƒCƒjƒVƒƒƒ‰ƒCƒY‚É¸”s‚µ‚½‚çKill
+				ob->Kill();//ã‚¤ãƒ‹ã‚·ãƒ£ãƒ©ã‚¤ã‚ºã«å¤±æ•—ã—ãŸã‚‰Kill
 			}
 			return  ob;
 		}
@@ -169,7 +169,7 @@ namespace  Game
 	//-------------------------------------------------------------------
 	Object::Object() {	}
 	//-------------------------------------------------------------------
-	//ƒŠƒ\[ƒXƒNƒ‰ƒX‚Ì¶¬
+	//ãƒªã‚½ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹ã®ç”Ÿæˆ
 	Resource::SP  Resource::Create()
 	{
 		if (auto sp = instance.lock()) {

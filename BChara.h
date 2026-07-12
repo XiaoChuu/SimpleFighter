@@ -1,25 +1,25 @@
-#pragma once
+ï»¿#pragma once
 #pragma warning(disable:4996)
 #pragma once
 //-----------------------------------------------------------------------------
-//ƒLƒƒƒ‰ƒNƒ^”Ä—pƒX[ƒp[ƒNƒ‰ƒX
+//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿æ±ç”¨ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹
 //-----------------------------------------------------------------------------
 #include "GameEngine_Ver3_83.h"
 
 class BChara : public BTask
 {
-	//•ÏX•s‰ÂŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸ
+	//å¤‰æ›´ä¸å¯â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†
 public:
 	typedef shared_ptr<BChara>		SP;
 	typedef weak_ptr<BChara>		WP;
 public:
-	//•ÏX‰Â
-	//ƒLƒƒƒ‰ƒNƒ^‹¤’Êƒƒ“ƒo•Ï”
-	ML::Vec2    pos;		//ƒLƒƒƒ‰ƒNƒ^ˆÊ’u
-	ML::Box2D   hitBase;	//‚ ‚½‚è”»’è”ÍˆÍ
-	ML::Vec2	moveVec;	//ˆÚ“®ƒxƒNƒgƒ‹
-	int			moveCnt;	//s“®ƒJƒEƒ“ƒ^
-	//Œü‚«i2D‹“_j
+	//å¤‰æ›´å¯â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿å…±é€šãƒ¡ãƒ³ãƒå¤‰æ•°
+	ML::Vec2    pos;		//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ä½ç½®
+	ML::Box2D   hitBase;	//ã‚ãŸã‚Šåˆ¤å®šç¯„å›²
+	ML::Vec2	moveVec;	//ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«
+	int			moveCnt;	//è¡Œå‹•ã‚«ã‚¦ãƒ³ã‚¿
+	//å‘ãï¼ˆ2Dè¦–ç‚¹ï¼‰
 	//float angle;
 	enum class Angle_LR
 	{
@@ -31,11 +31,17 @@ public:
 	{
 		Unnon = -1,
 		Stand,
-		Walk,
+		ForwardWalk,
+		BackWalk,
 		AttackPunch,
 		AttackKick,
-		Jump,
-		Fall,
+		NaturalJump,
+		ForwardJump,
+		BackJump,
+		NaturalFall,
+		ForwardFall,
+		BackFall,
+		Hurt,
 		Guard,
 		KO,
 		Super1,
@@ -52,10 +58,9 @@ public:
 	float maxSpeed;
 	float addSpeed;
 	float decSpeed;
-	
 
-	//ƒƒ“ƒo•Ï”‚ÉÅ’áŒÀ‚Ì‰Šú‰»‚ğs‚¤
-	//ššƒƒ“ƒo•Ï”‚ğ’Ç‰Á‚µ‚½‚ç•K‚¸‰Šú‰»‚à’Ç‰Á‚·‚é–šš
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°ã«æœ€ä½é™ã®åˆæœŸåŒ–ã‚’è¡Œã†
+	//â˜…â˜…ãƒ¡ãƒ³ãƒå¤‰æ•°ã‚’è¿½åŠ ã—ãŸã‚‰å¿…ãšåˆæœŸåŒ–ã‚‚è¿½åŠ ã™ã‚‹äº‹â˜…â˜…
 	BChara()
 		: pos(0, 0)
 		, hitBase(0, 0, 0, 0)
@@ -76,6 +81,10 @@ public:
 	bool CheckFoot();
 	bool UpdateMotion(Motion nm_);
 	
+	struct DrawInfo
+	{
+		ML::Box2D draw, src;
+	};
 
 protected:
 	ML::Vec2 MoveSet(int key);
