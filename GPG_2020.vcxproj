@@ -146,6 +146,7 @@
     <ClCompile Include="Task_Ending.cpp" />
     <ClCompile Include="Task_Game.cpp" />
     <ClCompile Include="Task_Player1.cpp" />
+    <ClCompile Include="Task_Player2.cpp" />
     <ClCompile Include="Task_Title.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="XI2018_Ver1_0.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Task_Ending.h" />
     <ClInclude Include="Task_Game.h" />
     <ClInclude Include="Task_Player1.h" />
+    <ClInclude Include="Task_Player2.h" />
     <ClInclude Include="Task_Title.h" />
     <ClInclude Include="XI2018_Ver1_0.h" />
   </ItemGroup>

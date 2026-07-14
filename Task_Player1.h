@@ -24,6 +24,7 @@ namespace  Player1
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
 		DG::Image::SP player1Img;
+		DG::Image::SP powerUpImg;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BChara
@@ -53,5 +54,6 @@ namespace  Player1
 		void Move();
 
 		BChara::DrawInfo Anim();
+		BChara::DrawInfo PowerUpAnim();
 	};
 }

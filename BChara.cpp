@@ -97,7 +97,7 @@ void BChara::CheckMove(ML::Vec2& e_)
 
 bool BChara::CheckHit(const ML::Box2D& hit_)
 {
-	ML::Box2D yuka(-10, 550, 1300, 100);
+	ML::Box2D yuka(-10, 550, 1300, 200);
 	return yuka.Hit(hit_);
 }
 

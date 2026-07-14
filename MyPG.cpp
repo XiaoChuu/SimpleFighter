@@ -475,13 +475,16 @@ ge->debugRect(me, DEBUGRECTMODE::RED ,- ge->camera2D.x, -ge->camera2D.y);
 
 		//キーボードの入力を受け取るオブジェクトを生成する
 		XI::AnalogAxisKB	ls = { DIK_LEFT, DIK_RIGHT, DIK_UP, DIK_DOWN };
-		XI::AnalogAxisKB	rs = { DIK_NUMPAD4, DIK_NUMPAD6, DIK_NUMPAD8, DIK_NUMPAD2 };
+		XI::AnalogAxisKB	rs = { DIK_Z, DIK_X, DIK_C ,DIK_V };
 		XI::AnalogTriggerKB  tg = { DIK_E, DIK_R };
 		XI::KeyDatas_KB	 key = {
-			{ DIK_U, XI::VGP::B1 },{ DIK_J, XI::VGP::B2 },{ DIK_I, XI::VGP::B3 },
-			{ DIK_K, XI::VGP::B4 },{ DIK_A, XI::VGP::SE },{ DIK_S, XI::VGP::ST },
-			{ DIK_P, XI::VGP::L1 },{ DIK_W, XI::VGP::R1 },
-			{ DIK_D, XI::VGP::L3 },{ DIK_NUMPAD5, XI::VGP::R3 },
+			{ DIK_U, XI::VGP::B1 },{ DIK_J, XI::VGP::B2 },
+			{ DIK_I, XI::VGP::B3 },{ DIK_K, XI::VGP::B4 },
+			{ DIK_A, XI::VGP::SE },{ DIK_S, XI::VGP::ST },
+			{ DIK_O, XI::VGP::L1 },{ DIK_W, XI::VGP::R1 },
+			{ DIK_D, XI::VGP::L3 },{ DIK_NUMPAD4, XI::VGP::S0 },
+			{ DIK_NUMPAD1, XI::VGP::S1 },{ DIK_NUMPAD5, XI::VGP::S2 },
+			{ DIK_NUMPAD2, XI::VGP::S3 },{ DIK_NUMPAD6, XI::VGP::S4 },
 		};
 		//ゲームパッドパラメータ
 		XI::KeyDatas_GP	but = {
@@ -489,7 +492,10 @@ ge->debugRect(me, DEBUGRECTMODE::RED ,- ge->camera2D.x, -ge->camera2D.y);
 			{ XI::RGP::B03, XI::VGP::B3 },{ XI::RGP::B04, XI::VGP::B4 },
 			{ XI::RGP::B05, XI::VGP::L1 },{ XI::RGP::B06, XI::VGP::R1 },
 			{ XI::RGP::B07, XI::VGP::SE },{ XI::RGP::B08, XI::VGP::ST },
-			{ XI::RGP::B09, XI::VGP::L3 },{ XI::RGP::B10, XI::VGP::R3 },
+			{ XI::RGP::B09, XI::VGP::L3 },{ XI::RGP::B10, XI::VGP::S0 },
+			{ XI::RGP::B11, XI::VGP::S1 },{ XI::RGP::B12, XI::VGP::S2 },
+			{ XI::RGP::B13, XI::VGP::S3 },{ XI::RGP::B14, XI::VGP::S4 },
+			
 		};
 		this->in1 = XI::GamePad::CreateKB(ls, rs, tg, key);
 		auto wgp = XI::GamePad::CreateGP(0, but);
