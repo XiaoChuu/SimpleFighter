@@ -3,6 +3,7 @@
 //-------------------------------------------------------------------
 #include  "MyPG.h"
 #include  "Task_Player1.h"
+#include  "Task_Hadouken.h"
 
 namespace  Player1
 {
@@ -526,6 +527,21 @@ namespace  Player1
 		case Motion::Guard:
 			break;
 		case Motion::Hadouken:
+			if (this->moveCnt == 0)
+			{
+				auto hadouken = Hadouken::Object::Create(true);
+				hadouken->owner = Hadouken::Object::Owner::Player1;
+				hadouken->pos = this->pos;
+				hadouken->pos.x += 20;
+				if (this->angle == Angle_LR::Right)
+				{
+					hadouken->flyingSpeed = 5.0f;
+				}
+				else
+				{
+					hadouken->flyingSpeed = -5.0f;
+				}
+			}
 			break;
 		case Motion::Shoryuken:
 			if (this->moveCnt == 0)

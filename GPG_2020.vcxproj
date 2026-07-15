@@ -145,6 +145,7 @@
     <ClCompile Include="Task_Effect00.cpp" />
     <ClCompile Include="Task_Ending.cpp" />
     <ClCompile Include="Task_Game.cpp" />
+    <ClCompile Include="Task_Hadouken.cpp" />
     <ClCompile Include="Task_Player1.cpp" />
     <ClCompile Include="Task_Player2.cpp" />
     <ClCompile Include="Task_Title.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Task_Effect00.h" />
     <ClInclude Include="Task_Ending.h" />
     <ClInclude Include="Task_Game.h" />
+    <ClInclude Include="Task_Hadouken.h" />
     <ClInclude Include="Task_Player1.h" />
     <ClInclude Include="Task_Player2.h" />
     <ClInclude Include="Task_Title.h" />
