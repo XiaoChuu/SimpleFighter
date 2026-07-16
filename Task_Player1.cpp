@@ -105,30 +105,6 @@ namespace  Player1
 		auto inp = this->controller->GetState();
 		BChara::Motion nm = this->motion;
 
-		if (motion == Motion::Stand || motion == Motion::ForwardWalk ||motion == Motion::BackWalk || motion == Motion::Guard)
-		{
-			if (inp.B1.down) //U:B1 J:B2 I:B3 K:B4 O:L1
-			{
-				nm = Motion::AttackPunch;
-			}
-			else if (inp.B2.down)
-			{
-				nm = Motion::AttackKick;
-			}
-			else if (inp.B3.down)
-			{
-				nm = Motion::Hadouken;
-			}
-			else if (inp.B4.down)
-			{
-				nm = Motion::Shoryuken;
-			}
-			else if (inp.L1.down)
-			{
-				nm = Motion::PowerUP;
-			}	
-		}
-
 		switch (nm)
 		{
 		case Motion::Stand:
@@ -329,6 +305,30 @@ namespace  Player1
 				nm = Motion::Stand;
 			}
 			break;
+		}
+
+		if (motion == Motion::Stand || motion == Motion::ForwardWalk || motion == Motion::BackWalk || motion == Motion::Guard)
+		{
+			if (inp.B1.down) //U:B1 J:B2 I:B3 K:B4 O:L1
+			{
+				nm = Motion::AttackPunch;
+			}
+			else if (inp.B2.down)
+			{
+				nm = Motion::AttackKick;
+			}
+			else if (inp.B3.down)
+			{
+				nm = Motion::Hadouken;
+			}
+			else if (inp.B4.down)
+			{
+				nm = Motion::Shoryuken;
+			}
+			else if (inp.L1.down)
+			{
+				nm = Motion::PowerUP;
+			}
 		}
 
 		this->UpdateMotion(nm);
@@ -532,13 +532,14 @@ namespace  Player1
 				auto hadouken = Hadouken::Object::Create(true);
 				hadouken->owner = Hadouken::Object::Owner::Player1;
 				hadouken->pos = this->pos;
-				hadouken->pos.x += 20;
 				if (this->angle == Angle_LR::Right)
 				{
+					hadouken->pos.x += 20;
 					hadouken->flyingSpeed = 5.0f;
 				}
 				else
 				{
+					hadouken->pos.x -= 20;
 					hadouken->flyingSpeed = -5.0f;
 				}
 			}
