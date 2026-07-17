@@ -3,7 +3,7 @@
 //-------------------------------------------------------------------
 //
 //-------------------------------------------------------------------
-#include "GameEngine_Ver3_83.h"
+#include "BChara.h"
 
 namespace  Hadouken
 {
@@ -26,7 +26,7 @@ namespace  Hadouken
 		DG::Image::SP fireBallImg;
 	};
 	//-------------------------------------------------------------------
-	class  Object : public  BTask
+	class  Object : public  BChara
 	{
 	//変更不可◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	public:
@@ -47,11 +47,7 @@ namespace  Hadouken
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
-		enum class Angle_LR
-		{
-			Left,
-			Right
-		};
+
 		struct DrawInfo
 		{
 			ML::Box2D draw, src;
@@ -63,12 +59,8 @@ namespace  Hadouken
 			Player2
 		};
 
-		ML::Vec2 pos;
 		float flyingSpeed;
-		Angle_LR angle;
 		Owner owner;
-		ML::Box2D hitBase;
-		int animCnt;
 		DrawInfo fireballAnim();
 	};
 }
