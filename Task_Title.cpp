@@ -16,7 +16,7 @@ namespace  Title
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/titleback.png");
+		this->img = DG::Image::Create("./data/image/Main_Menu_image.png");
 		this->TitleLogo01 = DG::Image::Create("./data/image/StartKey.png");
 		return true;
 	}
@@ -109,7 +109,7 @@ namespace  Title
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D  draw_BG(0, 0, 1280, 720);
-		ML::Box2D  src_BG(0, 0, 1920, 1080);
+		ML::Box2D  src_BG(0, 0, 1280, 720);
 		this->res->img->Draw(draw_BG, src_BG);
 
 		ML::Box2D  draw_PRS(342, 380, 596, 91);
