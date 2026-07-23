@@ -14,6 +14,7 @@ namespace  Player2
 	{
 		this->player2Img = DG::Image::Create("./data/image/Player2.png");
 		this->powerUpImg = DG::Image::Create("./data/image/Player2.png");
+		this->atkboxdebug = DG::Image::Create("./data/image/debug.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -81,6 +82,22 @@ namespace  Player2
 		this->Move();
 		ML::Vec2 est = this->moveVec;
 		this->CheckMove(est);
+
+		if (this->isAttacking)
+		{
+			ML::Box2D me = this->attackBox.OffsetCopy(this->pos);
+			auto target = ge->GetTasks<BChara>("本編", "Player1");
+			for (auto it = target->begin(); it != target->end(); it++)
+			{
+				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
+				if (hit.Hit(me))
+				{
+					(*it)->motion = Motion::Hurt;
+					break;
+				}
+			}
+		}
+
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -98,6 +115,9 @@ namespace  Player2
 		{
 			this->res->powerUpImg->Draw(pdi.draw, pdi.src);
 		}
+
+		ML::Box2D src(0, 0, 32, 32);
+		this->res->atkboxdebug->Draw(this->attackBox.OffsetCopy(this->pos), src);
 	}
 
 	void Object::Think() 
@@ -446,24 +466,38 @@ namespace  Player2
 			if (this->moveCnt >= 15)
 			{
 				isAttacking = true;
-				this->attackBox = ML::Box2D(this->hitBase.w, 0, 56, 96);
-				attackBox.Offset(this->pos.x, this->pos.y);
+				if (this->angle == Angle_LR::Right)
+				{
+					this->attackBox = ML::Box2D(this->hitBase.w - 60, -this->hitBase.h / 2, 30, 96);
+				}
+				else
+				{
+					this->attackBox = ML::Box2D(-this->hitBase.w + 30, -this->hitBase.h / 2, 30, 96);
+				}
 			}
 			if (this->moveCnt >= 45)
 			{
 				isAttacking = false;
+				this->attackBox = ML::Box2D(0, 0, 0, 0); //kari
 			}
 			break;
 		case Motion::AttackKick:
 			if (this->moveCnt >= 10)
 			{
 				isAttacking = true;
-				this->attackBox = ML::Box2D(this->hitBase.w, 192, 50, 64);
-				attackBox.Offset(this->pos.x, this->pos.y);
+				if (this->angle == Angle_LR::Right)
+				{
+					this->attackBox = ML::Box2D(-5 + this->hitBase.w / 2, 70, 50, 16);
+				}
+				else
+				{
+					this->attackBox = ML::Box2D(-45 + -this->hitBase.w / 2, 70, 50, 16);
+				}
 			}
 			if (this->moveCnt >= 35)
 			{
 				isAttacking = false;
+				this->attackBox = ML::Box2D(0, 0, 0, 0); //kari
 			}
 			break;
 		case Motion::NaturalJump:
@@ -565,6 +599,7 @@ namespace  Player2
 			}
 			if (this->moveCnt >= 30)
 			{
+				this->attackBox = ML::Box2D(0, 0, 0, 0); //kari
 				isAttacking = false;
 			}
 			break;

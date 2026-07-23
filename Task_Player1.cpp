@@ -14,6 +14,8 @@ namespace  Player1
 	{
 		this->player1Img = DG::Image::Create("./data/image/Player1.png");
 		this->powerUpImg = DG::Image::Create("./data/image/Player1.png");
+		this->atkboxdebug = DG::Image::Create("./data/image/debug.png");
+		this->playerhitbasedebug = DG::Image::Create("./data/image/debug.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -98,6 +100,10 @@ namespace  Player1
 		{
 			this->res->powerUpImg->Draw(pdi.draw, pdi.src);
 		}
+
+		ML::Box2D src(0, 0, 32, 32);
+		this->res->atkboxdebug->Draw(this->attackBox, src);
+		this->res->playerhitbasedebug->Draw(this->hitBase.OffsetCopy(this->pos), src);
 	}
 
 	void Object::Think() 
@@ -446,24 +452,40 @@ namespace  Player1
 			if (this->moveCnt >= 15)
 			{
 				isAttacking = true;
-				this->attackBox = ML::Box2D(this->hitBase.w, 0, 56, 96);
+				if (this->angle == Angle_LR::Right)
+				{
+					this->attackBox = ML::Box2D(this->hitBase.w - 60, -this->hitBase.h / 2, 30, 96);
+				}
+				else
+				{
+					this->attackBox = ML::Box2D(-this->hitBase.w + 30, -this->hitBase.h / 2, 30, 96);
+				}
 				attackBox.Offset(this->pos.x, this->pos.y);
 			}
 			if (this->moveCnt >= 45)
 			{
 				isAttacking = false;
+				this->attackBox = ML::Box2D(0, 0, 0, 0); //kari
 			}
 			break;
 		case Motion::AttackKick:
 			if (this->moveCnt >= 10)
 			{
 				isAttacking = true;
-				this->attackBox = ML::Box2D(this->hitBase.w, 192, 50, 64);
+				if (this->angle == Angle_LR::Right)
+				{
+					this->attackBox = ML::Box2D(-5 + this->hitBase.w / 2, 70, 50, 16);
+				}
+				else
+				{
+					this->attackBox = ML::Box2D(-45 + -this->hitBase.w / 2, 70, 50, 16);
+				}
 				attackBox.Offset(this->pos.x, this->pos.y);
 			}
 			if (this->moveCnt >= 35)
 			{
 				isAttacking = false;
+				this->attackBox = ML::Box2D(0, 0, 0, 0); //kari
 			}
 			break;
 		case Motion::NaturalJump:

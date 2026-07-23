@@ -25,6 +25,7 @@ namespace  Player2
 		//共有する変数はここに追加する
 		DG::Image::SP player2Img;
 		DG::Image::SP powerUpImg;
+		DG::Image::SP atkboxdebug;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BChara
