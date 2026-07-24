@@ -84,6 +84,7 @@ namespace  Player2
 		ML::Vec2 est = this->moveVec;
 		this->CheckMove(est);
 
+		//当たり判定
 		if (this->isAttacking)
 		{
 			ML::Box2D me = this->attackBox.OffsetCopy(this->pos);
