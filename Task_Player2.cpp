@@ -15,6 +15,7 @@ namespace  Player2
 		this->player2Img = DG::Image::Create("./data/image/Player2.png");
 		this->powerUpImg = DG::Image::Create("./data/image/Player2.png");
 		this->atkboxdebug = DG::Image::Create("./data/image/debug.png");
+		this->playerhitbasedebug = DG::Image::Create("./data/image/debug.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -92,7 +93,7 @@ namespace  Player2
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
 				if (hit.Hit(me))
 				{
-					(*it)->motion = Motion::Hurt;
+					(*it)->UpdateMotion(Motion::Hurt);
 					break;
 				}
 			}
@@ -118,6 +119,7 @@ namespace  Player2
 
 		ML::Box2D src(0, 0, 32, 32);
 		this->res->atkboxdebug->Draw(this->attackBox.OffsetCopy(this->pos), src);
+		this->res->playerhitbasedebug->Draw(this->hitBase.OffsetCopy(this->pos), src);
 	}
 
 	void Object::Think() 
@@ -288,7 +290,7 @@ namespace  Player2
 			}
 			break;
 		case Motion::Hurt:
-			if (this->moveCnt >= 5)
+			if (this->moveCnt >= 30)
 			{
 				nm = Motion::Stand;
 			}
@@ -595,7 +597,7 @@ namespace  Player2
 			{
 				isAttacking = true;
 				this->attackBox = this->hitBase;
-				attackBox.Offset(this->pos.x, this->pos.y);
+				//attackBox.Offset(this->pos.x, this->pos.y);
 			}
 			if (this->moveCnt >= 30)
 			{

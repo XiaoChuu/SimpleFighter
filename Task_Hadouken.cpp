@@ -88,11 +88,14 @@ namespace  Hadouken
 
 		Object::DrawInfo imageTable[] =
 		{
-			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(0, 0, 64, 64), color},
-			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(64, 0, 64, 64), color},
-			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(128, 0, 64, 64), color},
-			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(192, 0, 64, 64), color},
-			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(256, 0, 64, 64), color},
+			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(0, 0, 64, 64), color},   //fireball 1
+			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(64, 0, 64, 64), color},	 //fireball 2
+			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(128, 0, 64, 64), color}, //fireball 3
+			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(192, 0, 64, 64), color}, //fireball 4
+			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(256, 0, 64, 64), color}, //fireball 5
+			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(320, 0, 64, 64), color}, //hit effect 1
+			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(384, 0, 64, 64), color}, //hit effect 2
+			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(448, 0, 64, 64), color}, //hit effect 3
 		};
 		Object::DrawInfo rtv;
 		int work;

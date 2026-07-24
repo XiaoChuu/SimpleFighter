@@ -83,6 +83,21 @@ namespace  Player1
 		this->Move();
 		ML::Vec2 est = this->moveVec;
 		this->CheckMove(est);
+
+		if (this->isAttacking)
+		{
+			ML::Box2D me = this->attackBox.OffsetCopy(this->pos);
+			auto target = ge->GetTasks<BChara>("本編", "Player2");
+			for (auto it = target->begin(); it != target->end(); it++)
+			{
+				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
+				if (hit.Hit(me))
+				{
+					(*it)->UpdateMotion(Motion::Hurt);
+					break;
+				}
+			}
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -102,7 +117,7 @@ namespace  Player1
 		}
 
 		ML::Box2D src(0, 0, 32, 32);
-		this->res->atkboxdebug->Draw(this->attackBox, src);
+		this->res->atkboxdebug->Draw(this->attackBox.OffsetCopy(this->pos), src);
 		this->res->playerhitbasedebug->Draw(this->hitBase.OffsetCopy(this->pos), src);
 	}
 
@@ -274,7 +289,7 @@ namespace  Player1
 			}
 			break;
 		case Motion::Hurt:
-			if (this->moveCnt >= 5)
+			if (this->moveCnt >= 30)
 			{
 				nm = Motion::Stand;
 			}
@@ -460,7 +475,6 @@ namespace  Player1
 				{
 					this->attackBox = ML::Box2D(-this->hitBase.w + 30, -this->hitBase.h / 2, 30, 96);
 				}
-				attackBox.Offset(this->pos.x, this->pos.y);
 			}
 			if (this->moveCnt >= 45)
 			{
@@ -480,7 +494,6 @@ namespace  Player1
 				{
 					this->attackBox = ML::Box2D(-45 + -this->hitBase.w / 2, 70, 50, 16);
 				}
-				attackBox.Offset(this->pos.x, this->pos.y);
 			}
 			if (this->moveCnt >= 35)
 			{
@@ -639,6 +652,7 @@ namespace  Player1
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 320, 64, 64)}, //Hadouken 2
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 320, 64, 64)}, //Hadouken 3
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64, 192, 64, 64)}, //Guardss
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 192, 64, 64)}, //Hurt
 		};
 		BChara::DrawInfo rtv;
 		int work;
@@ -690,6 +704,9 @@ namespace  Player1
 			break;
 		case Motion::Guard:
 			rtv = imageTable[22];
+			break;
+		case Motion::Hurt:
+			rtv = imageTable[23];
 			break;
 		}
 		

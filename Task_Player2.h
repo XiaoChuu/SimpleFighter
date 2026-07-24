@@ -26,6 +26,7 @@ namespace  Player2
 		DG::Image::SP player2Img;
 		DG::Image::SP powerUpImg;
 		DG::Image::SP atkboxdebug;
+		DG::Image::SP playerhitbasedebug;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BChara

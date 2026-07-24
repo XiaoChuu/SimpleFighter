@@ -101,7 +101,7 @@ bool BChara::CheckHit(const ML::Box2D& hit_)
 	return yuka.Hit(hit_);
 }
 
-bool BChara::CheckFoot() 
+bool BChara::CheckFoot()
 {
 	ML::Box2D foot(this->hitBase.x, this->hitBase.y + this->hitBase.h, this->hitBase.w, 1);
 	foot.Offset(this->pos);
