@@ -58,12 +58,12 @@ namespace  Hadouken
 			Player1,
 			Player2
 		};
-		enum class State
+		/*enum class State
 		{
 			None,
 			Active,
 			Hit,
-		};
+		};*/
 
 		float flyingSpeed;
 		Owner owner;

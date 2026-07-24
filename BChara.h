@@ -61,6 +61,9 @@ public:
 	float decSpeed;
 	bool isAttacking;
 	bool isPowerUp;
+	const int maxHp = 100;
+	int currentHp;
+	int attackdmg;
 
 	//メンバ変数に最低限の初期化を行う
 	//★★メンバ変数を追加したら必ず初期化も追加する事★★
@@ -76,6 +79,7 @@ public:
 		, maxSpeed(0)
 		, addSpeed(0)
 		, decSpeed(0)
+		, currentHp(0)
 	{
 	}
 	virtual  ~BChara() {}
@@ -84,7 +88,8 @@ public:
 	bool CheckHit(const ML::Box2D& hit_);
 	bool CheckFoot();
 	bool UpdateMotion(Motion nm_);
-	
+	void takeDamage(int dmg);
+
 	struct DrawInfo
 	{
 		ML::Box2D draw, src;

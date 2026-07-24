@@ -121,6 +121,9 @@
     <ClCompile Include="Task_Hadouken.cpp">
       <Filter>MyPG\Task</Filter>
     </ClCompile>
+    <ClCompile Include="Task_AtkBox.cpp">
+      <Filter>MyPG\Task</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -206,6 +209,9 @@
       <Filter>MyPG\Task</Filter>
     </ClInclude>
     <ClInclude Include="Task_Hadouken.h">
+      <Filter>MyPG\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task_AtkBox.h">
       <Filter>MyPG\Task</Filter>
     </ClInclude>
   </ItemGroup>

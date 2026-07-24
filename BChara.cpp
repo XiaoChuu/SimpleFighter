@@ -108,3 +108,14 @@ bool BChara::CheckFoot()
 
 	return this->CheckHit(foot);
 }
+
+void BChara::takeDamage(int dmg)
+{
+	this->currentHp -= dmg;
+	if (currentHp <= 0)
+	{
+		currentHp = 0;
+	}
+	
+	this->UpdateMotion(Motion::Hurt);
+}

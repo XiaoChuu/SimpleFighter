@@ -4,6 +4,7 @@
 #include  "MyPG.h"
 #include  "Task_Player2.h"
 #include  "Task_Hadouken.h"
+#include  "Task_AtkBox.h"
 
 namespace  Player2
 {
@@ -14,7 +15,6 @@ namespace  Player2
 	{
 		this->player2Img = DG::Image::Create("./data/image/Player2.png");
 		this->powerUpImg = DG::Image::Create("./data/image/Player2.png");
-		this->atkboxdebug = DG::Image::Create("./data/image/debug.png");
 		this->playerhitbasedebug = DG::Image::Create("./data/image/debug.png");
 		return true;
 	}
@@ -48,6 +48,7 @@ namespace  Player2
 		this->gravity = ML::Gravity(32) * 3;
 		this->pos.x = 1000;
 		this->pos.y = 450;
+		this->currentHp = this->maxHp;
 		//★タスクの生成
 
 		return  true;
@@ -83,23 +84,6 @@ namespace  Player2
 		this->Move();
 		ML::Vec2 est = this->moveVec;
 		this->CheckMove(est);
-
-		//当たり判定
-		if (this->isAttacking)
-		{
-			ML::Box2D me = this->attackBox.OffsetCopy(this->pos);
-			auto target = ge->GetTasks<BChara>("本編", "Player1");
-			for (auto it = target->begin(); it != target->end(); it++)
-			{
-				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
-				if (hit.Hit(me))
-				{
-					(*it)->UpdateMotion(Motion::Hurt);
-					break;
-				}
-			}
-		}
-
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -119,7 +103,6 @@ namespace  Player2
 		}
 
 		ML::Box2D src(0, 0, 32, 32);
-		this->res->atkboxdebug->Draw(this->attackBox.OffsetCopy(this->pos), src);
 		this->res->playerhitbasedebug->Draw(this->hitBase.OffsetCopy(this->pos), src);
 	}
 
@@ -127,6 +110,11 @@ namespace  Player2
 	{
 		auto inp = this->controller->GetState();
 		BChara::Motion nm = this->motion;
+
+		if (this->currentHp <= 0)
+		{
+			nm = Motion::KO;
+		}
 
 		switch (nm)
 		{
@@ -466,41 +454,37 @@ namespace  Player2
 					this->moveVec.x = -10.0f;
 				}
 			}
-			if (this->moveCnt >= 15)
+			if (this->moveCnt == 15)
 			{
-				isAttacking = true;
+				auto AtkBox = AtkBox::Object::Create(true);
+				AtkBox->owner = AtkBox::Object::Owner::Player2;
 				if (this->angle == Angle_LR::Right)
 				{
-					this->attackBox = ML::Box2D(this->hitBase.w - 60, -this->hitBase.h / 2, 30, 96);
+					AtkBox->attackBox = ML::Box2D(this->hitBase.w - 60, -this->hitBase.h / 2, 30, 96);
 				}
 				else
 				{
-					this->attackBox = ML::Box2D(-this->hitBase.w + 30, -this->hitBase.h / 2, 30, 96);
+					AtkBox->attackBox = ML::Box2D(-this->hitBase.w + 30, -this->hitBase.h / 2, 30, 96);
 				}
-			}
-			if (this->moveCnt >= 45)
-			{
-				isAttacking = false;
-				this->attackBox = ML::Box2D(0, 0, 0, 0); //kari
+				AtkBox->attackdmg = 10;
+				AtkBox->lifeTime = 30;
 			}
 			break;
 		case Motion::AttackKick:
-			if (this->moveCnt >= 10)
+			if (this->moveCnt == 10)
 			{
-				isAttacking = true;
+				auto AtkBox = AtkBox::Object::Create(true);
+				AtkBox->owner = AtkBox::Object::Owner::Player2;
 				if (this->angle == Angle_LR::Right)
 				{
-					this->attackBox = ML::Box2D(-5 + this->hitBase.w / 2, 70, 50, 16);
+					AtkBox->attackBox = ML::Box2D(-5 + this->hitBase.w / 2, 70, 50, 16);
 				}
 				else
 				{
-					this->attackBox = ML::Box2D(-45 + -this->hitBase.w / 2, 70, 50, 16);
+					AtkBox->attackBox = ML::Box2D(-45 + -this->hitBase.w / 2, 70, 50, 16);
 				}
-			}
-			if (this->moveCnt >= 35)
-			{
-				isAttacking = false;
-				this->attackBox = ML::Box2D(0, 0, 0, 0); //kari
+				AtkBox->attackdmg = 15;
+				AtkBox->lifeTime = 25;
 			}
 			break;
 		case Motion::NaturalJump:
@@ -594,16 +578,13 @@ namespace  Player2
 					this->moveVec.x = -12.5f;
 				}
 			}
-			if (this->moveCnt >= 5)
+			if (this->moveCnt == 5)
 			{
-				isAttacking = true;
-				this->attackBox = this->hitBase;
-				//attackBox.Offset(this->pos.x, this->pos.y);
-			}
-			if (this->moveCnt >= 30)
-			{
-				this->attackBox = ML::Box2D(0, 0, 0, 0); //kari
-				isAttacking = false;
+				auto AtkBox = AtkBox::Object::Create(true);
+				AtkBox->owner = AtkBox::Object::Owner::Player2;
+				AtkBox->attackBox = this->hitBase;
+				AtkBox->attackdmg = 50;
+				AtkBox->lifeTime = 25;
 			}
 			break;
 		case Motion::PowerUP:
@@ -656,6 +637,7 @@ namespace  Player2
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 320, 64, 64)}, //Hadouken 3
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64, 192, 64, 64)}, //Guard
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 192, 64, 64)}, //Hurt
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448, 192, 64, 64)}, //KO
 		};
 		BChara::DrawInfo rtv;
 		int work;
@@ -710,6 +692,9 @@ namespace  Player2
 			break;
 		case Motion::Hurt:
 			rtv = imageTable[23];
+			break;
+		case Motion::KO:
+			rtv = imageTable[24];
 			break;
 		}
 		

@@ -34,6 +34,7 @@ namespace  Hadouken
 		//★データ初期化
 		this->flyingSpeed = 0.0f;
 		this->hitBase = ML::Box2D(-25, -25, 50, 50);
+		this->attackdmg = 40;
 		//★タスクの生成
 
 		return  true;
@@ -61,8 +62,71 @@ namespace  Hadouken
 			return;
 		}
 
+		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
+		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
+
+		//Playerとの当たり判定
+		if (owner == Owner::Player1)
+		{
+			ML::Box2D me = this->hitBase.OffsetCopy(this->pos);
+			auto target = ge->GetTasks<BChara>("本編", "Player2");
+			for (auto it = target->begin(); it != target->end(); it++)
+			{
+				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
+				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
+				{
+					(*it)->takeDamage(this->attackdmg);
+					this->Kill();
+					break;
+				}
+				else if (hit.Hit(me) && (*it)->motion == Motion::Guard)
+				{
+					this->Kill();
+					break;
+				}
+			}
+		}
+		else if (owner == Owner::Player2)
+		{
+			ML::Box2D me = this->hitBase.OffsetCopy(this->pos);
+			auto target = ge->GetTasks<BChara>("本編", "Player1");
+			for (auto it = target->begin(); it != target->end(); it++)
+			{
+				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
+				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
+				{
+					(*it)->takeDamage(this->attackdmg);
+					this->Kill();
+					break;
+				}
+				else if (hit.Hit(me) && (*it)->motion == Motion::Guard)
+				{
+					this->Kill();
+					break;
+				}
+			}
+		}
+
+		//Hadouken同士との当たり判定
+		ML::Box2D me = this->hitBase.OffsetCopy(this->pos);
+		auto target = ge->GetTasks<Hadouken::Object>("本編", "Hadouken");
+		for (auto it = target->begin(); it != target->end(); it++)
+		{
+			if ((*it)->owner == this->owner)
+			{
+				continue;
+			}
+			ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
+			if (hit.Hit(me))
+			{
+				this->Kill();
+				(*it)->Kill();
+				break;
+			}
+		}
+
 		this->animCnt++;
-		this->pos.x += flyingSpeed;
+		this->pos.x += this->flyingSpeed;
 
 	}
 	//-------------------------------------------------------------------
