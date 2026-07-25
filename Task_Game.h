@@ -64,5 +64,7 @@ namespace  Game
 		//追加したい変数・メソッドはここに追加する
 		DG::Font::SP TestFont;
 		int time;
+
+		float push = 2.0f;
 	};
 }

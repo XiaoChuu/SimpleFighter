@@ -132,6 +132,23 @@ namespace  Game
 				p2->angle = Player1::Object::Angle_LR::Right;
 			}
 		}
+
+		//プレイヤー二人重ねなし処理
+		ML::Box2D p1HB = p1->hitBase.OffsetCopy(p1->pos);
+		ML::Box2D p2HB = p2->hitBase.OffsetCopy(p2->pos);
+		if (p1HB.Hit(p2HB))
+		{
+			if (p1HB.x < p2HB.x)
+			{
+				p1->pos.x -= push;
+				p2->pos.x += push;
+			}
+			else
+			{
+				p1->pos.x += push;
+				p2->pos.x -= push;
+			}
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
