@@ -169,14 +169,14 @@ namespace  Game
 		ML::Box2D src_HP_E(0, 0, 512, 128);
 		this->res->imgHPEmp->Draw(draw_HP_E, src_HP_E);
 		ML::Box2D draw_HP_F(100, 40, 107 + (405 * p1->currentHp / p1->maxHp), 128);
-		ML::Box2D src_HP_F(0, 0, 107 + (405 * p1->currentHp / p1->maxHp), 128);//HP0の時wはちょうど107のとこ
+		ML::Box2D src_HP_F(0, 0, 107 + (405 * p1->currentHp / p1->maxHp), 128); //HP0の時wはちょうど107のとこ
 		this->res->imgHPFull->Draw(draw_HP_F, src_HP_F);
 		//Player2
 		ML::Box2D draw_HP_E2(668, 40, 512, 128);
 		ML::Box2D src_HP_E2(512, 0, -512, 128);
 		this->res->imgHPEmp->Draw(draw_HP_E2, src_HP_E2);
 		ML::Box2D draw_HP_F2(668 + (512 - (107 + (405 * p2->currentHp / p2->maxHp))), 40, 107 + (405 * p2->currentHp / p2->maxHp), 128);
-		ML::Box2D src_HP_F2(107 + (405 * p2->currentHp / p2->maxHp), 0, -107 - (405 * p2->currentHp / p2->maxHp), 128);//HP0の時wはちょうど107のとこ
+		ML::Box2D src_HP_F2(107 + (405 * p2->currentHp / p2->maxHp), 0, -107 - (405 * p2->currentHp / p2->maxHp), 128); //HP0の時wはちょうど107のとこ
 		this->res->imgHPFull->Draw(draw_HP_F2, src_HP_F2);
 
 		//必殺技ゲージ
@@ -185,14 +185,14 @@ namespace  Game
 		ML::Box2D src_Gauge_E(0, 0, 512, 96);
 		this->res->imgGaugeEmp->Draw(draw_Gauge_E, src_Gauge_E);
 		ML::Box2D draw_Gauge_F(100, 584, 256, 48);
-		ML::Box2D src_Gauge_F(0, 0, 512, 96);//仮
+		ML::Box2D src_Gauge_F(0, 0, 179 + 333, 96); //Gauge0の時wはちょうど179のとこ
 		this->res->imgGaugeFull->Draw(draw_Gauge_F, src_Gauge_F);
 		//Player2
 		ML::Box2D draw_Gauge_E2(924, 584, 256, 48);
 		ML::Box2D src_Gauge_E2(0, 0, 512, 96);
 		this->res->imgGaugeEmpR->Draw(draw_Gauge_E2, src_Gauge_E2);
 		ML::Box2D draw_Gauge_F2(924, 584, 256, 48);
-		ML::Box2D src_Gauge_F2(0, 0, 512, 96);//仮
+		ML::Box2D src_Gauge_F2(0, 0, 179 + 333, 96); //Gauge0の時wはちょうど179のとこ
 		this->res->imgGaugeFullR->Draw(draw_Gauge_F2, src_Gauge_F2);
 
 		//アバター画像
