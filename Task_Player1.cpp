@@ -84,6 +84,8 @@ namespace  Player1
 		this->Move();
 		ML::Vec2 est = this->moveVec;
 		this->CheckMove(est);
+		this->powerUpTimerUpdate();
+		this->addGaugeBar(0.1f);
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -328,18 +330,22 @@ namespace  Player1
 			{
 				nm = Motion::AttackKick;
 			}
-			else if (inp.B3.down)
+			else if (this->isGaugeBarFull())
 			{
-				nm = Motion::Hadouken;
+				if (inp.B3.down && !this->isUsedHadouken)
+				{
+					nm = Motion::Hadouken;
+				}
+				else if (inp.B4.down && !this->isUsedShoryu)
+				{
+					nm = Motion::Shoryuken;
+				}
+				else if (inp.L1.down && !this->isUsedPowerUp)
+				{
+					nm = Motion::PowerUP;
+				}
 			}
-			else if (inp.B4.down)
-			{
-				nm = Motion::Shoryuken;
-			}
-			else if (inp.L1.down)
-			{
-				nm = Motion::PowerUP;
-			}
+			
 		}
 
 		this->UpdateMotion(nm);
@@ -466,7 +472,7 @@ namespace  Player1
 				{
 					AtkBox->attackBox = ML::Box2D(-this->hitBase.w + 30, -this->hitBase.h / 2, 30, 96);
 				}
-				AtkBox->attackdmg = 10;		
+				AtkBox->attackdmg = getAtkDamage(10);
 				AtkBox->lifeTime = 30;
 			}
 			break;
@@ -483,7 +489,7 @@ namespace  Player1
 				{
 					AtkBox->attackBox = ML::Box2D(-45 + -this->hitBase.w / 2, 70, 50, 16);
 				}
-				AtkBox->attackdmg = 15;
+				AtkBox->attackdmg = getAtkDamage(15);
 				AtkBox->lifeTime = 25;
 			}
 			break;
@@ -548,6 +554,8 @@ namespace  Player1
 		case Motion::Guard:
 			break;
 		case Motion::Hadouken:
+			this->useGaugeBar();
+			this->isUsedHadouken = true;
 			if (this->moveCnt == 0)
 			{
 				auto hadouken = Hadouken::Object::Create(true);
@@ -566,6 +574,8 @@ namespace  Player1
 			}
 			break;
 		case Motion::Shoryuken:
+			this->useGaugeBar();
+			this->isUsedShoryu = true;
 			if (this->moveCnt == 0)
 			{
 				moveVec.y = this->jumpPow;
@@ -583,12 +593,15 @@ namespace  Player1
 				auto AtkBox = AtkBox::Object::Create(true);
 				AtkBox->owner = AtkBox::Object::Owner::Player1;
 				AtkBox->attackBox = this->hitBase;
-				AtkBox->attackdmg = 50;
+				AtkBox->attackdmg = getAtkDamage(50);
 				AtkBox->lifeTime = 25;
 			}
 			break;
 		case Motion::PowerUP:
-			isPowerUp = true;
+			this->useGaugeBar();
+			this->isUsedPowerUp = true;
+			this->isPowerUp = true;
+			this->powerUpTimer = 600;
 			break;
 		}
 	}

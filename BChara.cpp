@@ -111,6 +111,7 @@ bool BChara::CheckFoot()
 
 void BChara::takeDamage(int dmg)
 {
+	addGaugeBar(5.0f);
 	this->currentHp -= dmg;
 	if (currentHp <= 0)
 	{
@@ -118,4 +119,46 @@ void BChara::takeDamage(int dmg)
 	}
 	
 	this->UpdateMotion(Motion::Hurt);
+}
+
+int BChara::getAtkDamage(int basedmg)
+{
+	if (this->isPowerUp == true)
+	{
+		return basedmg * 2;
+	}
+	return basedmg;
+}
+
+void BChara::powerUpTimerUpdate() 
+{
+	if (this->powerUpTimer > 0)
+	{
+		this->powerUpTimer--;
+
+		if (this->powerUpTimer <= 0)
+		{
+			this->isPowerUp = false;
+		}
+	}
+}
+
+bool BChara::isGaugeBarFull()
+{
+	return this->currentGauge >= this->MaxGauge;
+}
+
+void BChara::addGaugeBar(float gaugevalue)
+{
+	this->currentGauge += gaugevalue;
+
+	if (this->currentGauge > this->MaxGauge)
+	{
+		this->currentGauge = this->MaxGauge;
+	}
+}
+
+void BChara::useGaugeBar()
+{
+	this->currentGauge = 0.0f;
 }

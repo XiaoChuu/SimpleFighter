@@ -75,7 +75,7 @@ namespace  Hadouken
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
 				{
-					(*it)->takeDamage(this->attackdmg);
+					(*it)->takeDamage(p1->getAtkDamage(this->attackdmg));
 					this->Kill();
 					break;
 				}
@@ -95,7 +95,7 @@ namespace  Hadouken
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
 				{
-					(*it)->takeDamage(this->attackdmg);
+					(*it)->takeDamage(p2->getAtkDamage(this->attackdmg));
 					this->Kill();
 					break;
 				}

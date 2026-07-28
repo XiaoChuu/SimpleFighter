@@ -64,6 +64,13 @@ public:
 	const int maxHp = 100;
 	int currentHp;
 	int attackdmg;
+	int powerUpTimer = 0;
+	const float MaxGauge = 100.0f;
+	float currentGauge;
+
+	bool isUsedPowerUp;
+	bool isUsedShoryu;
+	bool isUsedHadouken;
 
 	//メンバ変数に最低限の初期化を行う
 	//★★メンバ変数を追加したら必ず初期化も追加する事★★
@@ -89,6 +96,11 @@ public:
 	bool CheckFoot();
 	bool UpdateMotion(Motion nm_);
 	void takeDamage(int dmg);
+	int getAtkDamage(int basedmg);
+	void powerUpTimerUpdate();
+	bool isGaugeBarFull();
+	void addGaugeBar(float gaugevalue);
+	void useGaugeBar();
 
 	struct DrawInfo
 	{
