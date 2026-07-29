@@ -44,8 +44,8 @@ namespace  Player1
 		this->addSpeed = 1.0f;
 		this->decSpeed = 0.5f;
 		this->maxFallSpeed = 10.0f;
-		this->jumpPow = -15.0f;
-		this->gravity = ML::Gravity(32) * 3;
+		this->jumpPow = -21.0f;
+		this->gravity = ML::Gravity(32) * 6;
 		this->pos.x = 275;
 		this->pos.y = 450;
 		this->currentHp = this->maxHp;
@@ -233,13 +233,13 @@ namespace  Player1
 			}
 			break;
 		case Motion::AttackPunch:
-			if (this->moveCnt >= 60)
+			if (this->moveCnt >= 30)
 			{
 				nm = Motion::Stand;
 			}
 			break;
 		case Motion::AttackKick:
-			if (this->moveCnt >= 45)
+			if (this->moveCnt >= 22)
 			{
 				nm = Motion::Stand;
 			}
@@ -281,7 +281,7 @@ namespace  Player1
 			}
 			break;
 		case Motion::Hurt:
-			if (this->moveCnt >= 30)
+			if (this->moveCnt >= 15)
 			{
 				nm = Motion::Stand;
 			}
@@ -301,19 +301,19 @@ namespace  Player1
 			}
 			break;
 		case Motion::Hadouken:
-			if (this->moveCnt >= 120)
+			if (this->moveCnt >= 60)
 			{
 				nm = Motion::Stand;
 			}
 			break;
 		case Motion::Shoryuken:
-			if (this->moveCnt >= 180)
+			if (this->moveCnt >= 90)
 			{
 				nm = Motion::Stand;
 			}
 			break;
 		case Motion::PowerUP:
-			if (this->moveCnt >= 30)
+			if (this->moveCnt >= 15)
 			{
 				nm = Motion::Stand;
 			}
@@ -460,7 +460,7 @@ namespace  Player1
 					this->moveVec.x = -10.0f;
 				}
 			}
-			if (this->moveCnt == 15)
+			if (this->moveCnt == 7)
 			{
 				auto AtkBox = AtkBox::Object::Create(true);
 				AtkBox->owner = AtkBox::Object::Owner::Player1;
@@ -477,7 +477,7 @@ namespace  Player1
 			}
 			break;
 		case Motion::AttackKick:
-			if (this->moveCnt == 10)
+			if (this->moveCnt == 5)
 			{
 				auto AtkBox = AtkBox::Object::Create(true);
 				AtkBox->owner = AtkBox::Object::Owner::Player1;
@@ -564,12 +564,12 @@ namespace  Player1
 				if (this->angle == Angle_LR::Right)
 				{
 					hadouken->pos.x += 20;
-					hadouken->flyingSpeed = 5.0f;
+					hadouken->flyingSpeed = 10.0f;
 				}
 				else
 				{
 					hadouken->pos.x -= 20;
-					hadouken->flyingSpeed = -5.0f;
+					hadouken->flyingSpeed = -10.0f;
 				}
 			}
 			break;
@@ -682,17 +682,17 @@ namespace  Player1
 			break;
 		case Motion::AttackPunch:
 			//work = (this->animCnt / 20) % 3;
-			work = min(animCnt / 20, 2);
+			work = min(animCnt / 10, 2);
 			rtv = imageTable[work + 6];
 			break;
 		case Motion::AttackKick:
 			//work = (this->animCnt / 20) % 3;
-			work = min(animCnt / 20, 2);
+			work = min(animCnt / 10, 2);
 			rtv = imageTable[work + 9];
 			break;
 		case Motion::Hadouken:
 			//work = (this->animCnt / 40) % 3;
-			work = min(animCnt / 20, 2);
+			work = min(animCnt / 10, 2);
 			rtv = imageTable[work + 19];
 			break;
 		case Motion::Shoryuken:
