@@ -62,6 +62,11 @@ namespace  Game
 		//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
+		
+		int p1Round;
+		int p2Round;
+		bool isGameEnd = false;
+
 		DG::Font::SP TestFont;
 		int time;
 

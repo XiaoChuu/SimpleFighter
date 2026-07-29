@@ -104,8 +104,8 @@ namespace  Player1
 			this->res->powerUpImg->Draw(pdi.draw, pdi.src);
 		}
 
-		ML::Box2D src(0, 0, 32, 32);
-		this->res->playerhitbasedebug->Draw(this->hitBase.OffsetCopy(this->pos), src);
+		/*ML::Box2D src(0, 0, 32, 32);
+		this->res->playerhitbasedebug->Draw(this->hitBase.OffsetCopy(this->pos), src);*/
 	}
 
 	void Object::Think()

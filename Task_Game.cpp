@@ -72,6 +72,8 @@ namespace  Game
 		//★データ初期化
 		this->render2D_Priority[1] = 0.8f;
 		this->time = 0;
+		onePWin = false;
+		twoPWin = false;
 		mciSendString(TEXT("open \".\\data\\sound\\bgm\\TestBGM.mp3\" alias TestBGM"), NULL, 0, NULL); //BGM read file
 		mciSendString(TEXT("play TestBGM repeat"), NULL, 0, NULL); //BGM repeat
 
@@ -106,19 +108,16 @@ namespace  Game
 	{
 		time++;
 		auto inp = ge->in1->GetState( );
-		if (time == 5400) 
+		/*if (time >= 5400) 
 		{
-			ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
-			ge->CreateEffect(99, ML::Vec2(0, 0));
-		}
-		if (ge->getCounterFlag("test") == ge->LIMIT)
-		{
-			this->Kill();
-		}
+			
+		}*/
+		
+		
+		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
+		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
 
 		//向き変換
-		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName,Player1::defName);
-		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
 		if (p1->CheckFoot() && p2->CheckFoot())
 		{
 			if (p2->pos.x - p1->pos.x >= 0)
@@ -148,6 +147,67 @@ namespace  Game
 				p1->pos.x += push;
 				p2->pos.x -= push;
 			}
+		}
+
+		//勝敗判定
+		if (p1->currentHp <= 0)
+		{
+			twoPWin = true;
+		}
+		else if (p2->currentHp <= 0)
+		{
+			onePWin = true;
+		}
+		else if (time >= 5400)
+		{
+			if (p1->currentHp > p2->currentHp)
+			{
+				onePWin = true;
+			}
+			else if (p2->currentHp > p1->currentHp)
+			{
+				twoPWin = true;
+			}
+			else
+			{
+				//Draw
+				twoPWin = true; //Kari
+			}
+		}
+
+		if (onePWin)
+		{
+			this->p1Round++;
+			if (this->p1Round >= 1)
+			{
+				if (!isGameEnd)
+				{
+					this->isGameEnd = true;
+					ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
+					ge->CreateEffect(99, ML::Vec2(0, 0));
+				}
+			}
+			//NextRound if FT2
+		}
+		
+		if (twoPWin)
+		{
+			this->p2Round++;
+			if (this->p2Round >= 1)
+			{
+				if (!isGameEnd)
+				{
+					this->isGameEnd = true;
+					ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
+					ge->CreateEffect(99, ML::Vec2(0, 0));
+				}
+			}
+			//NextRound if FT2
+		}
+
+		if (ge->getCounterFlag("test") == ge->LIMIT)
+		{
+			this->Kill();
 		}
 	}
 	//-------------------------------------------------------------------
