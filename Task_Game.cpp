@@ -338,7 +338,7 @@ namespace  Game
 			this->res->imgShoryukenFull->Draw(draw_HADOU_F2, src_HADOU_F2);
 		}
 		//KO
-		ML::Box2D draw_KO(524, 232, 256, 128);
+		ML::Box2D draw_KO(384, 232, 512, 256);
 		ML::Box2D src_KO(0, 0, 256, 128);
 		if (true == this->isGameEnd)
 		{
