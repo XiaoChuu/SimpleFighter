@@ -40,12 +40,12 @@ namespace  Player2
 		this->angle = Angle_LR::Left;
 		this->controller = ge->in1;
 		this->motion = Motion::Stand;
-		this->maxSpeed = 5.0f;
+		this->maxSpeed = 6.5f;
 		this->addSpeed = 1.0f;
 		this->decSpeed = 0.5f;
-		this->maxFallSpeed = 10.0f;
-		this->jumpPow = -21.0f; //もと15
-		this->gravity = ML::Gravity(32) * 6; //もと3
+		this->maxFallSpeed = 45.0f;
+		this->jumpPow = -28.0f;
+		this->gravity = ML::Gravity(32) * 14;
 		this->pos.x = 1000;
 		this->pos.y = 450;
 		this->currentHp = this->maxHp;
@@ -121,13 +121,13 @@ namespace  Player2
 		switch (nm)
 		{
 		case Motion::Stand:
-			if (inp.LStick.BU.on) //W:R1 A:SE S:ST D:L3
+			if (inp.LStick.BU.on && CheckFoot())//W:R1 A:SE S:ST D:L3
 			{
 				nm = Motion::NaturalJump;
 			}
 			if (inp.LStick.BL.on)
 			{
-				if (this->angle == Angle_LR::Right)
+				if (this->angle == Angle_LR::Right&& CheckFoot())
 				{
 					nm = Motion::BackWalk;
 				}
@@ -138,7 +138,7 @@ namespace  Player2
 			}
 			if (inp.LStick.BR.on)
 			{
-				if (this->angle == Angle_LR::Left)
+				if (this->angle == Angle_LR::Left&& CheckFoot())
 				{
 					nm = Motion::BackWalk;
 				}
@@ -147,11 +147,11 @@ namespace  Player2
 					nm = Motion::ForwardWalk;
 				}
 			}
-			if (inp.LStick.BL.on && inp.LStick.BD.on && this->angle == Angle_LR::Right)
+			if (inp.LStick.BL.on && inp.LStick.BD.on && this->angle == Angle_LR::Right&& CheckFoot())
 			{
 				nm = Motion::Guard;
 			}
-			if (inp.LStick.BR.on && inp.LStick.BD.on && this->angle == Angle_LR::Left)
+			if (inp.LStick.BR.on && inp.LStick.BD.on && this->angle == Angle_LR::Left&& CheckFoot())
 			{
 				nm = Motion::Guard;
 			}

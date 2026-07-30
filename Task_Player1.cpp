@@ -40,12 +40,12 @@ namespace  Player1
 		this->angle = Angle_LR::Right;
 		this->controller = ge->in1;
 		this->motion = Motion::Stand;
-		this->maxSpeed = 5.0f;
+		this->maxSpeed = 6.5f;
 		this->addSpeed = 1.0f;
 		this->decSpeed = 0.5f;
-		this->maxFallSpeed = 21.0f;
-		this->jumpPow = -21.0f;
-		this->gravity = ML::Gravity(32) * 6;
+		this->maxFallSpeed = 45.0f;
+		this->jumpPow = -28.0f;
+		this->gravity = ML::Gravity(32) * 14;
 		this->pos.x = 275;
 		this->pos.y = 450;
 		this->currentHp = this->maxHp;
@@ -121,11 +121,11 @@ namespace  Player1
 		switch (nm)
 		{
 		case Motion::Stand:
-			if (inp.R1.on) //W:R1 A:SE S:ST D:L3
+			if (inp.R1.on&&CheckFoot()) //W:R1 A:SE S:ST D:L3
 			{
 				nm = Motion::NaturalJump;
 			}
-			if (inp.SE.on)
+			if (inp.SE.on&& CheckFoot())
 			{
 				if (this->angle == Angle_LR::Right)
 				{
@@ -136,7 +136,7 @@ namespace  Player1
 					nm = Motion::ForwardWalk;
 				}
 			}
-			if (inp.L3.on)
+			if (inp.L3.on&&CheckFoot())
 			{
 				if (this->angle == Angle_LR::Left)
 				{
@@ -147,11 +147,11 @@ namespace  Player1
 					nm = Motion::ForwardWalk;
 				}
 			}
-			if (inp.SE.on && inp.ST.on && this->angle == Angle_LR::Right)
+			if (inp.SE.on && inp.ST.on && this->angle == Angle_LR::Right&& CheckFoot())
 			{
 				nm = Motion::Guard;
 			}
-			if (inp.L3.on && inp.ST.on && this->angle == Angle_LR::Left)
+			if (inp.L3.on && inp.ST.on && this->angle == Angle_LR::Left&& CheckFoot())
 			{
 				nm = Motion::Guard;
 			}
