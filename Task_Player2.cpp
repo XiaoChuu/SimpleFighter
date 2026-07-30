@@ -45,7 +45,7 @@ namespace  Player2
 		this->decSpeed = 0.5f;
 		this->maxFallSpeed = 45.0f;
 		this->jumpPow = -28.0f;
-		this->gravity = ML::Gravity(32) * 14;
+		this->gravity = ML::Gravity(32) * 16;
 		this->pos.x = 1000;
 		this->pos.y = 450;
 		this->currentHp = this->maxHp;
