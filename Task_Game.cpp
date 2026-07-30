@@ -111,11 +111,6 @@ namespace  Game
 	{
 		time++;
 		auto inp = ge->in1->GetState( );
-		/*if (time >= 5400) 
-		{
-			
-		}*/
-		
 		
 		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
 		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);

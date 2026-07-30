@@ -40,10 +40,10 @@ namespace  Player1
 		this->angle = Angle_LR::Right;
 		this->controller = ge->in1;
 		this->motion = Motion::Stand;
-		this->maxSpeed = 3.5f;
+		this->maxSpeed = 5.0f;
 		this->addSpeed = 1.0f;
 		this->decSpeed = 0.5f;
-		this->maxFallSpeed = 10.0f;
+		this->maxFallSpeed = 21.0f;
 		this->jumpPow = -21.0f;
 		this->gravity = ML::Gravity(32) * 6;
 		this->pos.x = 275;
@@ -473,7 +473,7 @@ namespace  Player1
 					AtkBox->attackBox = ML::Box2D(-this->hitBase.w + 30, -this->hitBase.h / 2, 30, 96);
 				}
 				AtkBox->attackdmg = getAtkDamage(10);
-				AtkBox->lifeTime = 30;
+				AtkBox->lifeTime = 15;
 			}
 			break;
 		case Motion::AttackKick:
@@ -490,7 +490,7 @@ namespace  Player1
 					AtkBox->attackBox = ML::Box2D(-45 + -this->hitBase.w / 2, 70, 50, 16);
 				}
 				AtkBox->attackdmg = getAtkDamage(15);
-				AtkBox->lifeTime = 25;
+				AtkBox->lifeTime = 12;
 			}
 			break;
 		case Motion::NaturalJump:
@@ -594,7 +594,7 @@ namespace  Player1
 				AtkBox->owner = AtkBox::Object::Owner::Player1;
 				AtkBox->attackBox = this->hitBase;
 				AtkBox->attackdmg = getAtkDamage(50);
-				AtkBox->lifeTime = 25;
+				AtkBox->lifeTime = 12;
 			}
 			break;
 		case Motion::PowerUP:

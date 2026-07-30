@@ -65,9 +65,31 @@ namespace  AtkBox
 			for (auto it = target->begin(); it != target->end(); it++)
 			{
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
+				if (hit.Hit(me) && (*it)->motion == Motion::Guard && p1->motion != Motion::Shoryuken)
+				{
+					if (p1->angle == Angle_LR::Right)
+					{
+						p1->moveVec.x = -10.0;
+					}
+					else
+					{
+						p1->moveVec.x = 10.0;
+					}
+				}
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
 				{
 					(*it)->takeDamage(attackdmg);
+					if (p1->motion != Motion::Shoryuken)
+					{
+						if (p1->angle == Angle_LR::Right)
+						{
+							p1->moveVec.x = -10.0;
+						}
+						else
+						{
+							p1->moveVec.x = 10.0;
+						}
+					}
 					this->Kill();
 					break;
 				}
@@ -80,9 +102,31 @@ namespace  AtkBox
 			for (auto it = target->begin(); it != target->end(); it++)
 			{
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
+				if (hit.Hit(me) && (*it)->motion == Motion::Guard && p2->motion != Motion::Shoryuken)
+				{
+					if (p2->angle == Angle_LR::Right)
+					{
+						p2->moveVec.x = -10.0;
+					}
+					else
+					{
+						p2->moveVec.x = 10.0;
+					}
+				}
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
 				{
 					(*it)->takeDamage(attackdmg);
+					if (p2->motion != Motion::Shoryuken)
+					{
+						if (p2->angle == Angle_LR::Right)
+						{
+							p2->moveVec.x = -10.0;
+						}
+						else
+						{
+							p2->moveVec.x = 10.0;
+						}
+					}	
 					this->Kill();
 					break;
 				}

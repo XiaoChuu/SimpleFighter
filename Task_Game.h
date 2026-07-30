@@ -72,6 +72,6 @@ namespace  Game
 		int time;
 		int gameEndTime;
 
-		float push = 2.0f;
+		float push = 5.0f;
 	};
 }
