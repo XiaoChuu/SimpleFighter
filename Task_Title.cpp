@@ -18,6 +18,12 @@ namespace  Title
 	{
 		this->img = DG::Image::Create("./data/image/Main_Menu_image.png");
 		this->TitleLogo01 = DG::Image::Create("./data/image/StartKey.png");
+		this->PlayButton = DG::Image::Create("./data/image/Button_Play.png");
+		this->PlayButtonHover = DG::Image::Create("./data/image/Button_Play_Hover.png");
+		this->QuitButton = DG::Image::Create("./data/image/Button_Quit.png");
+		this->QuitButtonHover = DG::Image::Create("./data/image/Button_Quit_Hover.png");
+		this->TitleLogo = DG::Image::Create("./data/image/Title_Image.png");
+
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -26,6 +32,11 @@ namespace  Title
 	{
 		this->img.reset();
 		this->TitleLogo01.reset();
+		this->PlayButton.reset();
+		this->PlayButtonHover.reset();
+		this->QuitButton.reset();
+		this->QuitButtonHover.reset();
+		this->TitleLogo.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -112,10 +123,22 @@ namespace  Title
 		ML::Box2D  src_BG(0, 0, 1280, 720);
 		this->res->img->Draw(draw_BG, src_BG);
 
+		ML::Box2D  draw_Title(280, -80, 768, 512);
+		ML::Box2D  src_Title(0, 0, 1536, 1024);
+		this->res->TitleLogo->Draw(draw_Title, src_Title);
+
 		ML::Box2D  draw_PRS(342, 380, 596, 91);
 		ML::Box2D  src_PRS(0, 0, 596, 91);
 		src_PRS.Offset(0, srcSet);
 		this->res->TitleLogo01->Draw(draw_PRS, src_PRS);
+
+		//ML::Box2D  draw_PlayButton(576, 360, 128, 64);
+		//ML::Box2D  src_PlayButton(0, 0, 256, 128);
+		//this->res->PlayButton->Draw(draw_PlayButton, src_PlayButton);
+
+		//ML::Box2D  draw_QuitButton(576, 480, 128, 64);
+		//ML::Box2D  src_QuitButton(0, 0, 256, 128);
+		//this->res->QuitButton->Draw(draw_QuitButton, src_QuitButton);
 	}
 	
 
