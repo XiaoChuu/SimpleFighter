@@ -118,7 +118,7 @@ namespace  Title
 		ML::Box2D  src_PRS(0, 0, 596, 91);
 		src_PRS.Offset(0, srcSet);
 		this->res->TitleLogo01->Draw(draw_PRS, src_PRS);
-		ML::Box2D  draw_T(240, 30, 768, 512);
+		ML::Box2D  draw_T(240, -80, 768, 512);
 		ML::Box2D  src_T(0, 0, 1536, 1024);
 		this->res->TitleLogo02->Draw(draw_T, src_T);
 	}
