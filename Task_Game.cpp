@@ -34,6 +34,7 @@ namespace  Game
 		this->imgShoryukenEmp = DG::Image::Create("./data/image/Skill_Left_Grey.png");
 		this->imgPlayer1Ava = DG::Image::Create("./data/image/Skill_Bottom_Chara2.png");
 		this->imgPlayer2Ava = DG::Image::Create("./data/image/Skill_Bottom_Chara1.png");
+		this->imgKO = DG::Image::Create("./data/image/KO.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -58,6 +59,7 @@ namespace  Game
 		this->imgShoryukenEmp.reset();
 		this->imgPlayer1Ava.reset();
 		this->imgPlayer2Ava.reset();
+		this->imgKO.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -72,6 +74,7 @@ namespace  Game
 		//★データ初期化
 		this->render2D_Priority[1] = 0.8f;
 		this->time = 0;
+		this->gameEndTime = 0;
 		onePWin = false;
 		twoPWin = false;
 		mciSendString(TEXT("open \".\\data\\sound\\bgm\\TestBGM.mp3\" alias TestBGM"), NULL, 0, NULL); //BGM read file
@@ -183,8 +186,6 @@ namespace  Game
 				if (!isGameEnd)
 				{
 					this->isGameEnd = true;
-					ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
-					ge->CreateEffect(99, ML::Vec2(0, 0));
 				}
 			}
 			//NextRound if FT2
@@ -198,11 +199,18 @@ namespace  Game
 				if (!isGameEnd)
 				{
 					this->isGameEnd = true;
-					ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
-					ge->CreateEffect(99, ML::Vec2(0, 0));
 				}
 			}
 			//NextRound if FT2
+		}
+		if (true == isGameEnd)
+		{
+			this->gameEndTime++;
+			if (gameEndTime == 120)
+			{
+				ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
+				ge->CreateEffect(99, ML::Vec2(0, 0));
+			}
 		}
 
 		if (ge->getCounterFlag("test") == ge->LIMIT)
@@ -328,6 +336,13 @@ namespace  Game
 		if (!p2->isUsedShoryu)
 		{
 			this->res->imgShoryukenFull->Draw(draw_HADOU_F2, src_HADOU_F2);
+		}
+		//KO
+		ML::Box2D draw_KO(524, 232, 256, 128);
+		ML::Box2D src_KO(0, 0, 256, 128);
+		if (true == this->isGameEnd)
+		{
+			this->res->imgKO->Draw(draw_KO, src_KO);
 		}
 	}
 

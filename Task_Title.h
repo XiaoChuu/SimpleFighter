@@ -27,11 +27,6 @@ namespace  Title
 		DG::Image::SP	TitleLogo01;
 		DG::Image::SP	TitleLogo02;
 		DG::Image::SP	TitleLogo03;
-		DG::Image::SP	PlayButton;
-		DG::Image::SP	PlayButtonHover;
-		DG::Image::SP	QuitButton;
-		DG::Image::SP	QuitButtonHover;
-		DG::Image::SP	TitleLogo;
 		DG::Image::SP	StartLogo;
 	};
 	//-------------------------------------------------------------------

@@ -39,6 +39,7 @@ namespace  Game
 		DG::Image::SP	imgShoryukenEmp;
 		DG::Image::SP	imgPlayer1Ava;
 		DG::Image::SP	imgPlayer2Ava;
+		DG::Image::SP	imgKO;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -69,6 +70,7 @@ namespace  Game
 
 		DG::Font::SP TestFont;
 		int time;
+		int gameEndTime;
 
 		float push = 2.0f;
 	};
