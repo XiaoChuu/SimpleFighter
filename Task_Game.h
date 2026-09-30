@@ -40,6 +40,7 @@ namespace  Game
 		DG::Image::SP	imgPlayer1Ava;
 		DG::Image::SP	imgPlayer2Ava;
 		DG::Image::SP	imgKO;
+		DG::Image::SP	imgTimeFont;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -73,5 +74,7 @@ namespace  Game
 		int gameEndTime;
 
 		float push = 6.5f;
+
+		void number_Render(int x, int y, int t);
 	};
 }

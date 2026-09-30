@@ -35,6 +35,7 @@ namespace  Game
 		this->imgPlayer1Ava = DG::Image::Create("./data/image/Skill_Bottom_Chara2.png");
 		this->imgPlayer2Ava = DG::Image::Create("./data/image/Skill_Bottom_Chara1.png");
 		this->imgKO = DG::Image::Create("./data/image/KO.png");
+		this->imgTimeFont = DG::Image::Create("./data/image/Time.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -60,6 +61,7 @@ namespace  Game
 		this->imgPlayer1Ava.reset();
 		this->imgPlayer2Ava.reset();
 		this->imgKO.reset();
+		this->imgTimeFont.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -73,7 +75,7 @@ namespace  Game
 
 		//★データ初期化
 		this->render2D_Priority[1] = 0.8f;
-		this->time = 0;
+		this->time = 3600;
 		this->gameEndTime = 0;
 		onePWin = false;
 		twoPWin = false;
@@ -109,7 +111,7 @@ namespace  Game
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		time++;
+		time--;
 		auto inp = ge->in1->GetState( );
 		
 		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
@@ -156,7 +158,7 @@ namespace  Game
 		{
 			onePWin = true;
 		}
-		else if (time >= 5400)
+		else if (time <= 0)
 		{
 			if (p1->currentHp > p2->currentHp)
 			{
@@ -225,7 +227,10 @@ namespace  Game
 		ML::Box2D  draw_BG(0, 0, 1280, 720);
 		ML::Box2D  src_BG(0, 0, 1672, 941);
 		this->res->imgBG->Draw(draw_BG, src_BG);
-
+		
+		//制限時間
+		number_Render(610, 80, time/600);
+		number_Render(642, 80, time/60);
 
 		int imgOffset = 30;
 		//HPバー
@@ -341,6 +346,27 @@ namespace  Game
 		{
 			this->res->imgKO->Draw(draw_KO, src_KO);
 		}
+	}
+	//-------------------------------------------------------------------
+	void Object::number_Render(int x, int y, int t)
+	{
+		int draw_x, draw_y;
+		int font_x, font_y;
+		//文字開始位置をセット
+		draw_x = x; draw_y = y;
+
+		//画像データの参照位置を求める
+		font_x = t * 8;
+		font_y = 0;
+		while (font_x >= 80) {
+			font_x -= 80;
+		}
+		ML::Box2D draw(0, 0, 32, 32);
+		ML::Box2D src(font_x, font_y, 8, 16);
+		draw.Offset(draw_x, draw_y);
+		this->res->imgTimeFont->Draw(draw, src);
+		//一文字分ずらす
+		draw_x += 8;
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
