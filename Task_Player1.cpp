@@ -280,6 +280,24 @@ namespace  Player1
 				nm = Motion::Stand;
 			}
 			break;
+		case Motion::NaturalJumpAtk:
+			if (this->CheckFoot() == true)
+			{
+				nm = Motion::Stand;
+			}
+			break;
+		case Motion::ForwardJumpAtk:
+			if (this->CheckFoot() == true)
+			{
+				nm = Motion::Stand;
+			}
+			break;
+		case Motion::BackJumpAtk:
+			if (this->CheckFoot() == true)
+			{
+				nm = Motion::Stand;
+			}
+			break;
 		case Motion::Hurt:
 			if (this->moveCnt >= 15)
 			{
@@ -548,6 +566,12 @@ namespace  Player1
 			{
 				this->moveVec.x = -this->maxSpeed;
 			}
+			break;
+		case Motion::NaturalJumpAtk:
+			break;
+		case Motion::ForwardJumpAtk:
+			break;
+		case Motion::BackJumpAtk:
 			break;
 		case Motion::Hurt:
 			break;
