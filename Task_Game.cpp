@@ -226,19 +226,21 @@ namespace  Game
 		ML::Box2D  src_BG(0, 0, 1672, 941);
 		this->res->imgBG->Draw(draw_BG, src_BG);
 
+
+		int imgOffset = 30;
 		//HPバー
 		//Player1
-		ML::Box2D draw_HP_E(100, 40, 512, 128);
+		ML::Box2D draw_HP_E(100 - imgOffset, 40, 512, 128);
 		ML::Box2D src_HP_E(0, 0, 512, 128);
 		this->res->imgHPEmp->Draw(draw_HP_E, src_HP_E);
-		ML::Box2D draw_HP_F(100, 40, 107 + (405 * p1->currentHp / p1->maxHp), 128);
+		ML::Box2D draw_HP_F(100 - imgOffset, 40, 107 + (405 * p1->currentHp / p1->maxHp), 128);
 		ML::Box2D src_HP_F(0, 0, 107 + (405 * p1->currentHp / p1->maxHp), 128); //HP0の時wはちょうど107のとこ
 		this->res->imgHPFull->Draw(draw_HP_F, src_HP_F);
 		//Player2
-		ML::Box2D draw_HP_E2(668, 40, 512, 128);
+		ML::Box2D draw_HP_E2(668 + imgOffset, 40, 512, 128);
 		ML::Box2D src_HP_E2(512, 0, -512, 128);
 		this->res->imgHPEmp->Draw(draw_HP_E2, src_HP_E2);
-		ML::Box2D draw_HP_F2(668 + (512 - (107 + (405 * p2->currentHp / p2->maxHp))), 40, 107 + (405 * p2->currentHp / p2->maxHp), 128);
+		ML::Box2D draw_HP_F2(668 + imgOffset + (512 - (107 + (405 * p2->currentHp / p2->maxHp))), 40, 107 + (405 * p2->currentHp / p2->maxHp), 128);
 		ML::Box2D src_HP_F2(107 + (405 * p2->currentHp / p2->maxHp), 0, -107 - (405 * p2->currentHp / p2->maxHp), 128); //HP0の時wはちょうど107のとこ
 		this->res->imgHPFull->Draw(draw_HP_F2, src_HP_F2);
 
@@ -254,47 +256,47 @@ namespace  Game
 		ML::Box2D draw_Gauge_E2(924, 584, 256, 48);
 		ML::Box2D src_Gauge_E2(0, 0, 512, 96);
 		this->res->imgGaugeEmpR->Draw(draw_Gauge_E2, src_Gauge_E2);
-		ML::Box2D draw_Gauge_F2(924 + (333 / 2) - (333 * p2->currentGauge / p2->MaxGauge) / 2 , 584, (179 + (333 * p2->currentGauge / p2->MaxGauge)) / 2, 48);
-		ML::Box2D src_Gauge_F2(333 - (333 * p2->currentGauge / p2->MaxGauge), 0, 179 + (333 * p2->currentGauge / p2->MaxGauge), 96); //Gauge0の時wはちょうど179のとこ
+		ML::Box2D draw_Gauge_F2(924 + (334 / 2) - (334 * p2->currentGauge / p2->MaxGauge) / 2 , 584, (178 + (334 * p2->currentGauge / p2->MaxGauge)) / 2, 48);
+		ML::Box2D src_Gauge_F2(334 - (334 * p2->currentGauge / p2->MaxGauge), 0, 178 + (334 * p2->currentGauge / p2->MaxGauge), 96); //Gauge0の時wはちょうど179のとこ
 		this->res->imgGaugeFullR->Draw(draw_Gauge_F2, src_Gauge_F2);
 
 		//アバター画像
 		//Player1
-		ML::Box2D draw_AVA(100, 40, 512, 128);
+		ML::Box2D draw_AVA(100 - imgOffset, 40, 512, 128);
 		ML::Box2D src_AVA(0, 0, 512, 128);
 		this->res->imgPlayer1Ava->Draw(draw_AVA, src_AVA);
 		//Player2
-		ML::Box2D draw_AVA2(668, 40, 512, 128);
+		ML::Box2D draw_AVA2(668 + imgOffset, 40, 512, 128);
 		ML::Box2D src_AVA2(512, 0, -512, 128);
 		this->res->imgPlayer2Ava->Draw(draw_AVA2, src_AVA2);
 
 		//スキル画像
 		//Player1
 		//PowerUp
-		ML::Box2D draw_POWERUP_E(100, 40, 512, 128);
+		ML::Box2D draw_POWERUP_E(100 - imgOffset, 40, 512, 128);
 		ML::Box2D src_POWERUP_E(0, 0, 512, 128);
 		this->res->imgPowerUpEmp->Draw(draw_POWERUP_E, src_POWERUP_E);
-		ML::Box2D draw_POWERUP_F(100, 40, 512, 128);
+		ML::Box2D draw_POWERUP_F(100 - imgOffset, 40, 512, 128);
 		ML::Box2D src_POWERUP_F(0, 0, 512, 128);
 		if (!p1->isUsedPowerUp)
 		{
 			this->res->imgPowerUpFull->Draw(draw_POWERUP_F, src_POWERUP_F);
 		}
 		//Hadouken
-		ML::Box2D draw_HADOU_E(100, 40, 512, 128);
+		ML::Box2D draw_HADOU_E(100 - imgOffset, 40, 512, 128);
 		ML::Box2D src_HADOU_E(0, 0, 512, 128);
 		this->res->imgHadoukenEmp->Draw(draw_HADOU_E, src_HADOU_E);
-		ML::Box2D draw_HADOU_F(100, 40, 512, 128);
+		ML::Box2D draw_HADOU_F(100 - imgOffset, 40, 512, 128);
 		ML::Box2D src_HADOU_F(0, 0, 512, 128);
 		if (!p1->isUsedHadouken)
 		{
 			this->res->imgHadoukenFull->Draw(draw_HADOU_F, src_HADOU_F);
 		}
 		//Shoryuken
-		ML::Box2D draw_SHORYU_E(100, 40, 512, 128);
+		ML::Box2D draw_SHORYU_E(100 - imgOffset, 40, 512, 128);
 		ML::Box2D src_SHORYU_E(0, 0, 512, 128);
 		this->res->imgShoryukenEmp->Draw(draw_SHORYU_E, src_SHORYU_E);
-		ML::Box2D draw_SHORYU_F(100, 40, 512, 128);
+		ML::Box2D draw_SHORYU_F(100 - imgOffset, 40, 512, 128);
 		ML::Box2D src_SHORYU_F(0, 0, 512, 128); 
 		if (!p1->isUsedShoryu)
 		{
@@ -303,30 +305,30 @@ namespace  Game
 
 		//Player2
 		//PowerUp
-		ML::Box2D draw_POWERUP_E2(668, 40, 512, 128);
+		ML::Box2D draw_POWERUP_E2(668 + imgOffset, 40, 512, 128);
 		ML::Box2D src_POWERUP_E2(512, 0, -512, 128);
 		this->res->imgPowerUpEmp->Draw(draw_POWERUP_E2, src_POWERUP_E2);
-		ML::Box2D draw_POWERUP_F2(668, 40, 512, 128);
+		ML::Box2D draw_POWERUP_F2(668 + imgOffset, 40, 512, 128);
 		ML::Box2D src_POWERUP_F2(512, 0, -512, 128);
 		if (!p2->isUsedPowerUp)
 		{
 			this->res->imgPowerUpFull->Draw(draw_POWERUP_F2, src_POWERUP_F2);
 		}
 		//Hadouken
-		ML::Box2D draw_HADOU_E2(668, 40, 512, 128);
+		ML::Box2D draw_HADOU_E2(668 + imgOffset, 40, 512, 128);
 		ML::Box2D src_HADOU_E2(512, 0, -512, 128);
 		this->res->imgHadoukenEmp->Draw(draw_HADOU_E2, src_HADOU_E2);
-		ML::Box2D draw_HADOU_F2(668, 40, 512, 128);
+		ML::Box2D draw_HADOU_F2(668 + imgOffset, 40, 512, 128);
 		ML::Box2D src_HADOU_F2(512, 0, -512, 128);
 		if (!p2->isUsedHadouken)
 		{
 			this->res->imgHadoukenFull->Draw(draw_HADOU_F2, src_HADOU_F2);
 		}
 		//Shoryuken
-		ML::Box2D draw_SHORYU_E2(668, 40, 512, 128);
+		ML::Box2D draw_SHORYU_E2(668 + imgOffset, 40, 512, 128);
 		ML::Box2D src_SHORYU_E2(512, 0, -512, 128);
 		this->res->imgShoryukenEmp->Draw(draw_SHORYU_E2, src_SHORYU_E2);
-		ML::Box2D draw_SHORYU_F2(668, 40, 512, 128);
+		ML::Box2D draw_SHORYU_F2(668 + imgOffset, 40, 512, 128);
 		ML::Box2D src_SHORYU_F2(512, 0, -512, 128);
 		if (!p2->isUsedShoryu)
 		{

@@ -66,14 +66,16 @@ namespace  AtkBox
 			{
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
 				if (hit.Hit(me) && (*it)->motion == Motion::Guard && p1->motion != Motion::Shoryuken)
-				{
+				{					
 					if (p1->angle == Angle_LR::Right)
 					{
 						p1->moveVec.x = -10.0;
+						(*it)->moveVec.x = 5.0f;
 					}
 					else
 					{
 						p1->moveVec.x = 10.0;
+						(*it)->moveVec.x = -5.0f;
 					}
 				}
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
@@ -107,10 +109,12 @@ namespace  AtkBox
 					if (p2->angle == Angle_LR::Right)
 					{
 						p2->moveVec.x = -10.0;
+						(*it)->moveVec.x = 5.0f;
 					}
 					else
 					{
 						p2->moveVec.x = 10.0;
+						(*it)->moveVec.x = -5.0f;
 					}
 				}
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)

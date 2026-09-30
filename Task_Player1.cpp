@@ -45,7 +45,7 @@ namespace  Player1
 		this->decSpeed = 0.5f;
 		this->maxFallSpeed = 45.0f;
 		this->jumpPow = -28.0f;
-		this->gravity = ML::Gravity(32) * 16;
+		this->gravity = ML::Gravity(32) * 14;
 		this->pos.x = 275;
 		this->pos.y = 450;
 		this->currentHp = this->maxHp;
@@ -624,6 +624,38 @@ namespace  Player1
 	//Animation
 	BChara::DrawInfo Object::Anim() 
 	{
+		BChara::DrawInfo Punch[] =
+		{
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 128, 64, 64)}, //Punch 1
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(256, 128, 64, 64)}, //Punch 2
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(320, 128, 64, 64)}, //Punch 3
+		};
+
+		BChara::DrawInfo Kick[] =
+		{
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896, 0, 64, 64)}, //Kick 1
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960, 0, 64, 64)}, //Kick 2
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024, 0, 64, 64)}, //Kick 3
+		};
+
+		BChara::DrawInfo Shoryuken[] =
+		{
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(512, 128, 64, 64)}, //Shoryuken 1
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 128, 64, 64)}, //Shoryuken 2
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 128, 64, 64)}, //Shoryuken 3　15番目
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 128, 64, 64)}, //Shoryuken 4
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(768, 128, 64, 64)}, //Shoryuken 5
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(832, 128, 64, 64)}, //Shoryuken 6
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0, 0, 64, 64)}, //Shoryuken 7
+		};
+
+		BChara::DrawInfo Hadouken[] =
+		{
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 320, 64, 64)}, //Hadouken 1　20番目
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 320, 64, 64)}, //Hadouken 2
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 320, 64, 64)}, //Hadouken 3
+		};
+
 		BChara::DrawInfo imageTable[] =
 		{
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0, 0, 64, 64)},//Stand　1番目
@@ -632,23 +664,7 @@ namespace  Player1
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960, 128, 64, 64)}, //Back jump fall
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024, 128, 64, 64)}, //Natural jump fall 5番目
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088, 128, 64, 64)}, //Forward jump fall
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 128, 64, 64)}, //Punch 1
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(256, 128, 64, 64)}, //Punch 2
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(320, 128, 64, 64)}, //Punch 3
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896, 0, 64, 64)}, //Kick 1　　10番目
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960, 0, 64, 64)}, //Kick 2
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024, 0, 64, 64)}, //Kick 3
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(512, 128, 64, 64)}, //Shoryuken 1
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 128, 64, 64)}, //Shoryuken 2
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 128, 64, 64)}, //Shoryuken 3　15番目
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 128, 64, 64)}, //Shoryuken 4
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(768, 128, 64, 64)}, //Shoryuken 5
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(832, 128, 64, 64)}, //Shoryuken 6
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0, 0, 64, 64)}, //Shoryuken 7
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 320, 64, 64)}, //Hadouken 1　20番目
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 320, 64, 64)}, //Hadouken 2
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 320, 64, 64)}, //Hadouken 3
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64, 192, 64, 64)}, //Guardss
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64, 192, 64, 64)}, //Guard
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 192, 64, 64)}, //Hurt
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448, 192, 64, 64)}, //KO
 		};
@@ -683,31 +699,31 @@ namespace  Player1
 		case Motion::AttackPunch:
 			//work = (this->animCnt / 20) % 3;
 			work = min(animCnt / 10, 2);
-			rtv = imageTable[work + 6];
+			rtv = Punch[work];
 			break;
 		case Motion::AttackKick:
 			//work = (this->animCnt / 20) % 3;
 			work = min(animCnt / 10, 2);
-			rtv = imageTable[work + 9];
+			rtv = Kick[work];
 			break;
 		case Motion::Hadouken:
 			//work = (this->animCnt / 40) % 3;
 			work = min(animCnt / 10, 2);
-			rtv = imageTable[work + 19];
+			rtv = Hadouken[work];
 			break;
 		case Motion::Shoryuken:
 			//work = (this->animCnt / 20) % 6;
 			work = min(animCnt / 15, 6);
-			rtv = imageTable[work + 12];
+			rtv = Shoryuken[work];
 			break;
 		case Motion::Guard:
-			rtv = imageTable[22];
+			rtv = imageTable[6];
 			break;
 		case Motion::Hurt:
-			rtv = imageTable[23];
+			rtv = imageTable[7];
 			break;
 		case Motion::KO:
-			rtv = imageTable[24];
+			rtv = imageTable[8];
 			break;
 		}
 		
