@@ -57,6 +57,16 @@ namespace  AtkBox
 		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
 		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
 
+		if (p1->motion == Motion::Stand && owner == Owner::Player1)
+		{
+			this->lifeTime = 0;
+		}
+
+		if (p2->motion == Motion::Stand && owner == Owner::Player2)
+		{
+			this->lifeTime = 0;
+		}
+
 		//当たり判定
 		if (owner == Owner::Player1)
 		{

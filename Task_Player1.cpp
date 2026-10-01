@@ -338,6 +338,30 @@ namespace  Player1
 			break;
 		}
 
+		if (motion == Motion::ForwardJump || motion == Motion::ForwardFall)
+		{
+			if (inp.B1.down || inp.B2.down)
+			{
+				nm = Motion::ForwardJumpAtk;
+			}
+		}
+
+		if (motion == Motion::NaturalJump || motion == Motion::NaturalFall)
+		{
+			if (inp.B1.down || inp.B2.down)
+			{
+				nm = Motion::NaturalJumpAtk;
+			}
+		}
+
+		if (motion == Motion::BackJump || motion == Motion::BackFall)
+		{
+			if (inp.B1.down || inp.B2.down)
+			{
+				nm = Motion::BackJumpAtk;
+			}
+		}
+
 		if (motion == Motion::Stand || motion == Motion::ForwardWalk || motion == Motion::BackWalk || motion == Motion::Guard)
 		{
 			if (inp.B1.down) //U:B1 J:B2 I:B3 K:B4 O:L1
@@ -363,7 +387,6 @@ namespace  Player1
 					nm = Motion::PowerUP;
 				}
 			}
-			
 		}
 
 		this->UpdateMotion(nm);
@@ -568,10 +591,73 @@ namespace  Player1
 			}
 			break;
 		case Motion::NaturalJumpAtk:
+			if (this->moveCnt == 3)
+			{
+				auto AtkBox = AtkBox::Object::Create(true);
+				AtkBox->owner = AtkBox::Object::Owner::Player1;
+				if (this->angle == Angle_LR::Right)
+				{
+					AtkBox->attackBox = ML::Box2D(-5 + this->hitBase.w / 4, 40, 50, 50);
+				}
+				else
+				{
+					AtkBox->attackBox = ML::Box2D(-45 + -this->hitBase.w / 4, 40, 50, 50);
+				}
+				AtkBox->attackdmg = getAtkDamage(12);
+				AtkBox->lifeTime = 10;
+			}
 			break;
 		case Motion::ForwardJumpAtk:
+			if (this->angle == Angle_LR::Right)
+			{
+				this->moveVec.x = this->maxSpeed;
+			}
+			else
+			{
+				this->moveVec.x = -this->maxSpeed;
+			}
+
+			if (this->moveCnt == 3)
+			{
+				auto AtkBox = AtkBox::Object::Create(true);
+				AtkBox->owner = AtkBox::Object::Owner::Player1;
+				if (this->angle == Angle_LR::Right)
+				{
+					AtkBox->attackBox = ML::Box2D(-5 + this->hitBase.w / 4, 40, 50, 50);
+				}
+				else
+				{
+					AtkBox->attackBox = ML::Box2D(-45 + -this->hitBase.w / 4, 40, 50, 50);
+				}
+				AtkBox->attackdmg = getAtkDamage(12);
+				AtkBox->lifeTime = 10;
+			}
 			break;
 		case Motion::BackJumpAtk:
+			if (this->angle == Angle_LR::Left)
+			{
+				this->moveVec.x = this->maxSpeed;
+			}
+			else
+			{
+				this->moveVec.x = -this->maxSpeed;
+			}
+
+			if (this->moveCnt == 3)
+			{
+				auto AtkBox = AtkBox::Object::Create(true);
+				AtkBox->owner = AtkBox::Object::Owner::Player1;
+				if (this->angle == Angle_LR::Right)
+				{
+					AtkBox->attackBox = ML::Box2D(-5 + this->hitBase.w / 4, 40, 50, 50);
+				}
+				else
+				{
+					AtkBox->attackBox = ML::Box2D(-45 + -this->hitBase.w / 4, 40, 50, 50);
+				}
+				AtkBox->attackdmg = getAtkDamage(12);
+				AtkBox->lifeTime = 10;
+			}
 			break;
 		case Motion::Hurt:
 			break;
@@ -612,13 +698,13 @@ namespace  Player1
 					this->moveVec.x = -12.5f;
 				}
 			}
-			if (this->moveCnt == 5)
+			if (this->moveCnt == 3)
 			{
 				auto AtkBox = AtkBox::Object::Create(true);
 				AtkBox->owner = AtkBox::Object::Owner::Player1;
 				AtkBox->attackBox = this->hitBase;
 				AtkBox->attackdmg = getAtkDamage(50);
-				AtkBox->lifeTime = 12;
+				AtkBox->lifeTime = 15;
 			}
 			break;
 		case Motion::PowerUP:
@@ -666,7 +752,7 @@ namespace  Player1
 		{
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(512, 128, 64, 64)}, //Shoryuken 1
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 128, 64, 64)}, //Shoryuken 2
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 128, 64, 64)}, //Shoryuken 3　15番目
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 128, 64, 64)}, //Shoryuken 3
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 128, 64, 64)}, //Shoryuken 4
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(768, 128, 64, 64)}, //Shoryuken 5
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(832, 128, 64, 64)}, //Shoryuken 6
@@ -675,7 +761,7 @@ namespace  Player1
 
 		BChara::DrawInfo Hadouken[] =
 		{
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 320, 64, 64)}, //Hadouken 1　20番目
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 320, 64, 64)}, //Hadouken 1
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 320, 64, 64)}, //Hadouken 2
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 320, 64, 64)}, //Hadouken 3
 		};
@@ -687,10 +773,11 @@ namespace  Player1
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0, 64, 64, 64)},//BackWalk
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960, 128, 64, 64)}, //Back jump fall
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024, 128, 64, 64)}, //Natural jump fall 5番目
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088, 128, 64, 64)}, //Forward jump fall
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896, 256, 64, 64)}, //Forward jump fall
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64, 192, 64, 64)}, //Guard
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 192, 64, 64)}, //Hurt
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448, 192, 64, 64)}, //KO
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088, 128, 64, 64)}, //JumpAtk 10番目
 		};
 		BChara::DrawInfo rtv;
 		int work;
@@ -729,6 +816,11 @@ namespace  Player1
 			//work = (this->animCnt / 20) % 3;
 			work = min(animCnt / 10, 2);
 			rtv = Kick[work];
+			break;
+		case Motion::NaturalJumpAtk:
+		case Motion::ForwardJumpAtk:
+		case Motion::BackJumpAtk:
+			rtv = imageTable[9];
 			break;
 		case Motion::Hadouken:
 			//work = (this->animCnt / 40) % 3;
