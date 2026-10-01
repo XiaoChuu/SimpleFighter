@@ -229,8 +229,8 @@ namespace  Game
 		this->res->imgBG->Draw(draw_BG, src_BG);
 		
 		//制限時間
-		number_Render(610, 80, time/600);
-		number_Render(642, 80, time/60);
+		number_Render(587, 80, time / 600);//610
+		number_Render(642, 80, time / 60);//642
 
 		int imgOffset = 30;
 		//HPバー
@@ -356,12 +356,16 @@ namespace  Game
 		draw_x = x; draw_y = y;
 
 		//画像データの参照位置を求める
+		if (t <= 0)
+		{
+			t = 0;
+		}
 		font_x = t * 8;
 		font_y = 0;
 		while (font_x >= 80) {
 			font_x -= 80;
 		}
-		ML::Box2D draw(0, 0, 32, 32);
+		ML::Box2D draw(0, 0, 55, 80);//32 32
 		ML::Box2D src(font_x, font_y, 8, 16);
 		draw.Offset(draw_x, draw_y);
 		this->res->imgTimeFont->Draw(draw, src);

@@ -159,7 +159,7 @@ namespace  AtkBox
 	{
 		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
 		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
-		ML::Box2D src(0, 0, 32, 32);
+		/*ML::Box2D src(0, 0, 32, 32);
 		if (owner == Owner::Player1)
 		{
 			this->res->atkboxdebug->Draw(this->attackBox.OffsetCopy(p1->pos), src);
@@ -167,7 +167,7 @@ namespace  AtkBox
 		else
 		{
 			this->res->atkboxdebug->Draw(this->attackBox.OffsetCopy(p2->pos), src);
-		}
+		}*/
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
