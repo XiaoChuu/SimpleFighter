@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include "GameEngine_Ver3_83.h"
 #include <fstream>
 #include <sstream>
 
-//ƒQ[ƒ€“à‘Sˆæ‚Åg—p‚·‚é\‘¢‘Ì‚È‚Ç‚ğ’è‹`‚·‚é
+//ã‚²ãƒ¼ãƒ å†…å…¨åŸŸã§ä½¿ç”¨ã™ã‚‹æ§‹é€ ä½“ãªã©ã‚’å®šç¾©ã™ã‚‹
 //-----------------------------------------------------------------------------------------------
 
 #include "fpscounter.h"
@@ -12,48 +12,49 @@
 
 extern bool onePWin;
 extern bool twoPWin;
+extern bool drawGame;
 
 //-----------------------------------------------------------------------------------------------
 namespace  MyPG
 {
 	//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	//----------------------------------------------
-	//ƒJƒƒ‰Šî–{Œ`
+	//ã‚«ãƒ¡ãƒ©åŸºæœ¬å½¢
 	class Camera
 	{
 		Camera() { }
 		Camera(
-			const ML::Vec3& tg_,	//	”íÊ‘Ì‚ÌˆÊ’u
-			const ML::Vec3& pos_,	//	ƒJƒƒ‰‚ÌˆÊ’u
-			const ML::Vec3& up_,	//	ƒJƒƒ‰‚Ìã•ûŒü‚ğ¦‚·ƒxƒNƒgƒ‹i‘å‘Ì‚x{ŒÅ’èj
-			float				fov_,	//	‹–ìŠp
-			float				np_,	//	‘OƒNƒŠƒbƒv•½–Êi‚±‚ê‚æ‚è‘O‚Í‰f‚ç‚È‚¢j
-			float				fp_,	//	ŒãƒNƒŠƒbƒv•½–Êi‚±‚ê‚æ‚èŒã‚ë‚Í‰f‚ç‚È‚¢j
-			float				asp_);	//	ƒAƒXƒyƒNƒg”äi‰æ–Ê‚Ì”ä—¦‚É‡‚í‚¹‚é@‰¡€cj			
+			const ML::Vec3& tg_,	//	è¢«å†™ä½“ã®ä½ç½®
+			const ML::Vec3& pos_,	//	ã‚«ãƒ¡ãƒ©ã®ä½ç½®
+			const ML::Vec3& up_,	//	ã‚«ãƒ¡ãƒ©ã®ä¸Šæ–¹å‘ã‚’ç¤ºã™ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆå¤§ä½“ï¼¹ï¼‹å›ºå®šï¼‰
+			float				fov_,	//	è¦–é‡è§’
+			float				np_,	//	å‰ã‚¯ãƒªãƒƒãƒ—å¹³é¢ï¼ˆã“ã‚Œã‚ˆã‚Šå‰ã¯æ˜ ã‚‰ãªã„ï¼‰
+			float				fp_,	//	å¾Œã‚¯ãƒªãƒƒãƒ—å¹³é¢ï¼ˆã“ã‚Œã‚ˆã‚Šå¾Œã‚ã¯æ˜ ã‚‰ãªã„ï¼‰
+			float				asp_);	//	ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ï¼ˆç”»é¢ã®æ¯”ç‡ã«åˆã‚ã›ã‚‹ã€€æ¨ªÃ·ç¸¦ï¼‰			
 	public:
-		//	ƒrƒ…[î•ñi•ûŒüŠÖ˜Aj
-		ML::Vec3 target;			//	”íÊ‘Ì‚ÌˆÊ’u
-		ML::Vec3 pos;			//	ƒJƒƒ‰‚ÌˆÊ’u
-		ML::Vec3 up;				//	ƒJƒƒ‰‚Ìã•ûŒü‚ğ¦‚·ƒxƒNƒgƒ‹i‘å‘Ì‚x{ŒÅ’èj
-	//	Ë‰eî•ñi‹–ì”ÍˆÍŠÖ˜Aj
-		float fov;					//	‹–ìŠp
-		float nearPlane;			//	‘OƒNƒŠƒbƒv•½–Êi‚±‚ê‚æ‚è‘O‚Í‰f‚ç‚È‚¢j
-		float forePlane;			//	ŒãƒNƒŠƒbƒv•½–Êi‚±‚ê‚æ‚èŒã‚ë‚Í‰f‚ç‚È‚¢j
-		float aspect;				//	ƒAƒXƒyƒNƒg”äi‰æ–Ê‚Ì”ä—¦‚É‡‚í‚¹‚é@‰¡€cj
-	//	s—ñî•ñ
+		//	ãƒ“ãƒ¥ãƒ¼æƒ…å ±ï¼ˆæ–¹å‘é–¢é€£ï¼‰
+		ML::Vec3 target;			//	è¢«å†™ä½“ã®ä½ç½®
+		ML::Vec3 pos;			//	ã‚«ãƒ¡ãƒ©ã®ä½ç½®
+		ML::Vec3 up;				//	ã‚«ãƒ¡ãƒ©ã®ä¸Šæ–¹å‘ã‚’ç¤ºã™ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆå¤§ä½“ï¼¹ï¼‹å›ºå®šï¼‰
+	//	å°„å½±æƒ…å ±ï¼ˆè¦–é‡ç¯„å›²é–¢é€£ï¼‰
+		float fov;					//	è¦–é‡è§’
+		float nearPlane;			//	å‰ã‚¯ãƒªãƒƒãƒ—å¹³é¢ï¼ˆã“ã‚Œã‚ˆã‚Šå‰ã¯æ˜ ã‚‰ãªã„ï¼‰
+		float forePlane;			//	å¾Œã‚¯ãƒªãƒƒãƒ—å¹³é¢ï¼ˆã“ã‚Œã‚ˆã‚Šå¾Œã‚ã¯æ˜ ã‚‰ãªã„ï¼‰
+		float aspect;				//	ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ï¼ˆç”»é¢ã®æ¯”ç‡ã«åˆã‚ã›ã‚‹ã€€æ¨ªÃ·ç¸¦ï¼‰
+	//	è¡Œåˆ—æƒ…å ±
 		ML::Mat4x4  matView, matProj;
 		~Camera();
 		using SP = shared_ptr<Camera>;
-		//	ƒJƒƒ‰‚ğ¶¬‚·‚é
+		//	ã‚«ãƒ¡ãƒ©ã‚’ç”Ÿæˆã™ã‚‹
 		static SP Create(
-			const ML::Vec3& tg_,	//	”íÊ‘Ì‚ÌˆÊ’u
-			const ML::Vec3& pos_,	//	ƒJƒƒ‰‚ÌˆÊ’u
-			const ML::Vec3& up_,	//	ƒJƒƒ‰‚Ìã•ûŒü‚ğ¦‚·ƒxƒNƒgƒ‹i‘å‘Ì‚x{ŒÅ’èj
-			float				fov_,	//	‹–ìŠp
-			float				np_,	//	‘OƒNƒŠƒbƒv•½–Êi‚±‚ê‚æ‚è‘O‚Í‰f‚ç‚È‚¢j
-			float				fp_,	//	ŒãƒNƒŠƒbƒv•½–Êi‚±‚ê‚æ‚èŒã‚ë‚Í‰f‚ç‚È‚¢j
-			float				asp_);	//	ƒAƒXƒyƒNƒg”äi‰æ–Ê‚Ì”ä—¦‚É‡‚í‚¹‚é@‰¡€cj	
-//	ƒJƒƒ‰‚Ìİ’è
+			const ML::Vec3& tg_,	//	è¢«å†™ä½“ã®ä½ç½®
+			const ML::Vec3& pos_,	//	ã‚«ãƒ¡ãƒ©ã®ä½ç½®
+			const ML::Vec3& up_,	//	ã‚«ãƒ¡ãƒ©ã®ä¸Šæ–¹å‘ã‚’ç¤ºã™ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆå¤§ä½“ï¼¹ï¼‹å›ºå®šï¼‰
+			float				fov_,	//	è¦–é‡è§’
+			float				np_,	//	å‰ã‚¯ãƒªãƒƒãƒ—å¹³é¢ï¼ˆã“ã‚Œã‚ˆã‚Šå‰ã¯æ˜ ã‚‰ãªã„ï¼‰
+			float				fp_,	//	å¾Œã‚¯ãƒªãƒƒãƒ—å¹³é¢ï¼ˆã“ã‚Œã‚ˆã‚Šå¾Œã‚ã¯æ˜ ã‚‰ãªã„ï¼‰
+			float				asp_);	//	ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ï¼ˆç”»é¢ã®æ¯”ç‡ã«åˆã‚ã›ã‚‹ã€€æ¨ªÃ·ç¸¦ï¼‰	
+//	ã‚«ãƒ¡ãƒ©ã®è¨­å®š
 		void UpDate();
 	};
 	//----------------------------------------------
@@ -61,39 +62,39 @@ namespace  MyPG
 	{
 	public:
 		MyGameEngine();
-		//ƒQ[ƒ€ƒGƒ“ƒWƒ“‚É’Ç‰Á‚µ‚½‚à‚Ì‚Ì‰Šú‰»‚ÆŠJ•ú
+		//ã‚²ãƒ¼ãƒ ã‚¨ãƒ³ã‚¸ãƒ³ã«è¿½åŠ ã—ãŸã‚‚ã®ã®åˆæœŸåŒ–ã¨é–‹æ”¾
 		bool Initialize(HWND wnd_);
 		~MyGameEngine();
-		//ƒQ[ƒ€ƒGƒ“ƒWƒ“‚É’Ç‰Á‚µ‚½‚à‚Ì‚ÌƒXƒeƒbƒvˆ—
+		//ã‚²ãƒ¼ãƒ ã‚¨ãƒ³ã‚¸ãƒ³ã«è¿½åŠ ã—ãŸã‚‚ã®ã®ã‚¹ãƒ†ãƒƒãƒ—å‡¦ç†
 		void UpDate();
 
-		//3DPG1‘Î‰‚É‚æ‚è’Ç‰Á
-			//2D•`‰æŠÂ‹«‚ÌƒfƒtƒHƒ‹ƒgƒpƒ‰ƒ[ƒ^İ’è
+		//3DPG1å¯¾å¿œã«ã‚ˆã‚Šè¿½åŠ 
+			//2Dæç”»ç’°å¢ƒã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 		void Set2DRenderState(DWORD l_);
-		//3D•`‰æŠÂ‹«‚ÌƒfƒtƒHƒ‹ƒgƒpƒ‰ƒ[ƒ^İ’è
+		//3Dæç”»ç’°å¢ƒã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 		void Set3DRenderState(DWORD l_);
 
-		//ƒQ[ƒ€ƒGƒ“ƒWƒ“‚É’Ç‰Á‚µ‚½‚¢‚à‚Ì‚Í‰º‚É‰Á‚¦‚é
+		//ã‚²ãƒ¼ãƒ ã‚¨ãƒ³ã‚¸ãƒ³ã«è¿½åŠ ã—ãŸã„ã‚‚ã®ã¯ä¸‹ã«åŠ ãˆã‚‹
 		//----------------------------------------------
-		MyPG::Camera::SP		camera[4];		//	ƒJƒƒ‰
+		MyPG::Camera::SP		camera[4];		//	ã‚«ãƒ¡ãƒ©
 
 		XI::Mouse::SP  mouse;
-		XI::GamePad::SP  in1, in2, in3, in4;	//æ‚è‡‚¦‚¸‚S–{
-		//‚Q‚cƒJƒƒ‰‹éŒ`
-		ML::Box2D				camera2D;	//  ‚Q‚cƒXƒNƒ[ƒ‹§Œä—p
+		XI::GamePad::SP  in1, in2, in3, in4;	//å–ã‚Šåˆãˆãšï¼”æœ¬
+		//ï¼’ï¼¤ã‚«ãƒ¡ãƒ©çŸ©å½¢
+		ML::Box2D				camera2D;	//  ï¼’ï¼¤ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«åˆ¶å¾¡ç”¨
 		map<string, float> evFlags;
 
-		bool GameOverFlag = false; //ƒQ[ƒ€ƒI[ƒo[ƒtƒ‰ƒO
-		bool GameClearFlag = false;//ƒNƒŠƒAƒtƒ‰ƒO
-		bool unHitEnemy = false;//“G‚Æ‚Ì“–‚½‚è”»’è
+		bool GameOverFlag = false; //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ©ã‚°
+		bool GameClearFlag = false;//ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°
+		bool unHitEnemy = false;//æ•µã¨ã®å½“ãŸã‚Šåˆ¤å®š
 		int GameOverCnt;
 		int MaxGameOver;
 
-		bool			Jump2Check;		//ƒWƒƒƒ“ƒv2”»’è
-		bool			DestroyFlag; //”j‰óƒtƒ‰ƒO
-		bool			AttackFlag; //UŒ‚ƒtƒ‰ƒO
+		bool			Jump2Check;		//ã‚¸ãƒ£ãƒ³ãƒ—2åˆ¤å®š
+		bool			DestroyFlag; //ç ´å£Šãƒ•ãƒ©ã‚°
+		bool			AttackFlag; //æ”»æ’ƒãƒ•ãƒ©ã‚°
 
-		bool			TransparentFlag; //“§–¾ƒtƒ‰ƒO
+		bool			TransparentFlag; //é€æ˜ãƒ•ãƒ©ã‚°
 
 		
 
@@ -110,8 +111,8 @@ namespace  MyPG
 		void Dbg_ToBox(const char* str, ...);
 		void Dbg_ToFileOut(const char* str, ...);
 
-		//ƒfƒoƒbƒO‹éŒ`
-		//‚±‚±‚©‚ç
+		//ãƒ‡ãƒãƒƒã‚°çŸ©å½¢
+		//ã“ã“ã‹ã‚‰
 		DG::Image::SP rectImage;
 
 		enum DEBUGRECTMODE {
@@ -124,19 +125,19 @@ namespace  MyPG
 		};
 
 		std::vector<DebugRectInfo> debugRectArray;
-		//“à•”—˜—p
+		//å†…éƒ¨åˆ©ç”¨
 		void debugRectLoad();
 		void debugRectReset();
 		void debugRectDraw();
-		//•\¦‚µ‚½‚¢‹éŒ`‚Æ•\¦ƒ‚[ƒh‚ğ“n‚·
-		//RED,BLUE,GREEN,ORANGE‚Ì‹éŒ`‚ÆFRAME‚Í˜g‚Ì‚İ
+		//è¡¨ç¤ºã—ãŸã„çŸ©å½¢ã¨è¡¨ç¤ºãƒ¢ãƒ¼ãƒ‰ã‚’æ¸¡ã™
+		//RED,BLUE,GREEN,ORANGEã®çŸ©å½¢ã¨FRAMEã¯æ ã®ã¿
 		void debugRect(ML::Box2D r_, int flag = 4, int offsetx = 0, int offsety = 0);
 
 		enum COUNTER_FLAGS {
 			NONE,
-			ACTIVE,//‰Ò“­’†
-			LIMIT,//I—¹’¼Œã
-			END,//I—¹
+			ACTIVE,//ç¨¼åƒä¸­
+			LIMIT,//çµ‚äº†ç›´å¾Œ
+			END,//çµ‚äº†
 		};
 
 		struct COUNTER {

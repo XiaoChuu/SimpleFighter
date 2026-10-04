@@ -5,6 +5,17 @@
 //-------------------------------------------------------------------
 #include "GameEngine_Ver3_83.h"
 
+enum class GamePhase
+{
+	Round1,
+	Round2,
+	FinalRound,
+	Fight,
+	Battle,
+	KO,
+	TimeOver,
+};
+
 namespace  Game
 {
 	//タスクに割り当てるグループ名と固有名
@@ -41,6 +52,9 @@ namespace  Game
 		DG::Image::SP	imgPlayer2Ava;
 		DG::Image::SP	imgKO;
 		DG::Image::SP	imgTimeFont;
+		DG::Image::SP	imgFinalRound;
+		DG::Image::SP	imgFight;
+		DG::Image::SP	imgTimeOver;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -75,6 +89,11 @@ namespace  Game
 
 		float push = 6.5f;
 
+		GamePhase gamePhase;
+		int phaseTimer;
+
 		void number_Render(int x, int y, int t);
+		void phaseChange();
+		bool canPlayerMove();
 	};
 }

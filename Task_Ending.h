@@ -1,15 +1,15 @@
-#pragma warning(disable:4996)
+ï»¿#pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//ƒGƒ“ƒfƒBƒ“ƒO
+//ã‚¨ãƒ³ãƒ‡ã‚£ãƒ³ã‚°
 //-------------------------------------------------------------------
 #include "GameEngine_Ver3_83.h"
 
 namespace  Ending
 {
-	//ƒ^ƒXƒN‚ÉŠ„‚è“–‚Ä‚éƒOƒ‹[ƒv–¼‚ÆŒÅ—L–¼
-	const  string  defGroupName("ƒGƒ“ƒfƒBƒ“ƒO");	//ƒOƒ‹[ƒv–¼
-	const  string  defName("NoName");	//ƒ^ƒXƒN–¼
+	//ã‚¿ã‚¹ã‚¯ã«å‰²ã‚Šå½“ã¦ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—åã¨å›ºæœ‰å
+	const  string  defGroupName("ã‚¨ãƒ³ãƒ‡ã‚£ãƒ³ã‚°");	//ã‚°ãƒ«ãƒ¼ãƒ—å
+	const  string  defName("NoName");	//ã‚¿ã‚¹ã‚¯å
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -22,34 +22,35 @@ namespace  Ending
 		typedef  weak_ptr<Resource>		WP;
 		static   WP  instance;
 		static  Resource::SP  Create();
-		//‹¤—L‚·‚é•Ï”‚Í‚±‚±‚É’Ç‰Á‚·‚é
+		//å…±æœ‰ã™ã‚‹å¤‰æ•°ã¯ã“ã“ã«è¿½åŠ ã™ã‚‹
 		DG::Image::SP	img;
 		DG::Image::SP	TitleLogo01;
 		DG::Image::SP	win01;
 		DG::Image::SP   win02;
+		DG::Image::SP	draw00;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
 	{
-	//•ÏX•s‰ÂŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸŸ
+	//å¤‰æ›´ä¸å¯â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†
 	public:
 		virtual  ~Object();
 		typedef  shared_ptr<Object>		SP;
 		typedef  weak_ptr<Object>		WP;
-		//¶¬‘‹Œû ˆø”‚Ítrue‚Åƒ^ƒXƒNƒVƒXƒeƒ€‚Ö©“®“o˜^
+		//ç”Ÿæˆçª“å£ å¼•æ•°ã¯trueã§ã‚¿ã‚¹ã‚¯ã‚·ã‚¹ãƒ†ãƒ ã¸è‡ªå‹•ç™»éŒ²
 		static  Object::SP  Create(bool flagGameEnginePushBack_);
 		Resource::SP	res;
 	private:
 		Object();
 		bool  B_Initialize();
 		bool  B_Finalize();
-		bool  Initialize();	//u‰Šú‰»vƒ^ƒXƒN¶¬‚É‚P‰ñ‚¾‚¯s‚¤ˆ—
-		void  UpDate()			override;//uÀsv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
-		void  Render2D_AF()		override;//u2D•`‰æv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
-		bool  Finalize();		//uI—¹vƒ^ƒXƒNÁ–Å‚É‚P‰ñ‚¾‚¯s‚¤ˆ—
-	//•ÏX‰Â
+		bool  Initialize();	//ã€ŒåˆæœŸåŒ–ã€ã‚¿ã‚¹ã‚¯ç”Ÿæˆæ™‚ã«ï¼‘å›ã ã‘è¡Œã†å‡¦ç†
+		void  UpDate()			override;//ã€Œå®Ÿè¡Œã€ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ æ¯ã«è¡Œã†å‡¦ç†
+		void  Render2D_AF()		override;//ã€Œ2Dæç”»ã€ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ æ¯ã«è¡Œã†å‡¦ç†
+		bool  Finalize();		//ã€Œçµ‚äº†ã€ã‚¿ã‚¹ã‚¯æ¶ˆæ»…æ™‚ã«ï¼‘å›ã ã‘è¡Œã†å‡¦ç†
+	//å¤‰æ›´å¯â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡â—‡
 	public:
-		//’Ç‰Á‚µ‚½‚¢•Ï”Eƒƒ\ƒbƒh‚Í‚±‚±‚É’Ç‰Á‚·‚é
+		//è¿½åŠ ã—ãŸã„å¤‰æ•°ãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã¯ã“ã“ã«è¿½åŠ ã™ã‚‹
 		int srcSet;
 		int timer1;
 		int timer2;

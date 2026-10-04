@@ -10,6 +10,7 @@
 
 bool onePWin;
 bool twoPWin;
+bool drawGame;
 
 namespace  Game
 {
@@ -36,6 +37,9 @@ namespace  Game
 		this->imgPlayer2Ava = DG::Image::Create("./data/image/Skill_Bottom_Chara1.png");
 		this->imgKO = DG::Image::Create("./data/image/KO.png");
 		this->imgTimeFont = DG::Image::Create("./data/image/Time.png");
+		this->imgFinalRound = DG::Image::Create("./data/image/FinalRound.png");
+		this->imgFight = DG::Image::Create("./data/image/FIGHT.png");
+		this->imgTimeOver = DG::Image::Create("./data/image/Timeover.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -62,6 +66,9 @@ namespace  Game
 		this->imgPlayer2Ava.reset();
 		this->imgKO.reset();
 		this->imgTimeFont.reset();
+		this->imgFinalRound.reset();
+		this->imgFight.reset();
+		this->imgTimeOver.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -79,8 +86,10 @@ namespace  Game
 		this->gameEndTime = 0;
 		onePWin = false;
 		twoPWin = false;
+		drawGame = false;
 		mciSendString(TEXT("open \".\\data\\sound\\bgm\\TestBGM.mp3\" alias TestBGM"), NULL, 0, NULL); //BGM read file
 		mciSendString(TEXT("play TestBGM repeat"), NULL, 0, NULL); //BGM repeat
+		this->gamePhase = GamePhase::FinalRound;
 
 		//デバッグ用フォントの準備
 		this->TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
@@ -111,7 +120,13 @@ namespace  Game
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		time--;
+		this->phaseChange();
+
+		if (this->gamePhase == GamePhase::Battle)
+		{
+			time--;
+		}
+		
 		auto inp = ge->in1->GetState( );
 		
 		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
@@ -152,26 +167,30 @@ namespace  Game
 		//勝敗判定
 		if (p1->currentHp <= 0)
 		{
+			this->gamePhase = GamePhase::KO;
 			twoPWin = true;
 		}
 		else if (p2->currentHp <= 0)
 		{
+			this->gamePhase = GamePhase::KO;
 			onePWin = true;
 		}
 		else if (time <= 0)
 		{
 			if (p1->currentHp > p2->currentHp)
 			{
+				this->gamePhase = GamePhase::TimeOver;
 				onePWin = true;
 			}
 			else if (p2->currentHp > p1->currentHp)
 			{
+				this->gamePhase = GamePhase::TimeOver;
 				twoPWin = true;
 			}
 			else
 			{
-				//Draw
-				twoPWin = true; //Kari
+				this->gamePhase = GamePhase::TimeOver;
+				drawGame = true;
 			}
 		}
 
@@ -200,6 +219,21 @@ namespace  Game
 			}
 			//NextRound if FT2
 		}
+
+		if (drawGame)
+		{
+			this->p1Round++;
+			this->p2Round++;
+			if (this->p1Round >= 1 && this->p2Round >= 1)
+			{
+				if (!isGameEnd)
+				{
+					this->isGameEnd = true;
+				}
+			}
+			//NextRound if FT2
+		}
+
 		if (true == isGameEnd)
 		{
 			this->gameEndTime++;
@@ -342,9 +376,30 @@ namespace  Game
 		//KO
 		ML::Box2D draw_KO(384, 232, 512, 256);
 		ML::Box2D src_KO(0, 0, 256, 128);
-		if (true == this->isGameEnd)
+		if (this->gamePhase == GamePhase::KO)
 		{
 			this->res->imgKO->Draw(draw_KO, src_KO);
+		}
+		//FinalRound
+		ML::Box2D draw_FinalRound(384, 232, 512, 256);
+		ML::Box2D src_FinalRound(0, 0, 1168, 784);
+		if (this->gamePhase == GamePhase::FinalRound)
+		{
+			this->res->imgFinalRound->Draw(draw_FinalRound, src_FinalRound);
+		}
+		//Fight
+		ML::Box2D draw_Fight(384, 232, 512, 256);
+		ML::Box2D src_Fight(0, 0, 269, 80);
+		if (this->gamePhase == GamePhase::Fight)
+		{
+			this->res->imgFight->Draw(draw_Fight, src_Fight);
+		}
+		//Time Over
+		ML::Box2D draw_TimeOver(384, 232, 512, 256);
+		ML::Box2D src_TimeOver(0, 0, 1168, 784);
+		if (this->gamePhase == GamePhase::TimeOver)
+		{
+			this->res->imgTimeOver->Draw(draw_TimeOver, src_TimeOver);
 		}
 	}
 	//-------------------------------------------------------------------
@@ -371,6 +426,40 @@ namespace  Game
 		this->res->imgTimeFont->Draw(draw, src);
 		//一文字分ずらす
 		draw_x += 8;
+	}
+
+	void Object::phaseChange() 
+	{
+		this->phaseTimer++;
+
+		switch (this->gamePhase)
+		{
+			case GamePhase::FinalRound:
+				if (this->phaseTimer >= 120)
+				{
+					this->gamePhase = GamePhase::Fight;
+					this->phaseTimer = 0;
+				}
+				break;
+			case GamePhase::Fight:
+				if (this->phaseTimer >= 60)
+				{
+					this->gamePhase = GamePhase::Battle;
+					this->phaseTimer = 0;
+				}
+				break;
+			case GamePhase::Battle:
+				break;
+			case GamePhase::KO:
+				break;
+			case GamePhase::TimeOver:
+				break;
+		}
+	}
+
+	bool Object::canPlayerMove() 
+	{
+		return gamePhase == GamePhase::Battle;
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

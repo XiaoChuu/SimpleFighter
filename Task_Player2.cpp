@@ -5,6 +5,7 @@
 #include  "Task_Player2.h"
 #include  "Task_Hadouken.h"
 #include  "Task_AtkBox.h"
+#include  "Task_Game.h"
 
 namespace  Player2
 {
@@ -47,7 +48,7 @@ namespace  Player2
 		this->jumpPow = -28.0f;
 		this->gravity = ML::Gravity(32) * 16;
 		this->pos.x = 1000;
-		this->pos.y = 450;
+		this->pos.y = 458;
 		this->currentHp = this->maxHp;
 		//★タスクの生成
 
@@ -70,6 +71,13 @@ namespace  Player2
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		auto game = ge->GetTask<Game::Object>("本編", "統括");
+
+		if (game == nullptr)
+		{
+			return;
+		}
+
 		if (this->pos.x <= 0 + 75)
 		{
 			this->pos.x = 0 + 75;
@@ -81,11 +89,14 @@ namespace  Player2
 		this->moveCnt++;
 		this->animCnt++;
 		this->Think();
-		this->Move();
-		ML::Vec2 est = this->moveVec;
-		this->CheckMove(est);
+		if (game->canPlayerMove())
+		{
+			this->Move();
+			ML::Vec2 est = this->moveVec;
+			this->CheckMove(est);
+			this->addGaugeBar(0.1f);
+		}
 		this->powerUpTimerUpdate();
-		this->addGaugeBar(0.1f);
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
