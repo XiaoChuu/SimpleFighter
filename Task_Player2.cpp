@@ -96,6 +96,11 @@ namespace  Player2
 			this->CheckMove(est);
 			this->addGaugeBar(0.1f);
 		}
+		else if (this->motion != Motion::KO)
+		{
+			this->UpdateMotion(Motion::Stand);
+		}
+
 		this->powerUpTimerUpdate();
 	}
 	//-------------------------------------------------------------------

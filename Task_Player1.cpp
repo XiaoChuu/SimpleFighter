@@ -95,7 +95,12 @@ namespace  Player1
 			ML::Vec2 est = this->moveVec;
 			this->CheckMove(est);
 			this->addGaugeBar(0.1f);
-		}	
+		}
+		else if (this->motion != Motion::KO)
+		{
+			this->UpdateMotion(Motion::Stand);
+		}
+
 		this->powerUpTimerUpdate();
 	}
 	//-------------------------------------------------------------------
