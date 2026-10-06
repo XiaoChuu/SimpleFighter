@@ -98,9 +98,18 @@ namespace  Player1
 		}
 		else if (this->motion != Motion::KO)
 		{
-			this->UpdateMotion(Motion::Stand);
+			if (this->motion == Motion::Shoryuken)
+			{
+				this->Move();
+				ML::Vec2 est = this->moveVec;
+				this->CheckMove(est);
+			}
+			else
+			{
+				this->UpdateMotion(Motion::Stand);
+			}
 		}
-
+		
 		this->powerUpTimerUpdate();
 	}
 	//-------------------------------------------------------------------

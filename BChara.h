@@ -104,7 +104,8 @@ public:
 	bool isGaugeBarFull();
 	void addGaugeBar(float gaugevalue);
 	void useGaugeBar();
-
+	void resetPlayer(int x, int y);
+	
 	struct DrawInfo
 	{
 		ML::Box2D draw, src;

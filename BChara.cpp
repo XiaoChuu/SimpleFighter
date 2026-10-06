@@ -162,3 +162,16 @@ void BChara::useGaugeBar()
 {
 	this->currentGauge = 0.0f;
 }
+
+void BChara::resetPlayer(int x, int y)
+{
+	this->pos.x = x;
+	this->pos.y = y;
+	this->currentHp = this->maxHp;
+	this->motion = Motion::Stand;
+	this->moveVec.x = 0;
+	this->moveVec.y = 0;
+	this->isUsedHadouken = false;
+	this->isUsedPowerUp = false;
+	this->isUsedShoryu = false;
+}

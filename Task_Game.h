@@ -52,9 +52,13 @@ namespace  Game
 		DG::Image::SP	imgPlayer2Ava;
 		DG::Image::SP	imgKO;
 		DG::Image::SP	imgTimeFont;
+		DG::Image::SP	imgRound1;
+		DG::Image::SP	imgRound2;
 		DG::Image::SP	imgFinalRound;
 		DG::Image::SP	imgFight;
 		DG::Image::SP	imgTimeOver;
+		DG::Image::SP	imgScore;
+		DG::Image::SP	imgScoreEffect;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -84,7 +88,7 @@ namespace  Game
 		bool isGameEnd = false;
 
 		DG::Font::SP TestFont;
-		int time;
+		int battleTime;
 		int gameEndTime;
 
 		float push = 6.5f;
@@ -92,8 +96,17 @@ namespace  Game
 		GamePhase gamePhase;
 		int phaseTimer;
 
+		//Magic Number
+		const int KO_EFFECT_TIME = 90;
+		const int KO_NEXT_ROUND_TIME = 130;
+		const int ROUND_EFFECT_TIME = 120;
+		const int FIGHT_EFFECT_TIME = 60;
+
+		void UI_Render();
+		void Round_Render();
 		void number_Render(int x, int y, int t);
 		void phaseChange();
 		bool canPlayerMove();
+		void nextRoundInitialize();
 	};
 }

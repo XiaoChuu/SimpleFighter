@@ -37,9 +37,13 @@ namespace  Game
 		this->imgPlayer2Ava = DG::Image::Create("./data/image/Skill_Bottom_Chara1.png");
 		this->imgKO = DG::Image::Create("./data/image/KO.png");
 		this->imgTimeFont = DG::Image::Create("./data/image/Time.png");
+		this->imgRound1 = DG::Image::Create("./data/image/Round1.png");
+		this->imgRound2 = DG::Image::Create("./data/image/Round2.png");
 		this->imgFinalRound = DG::Image::Create("./data/image/FinalRound.png");
 		this->imgFight = DG::Image::Create("./data/image/FIGHT.png");
 		this->imgTimeOver = DG::Image::Create("./data/image/Timeover.png");
+		this->imgScore = DG::Image::Create("./data/image/VIcon.png");
+		this->imgScoreEffect = DG::Image::Create("./data/image/VEffect.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -66,9 +70,13 @@ namespace  Game
 		this->imgPlayer2Ava.reset();
 		this->imgKO.reset();
 		this->imgTimeFont.reset();
+		this->imgRound1.reset();
+		this->imgRound2.reset();
 		this->imgFinalRound.reset();
 		this->imgFight.reset();
 		this->imgTimeOver.reset();
+		this->imgScore.reset();
+		this->imgScoreEffect.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -82,14 +90,16 @@ namespace  Game
 
 		//★データ初期化
 		this->render2D_Priority[1] = 0.8f;
-		this->time = 3600;
+		this->battleTime = 3600;
 		this->gameEndTime = 0;
+		this->p1Round = 0;
+		this->p2Round = 0;
 		onePWin = false;
 		twoPWin = false;
 		drawGame = false;
 		mciSendString(TEXT("open \".\\data\\sound\\bgm\\TestBGM.mp3\" alias TestBGM"), NULL, 0, NULL); //BGM read file
 		mciSendString(TEXT("play TestBGM repeat"), NULL, 0, NULL); //BGM repeat
-		this->gamePhase = GamePhase::FinalRound;
+		this->gamePhase = GamePhase::Round1;
 
 		//デバッグ用フォントの準備
 		this->TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
@@ -124,7 +134,7 @@ namespace  Game
 
 		if (this->gamePhase == GamePhase::Battle)
 		{
-			time--;
+			battleTime--;
 		}
 		
 		auto inp = ge->in1->GetState( );
@@ -165,73 +175,39 @@ namespace  Game
 		}
 
 		//勝敗判定
-		if (p1->currentHp <= 0)
+		if (p1->currentHp <= 0 && this->gamePhase != GamePhase::KO)
 		{
 			this->gamePhase = GamePhase::KO;
 			twoPWin = true;
+			this->p2Round++;
 		}
-		else if (p2->currentHp <= 0)
+		else if (p2->currentHp <= 0 && this->gamePhase != GamePhase::KO)
 		{
 			this->gamePhase = GamePhase::KO;
 			onePWin = true;
+			this->p1Round++;
 		}
-		else if (time <= 0)
+		else if (this->battleTime <= 0 && this->gamePhase != GamePhase::TimeOver)
 		{
 			if (p1->currentHp > p2->currentHp)
 			{
 				this->gamePhase = GamePhase::TimeOver;
 				onePWin = true;
+				this->p1Round++;
 			}
 			else if (p2->currentHp > p1->currentHp)
 			{
 				this->gamePhase = GamePhase::TimeOver;
 				twoPWin = true;
+				this->p2Round++;
 			}
 			else
 			{
 				this->gamePhase = GamePhase::TimeOver;
 				drawGame = true;
+				this->p1Round++;
+				this->p2Round++;
 			}
-		}
-
-		if (onePWin)
-		{
-			this->p1Round++;
-			if (this->p1Round >= 1)
-			{
-				if (!isGameEnd)
-				{
-					this->isGameEnd = true;
-				}
-			}
-			//NextRound if FT2
-		}
-		
-		if (twoPWin)
-		{
-			this->p2Round++;
-			if (this->p2Round >= 1)
-			{
-				if (!isGameEnd)
-				{
-					this->isGameEnd = true;
-				}
-			}
-			//NextRound if FT2
-		}
-
-		if (drawGame)
-		{
-			this->p1Round++;
-			this->p2Round++;
-			if (this->p1Round >= 1 && this->p2Round >= 1)
-			{
-				if (!isGameEnd)
-				{
-					this->isGameEnd = true;
-				}
-			}
-			//NextRound if FT2
 		}
 
 		if (true == isGameEnd)
@@ -253,18 +229,66 @@ namespace  Game
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		//HP計算用
-		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
-		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
-
 		//背景
 		ML::Box2D  draw_BG(0, 0, 1280, 720);
 		ML::Box2D  src_BG(0, 0, 1672, 941);
 		this->res->imgBG->Draw(draw_BG, src_BG);
 		
 		//制限時間
-		number_Render(587, 80, time / 600);//610
-		number_Render(642, 80, time / 60);//642
+		number_Render(587, 80, battleTime / 600);//610
+		number_Render(642, 80, battleTime / 60);//642
+		
+		//PlayerUI
+		this->UI_Render();
+
+		//Round
+		this->Round_Render();
+
+		//VictoryScore
+		ML::Box2D draw_Score[4]
+		{
+			ML::Box2D(536, 32, 48, 48),
+			ML::Box2D(488, 32, 48, 48),
+			ML::Box2D(697, 32, 48, 48),
+			ML::Box2D(745, 32, 48, 48),
+		};
+		ML::Box2D src_p1Score[2]
+		{
+			ML::Box2D(416, 0, -32, 32),
+			ML::Box2D(512, 0, -32, 32),
+		};
+		ML::Box2D src_p2Score[2]
+		{
+			ML::Box2D(384, 0, 32, 32),
+			ML::Box2D(480, 0, 32, 32),
+		};
+		if (this->p1Round >= 1)
+		{
+			this->res->imgScore->Draw(draw_Score[0], src_p1Score[0]);
+		}
+		if (this->p1Round >= 2)
+		{
+			this->res->imgScore->Draw(draw_Score[1], src_p1Score[1]);
+		}
+		if (this->p2Round >= 1)
+		{
+			this->res->imgScore->Draw(draw_Score[2], src_p2Score[0]);
+		}
+		if (this->p2Round >= 2)
+		{
+			this->res->imgScore->Draw(draw_Score[3], src_p2Score[1]);
+		}
+
+		//ML::Box2D draw_ScoreEffect(0, 0, 128, 128);
+		//ML::Box2D src_ScoreEffect(0, 2560, 256, 256);
+		//this->res->imgScoreEffect->Draw(draw_ScoreEffect, src_ScoreEffect);
+	}
+
+	void Object::UI_Render()
+	{
+		//HP計算用
+		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
+		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
 
 		int imgOffset = 30;
 		//HPバー
@@ -295,7 +319,7 @@ namespace  Game
 		ML::Box2D draw_Gauge_E2(924, 584, 256, 48);
 		ML::Box2D src_Gauge_E2(0, 0, 512, 96);
 		this->res->imgGaugeEmpR->Draw(draw_Gauge_E2, src_Gauge_E2);
-		ML::Box2D draw_Gauge_F2(924 + (334 / 2) - (334 * p2->currentGauge / p2->MaxGauge) / 2 , 584, (178 + (334 * p2->currentGauge / p2->MaxGauge)) / 2, 48);
+		ML::Box2D draw_Gauge_F2(924 + (334 / 2) - (334 * p2->currentGauge / p2->MaxGauge) / 2, 584, (178 + (334 * p2->currentGauge / p2->MaxGauge)) / 2, 48);
 		ML::Box2D src_Gauge_F2(334 - (334 * p2->currentGauge / p2->MaxGauge), 0, 178 + (334 * p2->currentGauge / p2->MaxGauge), 96); //Gauge0の時wはちょうど179のとこ
 		this->res->imgGaugeFullR->Draw(draw_Gauge_F2, src_Gauge_F2);
 
@@ -336,7 +360,7 @@ namespace  Game
 		ML::Box2D src_SHORYU_E(0, 0, 512, 128);
 		this->res->imgShoryukenEmp->Draw(draw_SHORYU_E, src_SHORYU_E);
 		ML::Box2D draw_SHORYU_F(100 - imgOffset, 40, 512, 128);
-		ML::Box2D src_SHORYU_F(0, 0, 512, 128); 
+		ML::Box2D src_SHORYU_F(0, 0, 512, 128);
 		if (!p1->isUsedShoryu)
 		{
 			this->res->imgShoryukenFull->Draw(draw_HADOU_F, src_HADOU_F);
@@ -373,12 +397,30 @@ namespace  Game
 		{
 			this->res->imgShoryukenFull->Draw(draw_HADOU_F2, src_HADOU_F2);
 		}
+	}
+
+	void Object::Round_Render()
+	{
 		//KO
 		ML::Box2D draw_KO(384, 232, 512, 256);
 		ML::Box2D src_KO(0, 0, 256, 128);
 		if (this->gamePhase == GamePhase::KO)
 		{
 			this->res->imgKO->Draw(draw_KO, src_KO);
+		}
+		//Round 1
+		ML::Box2D draw_Round1(384, 232, 512, 256);
+		ML::Box2D src_Round1(0, 0, 1168, 784);
+		if (this->gamePhase == GamePhase::Round1)
+		{
+			this->res->imgRound1->Draw(draw_Round1, src_Round1);
+		}
+		//Round 2
+		ML::Box2D draw_Round2(384, 232, 512, 256);
+		ML::Box2D src_Round2(0, 0, 1168, 784);
+		if (this->gamePhase == GamePhase::Round2)
+		{
+			this->res->imgRound2->Draw(draw_Round2, src_Round2);
 		}
 		//FinalRound
 		ML::Box2D draw_FinalRound(384, 232, 512, 256);
@@ -402,6 +444,7 @@ namespace  Game
 			this->res->imgTimeOver->Draw(draw_TimeOver, src_TimeOver);
 		}
 	}
+
 	//-------------------------------------------------------------------
 	void Object::number_Render(int x, int y, int t)
 	{
@@ -434,25 +477,64 @@ namespace  Game
 
 		switch (this->gamePhase)
 		{
+			case GamePhase::Round1:
+			if (this->phaseTimer >= ROUND_EFFECT_TIME)
+				{
+					this->gamePhase = GamePhase::Fight;
+					this->phaseTimer = 0;
+				}
+			break;
+			case GamePhase::Round2:
+			if (this->phaseTimer >= ROUND_EFFECT_TIME)
+				{
+					this->gamePhase = GamePhase::Fight;
+					this->phaseTimer = 0;
+				}
+			break;
 			case GamePhase::FinalRound:
-				if (this->phaseTimer >= 120)
+				if (this->phaseTimer >= ROUND_EFFECT_TIME)
 				{
 					this->gamePhase = GamePhase::Fight;
 					this->phaseTimer = 0;
 				}
 				break;
 			case GamePhase::Fight:
-				if (this->phaseTimer >= 60)
+				if (this->phaseTimer >= FIGHT_EFFECT_TIME)
 				{
 					this->gamePhase = GamePhase::Battle;
 					this->phaseTimer = 0;
 				}
 				break;
 			case GamePhase::Battle:
+				this->phaseTimer = 0;
 				break;
 			case GamePhase::KO:
+				if (this->p1Round >= 2 || this->p2Round >= 2)
+				{
+					this->isGameEnd = true;
+				}
+				else if (this->phaseTimer == KO_EFFECT_TIME)
+				{
+					ge->CreateEffect(99, ML::Vec2(0, 0));
+				}
+				else if (this->phaseTimer >= KO_NEXT_ROUND_TIME)
+				{
+					this->nextRoundInitialize();
+				}
 				break;
 			case GamePhase::TimeOver:
+				if (this->p1Round >= 2 || this->p2Round >= 2)
+				{
+					this->isGameEnd = true;
+				}
+				else if (this->phaseTimer == KO_EFFECT_TIME)
+				{
+					ge->CreateEffect(99, ML::Vec2(0, 0));
+				}
+				else if (this->phaseTimer >= KO_NEXT_ROUND_TIME)
+				{
+					this->nextRoundInitialize();
+				}
 				break;
 		}
 	}
@@ -460,6 +542,38 @@ namespace  Game
 	bool Object::canPlayerMove() 
 	{
 		return gamePhase == GamePhase::Battle;
+	}
+
+	void Object::nextRoundInitialize()
+	{
+		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
+		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
+
+		//Player reset
+		p1->resetPlayer(275, 458);
+		p2->resetPlayer(1000, 458);
+		p1->isPowerUp = false;
+		p2->isPowerUp = false;
+
+		//round reset
+		if (p1Round == 1 && p2Round == 1)
+		{
+			this->gamePhase = GamePhase::FinalRound;
+		}
+		else if (p1Round == 1 || p2Round == 1)
+		{
+			this->gamePhase = GamePhase::Round2;
+		}
+
+		//batte result reset
+		onePWin = false;
+		twoPWin = false;
+		drawGame = false;
+
+		//timereset
+		this->battleTime = 3600;
+		this->gameEndTime = 0;
+		this->phaseTimer = 0;
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
