@@ -67,7 +67,8 @@ public:
 	const int maxHp = 100;
 	int currentHp;
 	int attackdmg;
-	int powerUpTimer = 0;
+	const float maxPowerUpTime = 600;
+	float powerUpTimer = 0;
 	const float MaxGauge = 100.0f;
 	float currentGauge;
 

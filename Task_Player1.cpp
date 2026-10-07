@@ -736,7 +736,7 @@ namespace  Player1
 			this->useGaugeBar();
 			this->isUsedPowerUp = true;
 			this->isPowerUp = true;
-			this->powerUpTimer = 600;
+			this->powerUpTimer = this->maxPowerUpTime;
 			break;
 		}
 	}

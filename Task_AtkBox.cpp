@@ -79,12 +79,12 @@ namespace  AtkBox
 				{					
 					if (p1->angle == Angle_LR::Right)
 					{
-						p1->moveVec.x = -10.0;
+						p1->moveVec.x = -12.0f;
 						(*it)->moveVec.x = 5.0f;
 					}
 					else
 					{
-						p1->moveVec.x = 10.0;
+						p1->moveVec.x = 12.0f;
 						(*it)->moveVec.x = -5.0f;
 					}
 				}
@@ -95,11 +95,13 @@ namespace  AtkBox
 					{
 						if (p1->angle == Angle_LR::Right)
 						{
-							p1->moveVec.x = -10.0;
+							p1->moveVec.x = -5.0f;
+							(*it)->moveVec.x = 8.0f;
 						}
 						else
 						{
-							p1->moveVec.x = 10.0;
+							p1->moveVec.x = 5.0f;
+							(*it)->moveVec.x = -8.0f;
 						}
 					}
 					this->Kill();
@@ -118,12 +120,12 @@ namespace  AtkBox
 				{
 					if (p2->angle == Angle_LR::Right)
 					{
-						p2->moveVec.x = -10.0;
+						p2->moveVec.x = -12.0f;
 						(*it)->moveVec.x = 5.0f;
 					}
 					else
 					{
-						p2->moveVec.x = 10.0;
+						p2->moveVec.x = 12.0f;
 						(*it)->moveVec.x = -5.0f;
 					}
 				}
@@ -134,11 +136,13 @@ namespace  AtkBox
 					{
 						if (p2->angle == Angle_LR::Right)
 						{
-							p2->moveVec.x = -10.0;
+							p2->moveVec.x = -5.0f;
+							(*it)->moveVec.x = 8.0f;
 						}
 						else
 						{
-							p2->moveVec.x = 10.0;
+							p2->moveVec.x = 5.0f;
+							(*it)->moveVec.x = -8.0f;
 						}
 					}	
 					this->Kill();
