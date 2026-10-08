@@ -81,6 +81,7 @@ namespace  Hadouken
 				}
 				else if (hit.Hit(me) && (*it)->motion == Motion::Guard)
 				{
+					(*it)->takeGuardDamage(p1->getAtkDamage(this->attackdmg), true);
 					this->Kill();
 					break;
 				}
@@ -101,6 +102,7 @@ namespace  Hadouken
 				}
 				else if (hit.Hit(me) && (*it)->motion == Motion::Guard)
 				{
+					(*it)->takeGuardDamage(p1->getAtkDamage(this->attackdmg), true);
 					this->Kill();
 					break;
 				}

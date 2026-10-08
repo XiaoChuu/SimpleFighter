@@ -75,18 +75,28 @@ namespace  AtkBox
 			for (auto it = target->begin(); it != target->end(); it++)
 			{
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
-				if (hit.Hit(me) && (*it)->motion == Motion::Guard && p1->motion != Motion::Shoryuken)
-				{					
-					if (p1->angle == Angle_LR::Right)
+				if (hit.Hit(me) && (*it)->motion == Motion::Guard)
+				{	
+					if (p1->motion != Motion::Shoryuken)
 					{
-						p1->moveVec.x = -12.0f;
-						(*it)->moveVec.x = 5.0f;
+						(*it)->takeGuardDamage(attackdmg, false);
+						if (p1->angle == Angle_LR::Right)
+						{
+							p1->moveVec.x = -12.0f;
+							(*it)->moveVec.x = 5.0f;
+						}
+						else
+						{
+							p1->moveVec.x = 12.0f;
+							(*it)->moveVec.x = -5.0f;
+						}
 					}
 					else
 					{
-						p1->moveVec.x = 12.0f;
-						(*it)->moveVec.x = -5.0f;
+						(*it)->takeGuardDamage(attackdmg, true);
 					}
+					this->Kill();
+					break;
 				}
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
 				{
@@ -116,18 +126,28 @@ namespace  AtkBox
 			for (auto it = target->begin(); it != target->end(); it++)
 			{
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
-				if (hit.Hit(me) && (*it)->motion == Motion::Guard && p2->motion != Motion::Shoryuken)
+				if (hit.Hit(me) && (*it)->motion == Motion::Guard)
 				{
-					if (p2->angle == Angle_LR::Right)
+					if (p2->motion != Motion::Shoryuken)
 					{
-						p2->moveVec.x = -12.0f;
-						(*it)->moveVec.x = 5.0f;
+						(*it)->takeGuardDamage(attackdmg, false);
+						if (p2->angle == Angle_LR::Right)
+						{
+							p2->moveVec.x = -12.0f;
+							(*it)->moveVec.x = 5.0f;
+						}
+						else
+						{
+							p2->moveVec.x = 12.0f;
+							(*it)->moveVec.x = -5.0f;
+						}
 					}
 					else
 					{
-						p2->moveVec.x = 12.0f;
-						(*it)->moveVec.x = -5.0f;
+						(*it)->takeGuardDamage(attackdmg, true);
 					}
+					this->Kill();
+					break;
 				}
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
 				{
@@ -163,7 +183,7 @@ namespace  AtkBox
 	{
 		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
 		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
-		/*ML::Box2D src(0, 0, 32, 32);
+		ML::Box2D src(0, 0, 32, 32);
 		if (owner == Owner::Player1)
 		{
 			this->res->atkboxdebug->Draw(this->attackBox.OffsetCopy(p1->pos), src);
@@ -171,7 +191,7 @@ namespace  AtkBox
 		else
 		{
 			this->res->atkboxdebug->Draw(this->attackBox.OffsetCopy(p2->pos), src);
-		}*/
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

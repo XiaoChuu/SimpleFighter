@@ -100,6 +100,7 @@ public:
 	bool CheckFoot();
 	bool UpdateMotion(Motion nm_);
 	void takeDamage(int dmg);
+	void takeGuardDamage(int dmg, bool isSpecial);
 	int getAtkDamage(int basedmg);
 	void powerUpTimerUpdate();
 	bool isGaugeBarFull();

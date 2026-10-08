@@ -121,6 +121,20 @@ void BChara::takeDamage(int dmg)
 	this->UpdateMotion(Motion::Hurt);
 }
 
+void BChara::takeGuardDamage(int dmg, bool isSpecial)
+{
+	addGaugeBar(2.5f);
+	this->currentHp -= dmg / 5;
+	if (currentHp <= 0 && isSpecial == false)
+	{
+		currentHp = 1;
+	}
+	else if(currentHp <= 0 && isSpecial == true)
+	{
+		currentHp = 0;
+	}
+}
+
 int BChara::getAtkDamage(int basedmg)
 {
 	if (this->isPowerUp == true)
