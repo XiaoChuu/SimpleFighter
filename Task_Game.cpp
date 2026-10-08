@@ -175,7 +175,14 @@ namespace  Game
 		}
 
 		//勝敗判定
-		if (p1->currentHp <= 0 && this->gamePhase != GamePhase::KO)
+		if (p1->currentHp <= 0 && p2->currentHp <= 0 && this->gamePhase != GamePhase::KO)
+		{
+			this->gamePhase = GamePhase::KO;
+			drawGame = true;
+			this->p1Round++;
+			this->p2Round++;
+		}
+		else if (p1->currentHp <= 0 && this->gamePhase != GamePhase::KO)
 		{
 			this->gamePhase = GamePhase::KO;
 			twoPWin = true;
