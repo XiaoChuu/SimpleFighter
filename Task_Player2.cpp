@@ -459,6 +459,11 @@ namespace  Player2
 		switch (nm)
 		{
 		case Motion::Stand:
+			if (inp.LStick.BD.on) //防御の時移動しないように
+			{
+				this->moveVec.x = 0.0f;
+				break;
+			}
 			if (inp.LStick.BL.on)
 			{
 				if (this->angle == Angle_LR::Right)

@@ -459,6 +459,11 @@ namespace  Player1
 		switch (nm)
 		{
 		case Motion::Stand:
+			if (inp.ST.on) //防御の時移動しないように
+			{
+				this->moveVec.x = 0.0f;
+				break;
+			}
 			if (inp.SE.on)
 			{
 				if (this->angle == Angle_LR::Right)
