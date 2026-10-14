@@ -793,16 +793,26 @@ namespace  Player1
 
 		BChara::DrawInfo imageTable[] =
 		{
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0, 0, 64, 64)},//Stand　1番目
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64, 64, 64, 64)},//ForwardWalk
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0, 64, 64, 64)},//BackWalk
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960, 128, 64, 64)}, //Back jump fall
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   , 0  , 64, 64)},//Stand　1番目
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  , 64 , 64, 64)},//ForwardWalk
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   , 64 , 64, 64)},//BackWalk
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 , 128, 64, 64)}, //Back jump fall
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024, 128, 64, 64)}, //Natural jump fall 5番目
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896, 256, 64, 64)}, //Forward jump fall
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64, 192, 64, 64)}, //Guard
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 192, 64, 64)}, //Hurt
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448, 192, 64, 64)}, //KO
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 , 256, 64, 64)}, //Forward jump fall
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  , 192, 64, 64)}, //Guard
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192 , 192, 64, 64)}, //Hurt
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 , 192, 64, 64)}, //KO
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088, 128, 64, 64)}, //JumpAtk 10番目
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   *4, 0  *4, 64*4, 64*4)},//Stand　1番目
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  *4, 64 *4, 64*4, 64*4)},//ForwardWalk
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   *4, 64 *4, 64*4, 64*4)},//BackWalk
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 *4, 128*4, 64*4, 64*4)}, //Back jump fall
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024*4, 128*4, 64*4, 64*4)}, //Natural jump fall 5番目
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 *4, 256*4, 64*4, 64*4)}, //Forward jump fall
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  *4, 192*4, 64*4, 64*4)}, //Guard
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192 *4, 192*4, 64*4, 64*4)}, //Hurt
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 *4, 192*4, 64*4, 64*4)}, //KO
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088*4, 128*4, 64*4, 64*4)}, //JumpAtk 10番目
 		};
 		BChara::DrawInfo rtv;
 		int work;
