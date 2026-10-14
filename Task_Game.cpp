@@ -240,10 +240,9 @@ namespace  Game
 		ML::Box2D  draw_BG(0, 0, 1280, 720);
 		ML::Box2D  src_BG(0, 0, 1672, 941);
 		this->res->imgBG->Draw(draw_BG, src_BG);
-		
 		//制限時間
-		number_Render(587, 80, battleTime / 600);//610
-		number_Render(642, 80, battleTime / 60);//642
+		number_Render(592, 80, battleTime / 600);//610
+		number_Render(637, 80, battleTime / 60);//642
 		
 		//PlayerUI
 		this->UI_Render();
@@ -455,8 +454,11 @@ namespace  Game
 	//-------------------------------------------------------------------
 	void Object::number_Render(int x, int y, int t)
 	{
+
+
 		int draw_x, draw_y;
 		int font_x, font_y;
+
 		//文字開始位置をセット
 		draw_x = x; draw_y = y;
 
@@ -465,17 +467,18 @@ namespace  Game
 		{
 			t = 0;
 		}
-		font_x = t * 8;
+		font_x = (t % 10) * 100;
 		font_y = 0;
-		while (font_x >= 80) {
-			font_x -= 80;
-		}
-		ML::Box2D draw(0, 0, 55, 80);//32 32
-		ML::Box2D src(font_x, font_y, 8, 16);
+
+		ML::Box2D draw(0, 0, 55, 80);
+		ML::Box2D src(font_x, font_y, 100, 170);
+
 		draw.Offset(draw_x, draw_y);
 		this->res->imgTimeFont->Draw(draw, src);
 		//一文字分ずらす
-		draw_x += 8;
+		//draw_x += 240;
+
+
 	}
 
 	void Object::phaseChange() 
