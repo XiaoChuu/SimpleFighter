@@ -241,8 +241,8 @@ namespace  Game
 		ML::Box2D  src_BG(0, 0, 1672, 941);
 		this->res->imgBG->Draw(draw_BG, src_BG);
 		//制限時間
-		number_Render(592, 80, battleTime / 600);//610
-		number_Render(637, 80, battleTime / 60);//642
+		number_Render(592, 80, battleTime / 600);//587
+		number_Render(638, 80, battleTime / 60);//642
 		
 		//PlayerUI
 		this->UI_Render();
@@ -468,10 +468,10 @@ namespace  Game
 			t = 0;
 		}
 		font_x = (t % 10) * 100;
-		font_y = 0;
+		font_y = 10;
 
 		ML::Box2D draw(0, 0, 55, 80);
-		ML::Box2D src(font_x, font_y, 100, 170);
+		ML::Box2D src(font_x, font_y, 100, 160);
 
 		draw.Offset(draw_x, draw_y);
 		this->res->imgTimeFont->Draw(draw, src);
