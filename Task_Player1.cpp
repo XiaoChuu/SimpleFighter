@@ -15,7 +15,7 @@ namespace  Player1
 	bool  Resource::Initialize()
 	{
 		this->player1Img = DG::Image::Create("./data/image/Player1.png");
-		this->powerUpImg = DG::Image::Create("./data/image/Player1.png");
+		this->powerUpImg = DG::Image::Create("./data/image/Player1power.png");
 		this->playerhitbasedebug = DG::Image::Create("./data/image/debug.png");
 		return true;
 	}
@@ -761,58 +761,74 @@ namespace  Player1
 	{
 		BChara::DrawInfo Punch[] =
 		{
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 128, 64, 64)}, //Punch 1
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(256, 128, 64, 64)}, //Punch 2
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(320, 128, 64, 64)}, //Punch 3
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 128, 64, 64)}, //Punch 1
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(256, 128, 64, 64)}, //Punch 2
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(320, 128, 64, 64)}, //Punch 3
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192*4, 128*4, 64*4, 64*4)}, //Punch 1
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(256*4, 128*4, 64*4, 64*4)}, //Punch 2
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(320*4, 128*4, 64*4, 64*4)}, //Punch 3
 		};
 
 		BChara::DrawInfo Kick[] =
 		{
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896, 0, 64, 64)}, //Kick 1
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960, 0, 64, 64)}, //Kick 2
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024, 0, 64, 64)}, //Kick 3
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 , 0, 64, 64)}, //Kick 1
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 , 0, 64, 64)}, //Kick 2
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024, 0, 64, 64)}, //Kick 3
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 *4, 0*4, 64*4, 64*4)}, //Kick 1
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 *4, 0*4, 64*4, 64*4)}, //Kick 2
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024*4, 0*4, 64*4, 64*4)}, //Kick 3
 		};
 
 		BChara::DrawInfo Shoryuken[] =
 		{
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(512, 128, 64, 64)}, //Shoryuken 1
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 128, 64, 64)}, //Shoryuken 2
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 128, 64, 64)}, //Shoryuken 3
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 128, 64, 64)}, //Shoryuken 4
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(768, 128, 64, 64)}, //Shoryuken 5
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(832, 128, 64, 64)}, //Shoryuken 6
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0, 0, 64, 64)}, //Shoryuken 7
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(512, 128, 64, 64)}, //Shoryuken 1
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 128, 64, 64)}, //Shoryuken 2
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 128, 64, 64)}, //Shoryuken 3
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 128, 64, 64)}, //Shoryuken 4
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(768, 128, 64, 64)}, //Shoryuken 5
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(832, 128, 64, 64)}, //Shoryuken 6
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0  , 0  , 64, 64)}, //Shoryuken 7
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(512*4, 128*4, 64*4, 64*4)}, //Shoryuken 1
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576*4, 128*4, 64*4, 64*4)}, //Shoryuken 2
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640*4, 128*4, 64*4, 64*4)}, //Shoryuken 3
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704*4, 128*4, 64*4, 64*4)}, //Shoryuken 4
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(768*4, 128*4, 64*4, 64*4)}, //Shoryuken 5
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(832*4, 128*4, 64*4, 64*4)}, //Shoryuken 6
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0  *4, 0  *4, 64*4, 64*4)}, //Shoryuken 7
 		};
 
 		BChara::DrawInfo Hadouken[] =
 		{
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 320, 64, 64)}, //Hadouken 1
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 320, 64, 64)}, //Hadouken 2
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 320, 64, 64)}, //Hadouken 3
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 320, 64, 64)}, //Hadouken 1
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 320, 64, 64)}, //Hadouken 2
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 320, 64, 64)}, //Hadouken 3
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576*4, 320*4, 64*4, 64*4)}, //Hadouken 1
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640*4, 320*4, 64*4, 64*4)}, //Hadouken 2
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704*4, 320*4, 64*4, 64*4)}, //Hadouken 3
 		};
 
 		BChara::DrawInfo imageTable[] =
 		{
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   , 0  , 64, 64)},//Stand　1番目
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  , 64 , 64, 64)},//ForwardWalk
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   , 64 , 64, 64)},//BackWalk
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 , 128, 64, 64)}, //Back jump fall
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024, 128, 64, 64)}, //Natural jump fall 5番目
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 , 256, 64, 64)}, //Forward jump fall
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  , 192, 64, 64)}, //Guard
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192 , 192, 64, 64)}, //Hurt
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 , 192, 64, 64)}, //KO
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088, 128, 64, 64)}, //JumpAtk 10番目
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   *4, 0  *4, 64*4, 64*4)},//Stand　1番目
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  *4, 64 *4, 64*4, 64*4)},//ForwardWalk
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   *4, 64 *4, 64*4, 64*4)},//BackWalk
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 *4, 128*4, 64*4, 64*4)}, //Back jump fall
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024*4, 128*4, 64*4, 64*4)}, //Natural jump fall 5番目
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 *4, 256*4, 64*4, 64*4)}, //Forward jump fall
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  *4, 192*4, 64*4, 64*4)}, //Guard
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192 *4, 192*4, 64*4, 64*4)}, //Hurt
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 *4, 192*4, 64*4, 64*4)}, //KO
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088*4, 128*4, 64*4, 64*4)}, //JumpAtk 10番目
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   , 0  , 64, 64)},//Stand　1番目
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  , 64 , 64, 64)},//ForwardWalk
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   , 64 , 64, 64)},//BackWalk
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 , 128, 64, 64)}, //Back jump fall
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024, 128, 64, 64)}, //Natural jump fall 5番目
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 , 256, 64, 64)}, //Forward jump fall
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  , 192, 64, 64)}, //Guard
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192 , 192, 64, 64)}, //Hurt
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 , 192, 64, 64)}, //KO
+			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088, 128, 64, 64)}, //JumpAtk 10番目
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   *4, 0  *4, 64*4, 64*4)},//Stand　1番目
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  *4, 64 *4, 64*4, 64*4)},//ForwardWalk
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   *4, 64 *4, 64*4, 64*4)},//BackWalk
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 *4, 128*4, 64*4, 64*4)}, //Back jump fall
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024*4, 128*4, 64*4, 64*4)}, //Natural jump fall 5番目
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 *4, 256*4, 64*4, 64*4)}, //Forward jump fall
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  *4, 192*4, 64*4, 64*4)}, //Guard
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192 *4, 192*4, 64*4, 64*4)}, //Hurt
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 *4, 192*4, 64*4, 64*4)}, //KO
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088*4, 128*4, 64*4, 64*4)}, //JumpAtk 10番目
 		};
 		BChara::DrawInfo rtv;
 		int work;
