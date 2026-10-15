@@ -14,8 +14,8 @@ namespace  Player2
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->player2Img = DG::Image::Create("./data/image/Player2.png");
-		this->powerUpImg = DG::Image::Create("./data/image/Player2power.png");
+		this->player2Img = DG::Image::Create("./data/image/Player2Large.png");
+		this->powerUpImg = DG::Image::Create("./data/image/Player2Large.png");
 		this->playerhitbasedebug = DG::Image::Create("./data/image/debug.png");
 		return true;
 	}
