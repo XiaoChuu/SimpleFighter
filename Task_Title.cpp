@@ -19,6 +19,8 @@ namespace  Title
 		this->img = DG::Image::Create("./data/image/Main_Menu_image.png");
 		this->TitleLogo01 = DG::Image::Create("./data/image/StartKey.png");
 		this->TitleLogo02 = DG::Image::Create("./data/image/Title_Image.png");
+		this->PlayButton = DG::Image::Create("./data/image/Button_Play.png");
+		this->QuitButton = DG::Image::Create("./data/image/Button_Quit.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -28,6 +30,10 @@ namespace  Title
 		this->img.reset();
 		this->TitleLogo01.reset();
 		this->TitleLogo02.reset();
+		this->PlayButton.reset();
+		this->PlayButtonHover.reset();
+		this->QuitButton.reset();
+		this->QuitButtonHover.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -103,6 +109,8 @@ namespace  Title
 			timer = 0;
 		}
 
+		
+
 		return;
 
 	}
@@ -121,6 +129,14 @@ namespace  Title
 		ML::Box2D  draw_T(240, -80, 768, 512);
 		ML::Box2D  src_T(0, 0, 1536, 1024);
 		this->res->TitleLogo02->Draw(draw_T, src_T);
+		
+		/*ML::Box2D  draw_PB(512, 300, 256, 128);
+		ML::Box2D  src_PB(0, 0, 256, 128);
+		this->res->PlayButton->Draw(draw_PB, src_PB);
+
+		ML::Box2D  draw_QB(512, 460, 256, 128);
+		ML::Box2D  src_QB(0, 0, 256, 128);
+		this->res->QuitButton->Draw(draw_QB, src_QB);*/
 	}
 	
 

@@ -28,6 +28,10 @@ namespace  Title
 		DG::Image::SP	TitleLogo02;
 		DG::Image::SP	TitleLogo03;
 		DG::Image::SP	StartLogo;
+		DG::Image::SP	PlayButton;
+		DG::Image::SP	PlayButtonHover;
+		DG::Image::SP	QuitButton;
+		DG::Image::SP	QuitButtonHover;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
