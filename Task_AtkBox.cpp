@@ -75,7 +75,7 @@ namespace  AtkBox
 			for (auto it = target->begin(); it != target->end(); it++)
 			{
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
-				if (hit.Hit(me) && (*it)->motion == Motion::Guard)
+				if (hit.Hit(me) && (*it)->motion == Motion::Guard && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing)
 				{	
 					if (p1->motion != Motion::Shoryuken)
 					{
@@ -98,11 +98,11 @@ namespace  AtkBox
 					this->Kill();
 					break;
 				}
-				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
+				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing)
 				{
-					(*it)->takeDamage(attackdmg);
 					if (p1->motion != Motion::Shoryuken)
 					{
+						(*it)->takeDamage(attackdmg);
 						if (p1->angle == Angle_LR::Right)
 						{
 							p1->moveVec.x = -5.0f;
@@ -112,6 +112,18 @@ namespace  AtkBox
 						{
 							p1->moveVec.x = 5.0f;
 							(*it)->moveVec.x = -8.0f;
+						}
+					}
+					else
+					{
+						(*it)->takeShoryuDamange(attackdmg);
+						if (p1->angle == Angle_LR::Right)
+						{
+							(*it)->moveVec.x = 20.0f;
+						}
+						else
+						{
+							(*it)->moveVec.x = -20.0f;
 						}
 					}
 					this->Kill();
@@ -149,11 +161,11 @@ namespace  AtkBox
 					this->Kill();
 					break;
 				}
-				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
+				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing)
 				{
-					(*it)->takeDamage(attackdmg);
 					if (p2->motion != Motion::Shoryuken)
 					{
+						(*it)->takeDamage(attackdmg);
 						if (p2->angle == Angle_LR::Right)
 						{
 							p2->moveVec.x = -5.0f;
@@ -164,7 +176,19 @@ namespace  AtkBox
 							p2->moveVec.x = 5.0f;
 							(*it)->moveVec.x = -8.0f;
 						}
-					}	
+					}
+					else
+					{
+						(*it)->takeShoryuDamange(attackdmg);
+						if (p2->angle == Angle_LR::Right)
+						{
+							(*it)->moveVec.x = 20.0f;
+						}
+						else
+						{
+							(*it)->moveVec.x = -20.0f;
+						}
+					}
 					this->Kill();
 					break;
 				}

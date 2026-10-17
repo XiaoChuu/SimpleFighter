@@ -96,17 +96,17 @@ namespace  Player2
 			this->CheckMove(est);
 			this->addGaugeBar(0.1f);
 		}
-		else if (this->motion != Motion::KO)
+		else if (this->motion != Motion::KO || !this->CheckFoot())
 		{
-			if (this->motion == Motion::Shoryuken)
+			if (this->CheckFoot())
+			{
+				this->UpdateMotion(Motion::Stand);
+			}
+			else
 			{
 				this->Move();
 				ML::Vec2 est = this->moveVec;
 				this->CheckMove(est);
-			}
-			else
-			{
-				this->UpdateMotion(Motion::Stand);
 			}
 		}
 
@@ -339,6 +339,23 @@ namespace  Player2
 				nm = Motion::Stand;
 			}
 			if (inp.LStick.BR.off && inp.LStick.BD.off && this->angle == Angle_LR::Left)
+			{
+				nm = Motion::Stand;
+			}
+			break;
+		case Motion::Down:
+			if (this->CheckFoot())
+			{
+				this->downTimer++;
+				if (this->downTimer >= 60)
+				{
+					this->downTimer = 0;
+					nm = Motion::Standing;
+				}
+			}
+			break;
+		case Motion::Standing:
+			if (this->moveCnt >= 30)
 			{
 				nm = Motion::Stand;
 			}
@@ -693,6 +710,10 @@ namespace  Player2
 			break;
 		case Motion::Guard:
 			break;
+		case Motion::Down:
+			break;
+		case Motion::Standing:
+			break;
 		case Motion::Hadouken:
 			this->useGaugeBar();
 			this->isUsedHadouken = true;
@@ -824,16 +845,17 @@ namespace  Player2
 			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192 , 192, 64, 64)}, //Hurt
 			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 , 192, 64, 64)}, //KO
 			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088, 128, 64, 64)}, //JumpAtk 10番目
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0 * 4, 0 * 4, 64 * 4, 64 * 4)},//Stand　1番目
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64 * 4, 64 * 4, 64 * 4, 64 * 4)},//ForwardWalk
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0 * 4, 64 * 4, 64 * 4, 64 * 4)},//BackWalk
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 * 4, 128 * 4, 64 * 4, 64 * 4)}, //Back jump fall
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0    * 4, 0   * 4, 64 * 4, 64 * 4)},//Stand　1番目
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64   * 4, 64  * 4, 64 * 4, 64 * 4)},//ForwardWalk
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0    * 4, 64  * 4, 64 * 4, 64 * 4)},//BackWalk
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960  * 4, 128 * 4, 64 * 4, 64 * 4)}, //Back jump fall
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024 * 4, 128 * 4, 64 * 4, 64 * 4)}, //Natural jump fall 5番目
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 * 4, 256 * 4, 64 * 4, 64 * 4)}, //Forward jump fall
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64 * 4, 192 * 4, 64 * 4, 64 * 4)}, //Guard
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192 * 4, 192 * 4, 64 * 4, 64 * 4)}, //Hurt
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 * 4, 192 * 4, 64 * 4, 64 * 4)}, //KO
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896  * 4, 256 * 4, 64 * 4, 64 * 4)}, //Forward jump fall
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64   * 4, 192 * 4, 64 * 4, 64 * 4)}, //Guard
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192  * 4, 192 * 4, 64 * 4, 64 * 4)}, //Hurt
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448  * 4, 192 * 4, 64 * 4, 64 * 4)}, //KO
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088 * 4, 128 * 4, 64 * 4, 64 * 4)}, //JumpAtk 10番目
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640  * 4, 192 * 4, 64 * 4, 64 * 4)}, //Standing
 		};
 		BChara::DrawInfo rtv;
 		int work;
@@ -896,6 +918,12 @@ namespace  Player2
 			break;
 		case Motion::KO:
 			rtv = imageTable[8];
+			break;
+		case Motion::Down:
+			rtv = imageTable[8];
+			break;
+		case Motion::Standing:
+			rtv = imageTable[10];
 			break;
 		}
 		

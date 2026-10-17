@@ -96,17 +96,17 @@ namespace  Player1
 			this->CheckMove(est);
 			this->addGaugeBar(0.1f);
 		}
-		else if (this->motion != Motion::KO)
+		else if (this->motion != Motion::KO || !this->CheckFoot())
 		{
-			if (this->motion == Motion::Shoryuken)
+			if (this->CheckFoot())
+			{
+				this->UpdateMotion(Motion::Stand);
+			}
+			else
 			{
 				this->Move();
 				ML::Vec2 est = this->moveVec;
 				this->CheckMove(est);
-			}
-			else
-			{
-				this->UpdateMotion(Motion::Stand);
 			}
 		}
 		
@@ -146,11 +146,11 @@ namespace  Player1
 		switch (nm)
 		{
 		case Motion::Stand:
-			if (inp.R1.on&&CheckFoot()) //W:R1 A:SE S:ST D:L3
+			if (inp.R1.on && CheckFoot()) //W:R1 A:SE S:ST D:L3
 			{
 				nm = Motion::NaturalJump;
 			}
-			if (inp.SE.on&& CheckFoot())
+			if (inp.SE.on && CheckFoot())
 			{
 				if (this->angle == Angle_LR::Right)
 				{
@@ -161,7 +161,7 @@ namespace  Player1
 					nm = Motion::ForwardWalk;
 				}
 			}
-			if (inp.L3.on&&CheckFoot())
+			if (inp.L3.on && CheckFoot())
 			{
 				if (this->angle == Angle_LR::Left)
 				{
@@ -172,11 +172,11 @@ namespace  Player1
 					nm = Motion::ForwardWalk;
 				}
 			}
-			if (inp.SE.on && inp.ST.on && this->angle == Angle_LR::Right&& CheckFoot())
+			if (inp.SE.on && inp.ST.on && this->angle == Angle_LR::Right && CheckFoot())
 			{
 				nm = Motion::Guard;
 			}
-			if (inp.L3.on && inp.ST.on && this->angle == Angle_LR::Left&& CheckFoot())
+			if (inp.L3.on && inp.ST.on && this->angle == Angle_LR::Left && CheckFoot())
 			{
 				nm = Motion::Guard;
 			}
@@ -339,6 +339,23 @@ namespace  Player1
 				nm = Motion::Stand;
 			}
 			if (inp.L3.off && inp.ST.off && this->angle == Angle_LR::Left)
+			{
+				nm = Motion::Stand;
+			}
+			break;
+		case Motion::Down:
+			if (this->CheckFoot())
+			{
+				this->downTimer++;
+				if (this->downTimer >= 60)
+				{
+					this->downTimer = 0;
+					nm = Motion::Standing;
+				}
+			}
+			break;
+		case Motion::Standing:
+			if (this->moveCnt >= 30)
 			{
 				nm = Motion::Stand;
 			}
@@ -693,6 +710,10 @@ namespace  Player1
 			break;
 		case Motion::Guard:
 			break;
+		case Motion::Down:
+			break;
+		case Motion::Standing:
+			break;
 		case Motion::Hadouken:
 			this->useGaugeBar();
 			this->isUsedHadouken = true;
@@ -832,8 +853,9 @@ namespace  Player1
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 *4, 256*4, 64*4, 64*4)}, //Forward jump fall
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  *4, 192*4, 64*4, 64*4)}, //Guard
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192 *4, 192*4, 64*4, 64*4)}, //Hurt
-			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 *4, 192*4, 64*4, 64*4)}, //KO
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 *4, 192*4, 64*4, 64*4)}, //KO Down
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088*4, 128*4, 64*4, 64*4)}, //JumpAtk 10番目
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640 *4, 192*4, 64*4, 64*4)}, //Standing
 		};
 		BChara::DrawInfo rtv;
 		int work;
@@ -896,6 +918,12 @@ namespace  Player1
 			break;
 		case Motion::KO:
 			rtv = imageTable[8];
+			break;
+		case Motion::Down:
+			rtv = imageTable[8];
+			break;
+		case Motion::Standing:
+			rtv = imageTable[10];
 			break;
 		}
 		

@@ -135,6 +135,19 @@ void BChara::takeGuardDamage(int dmg, bool isSpecial)
 	}
 }
 
+void BChara::takeShoryuDamange(int dmg)
+{
+	addGaugeBar(5.0f);
+	this->currentHp -= dmg;
+	this->moveVec.y = this->jumpPow;
+	if (currentHp <= 0)
+	{
+		currentHp = 0;
+	}
+
+	this->UpdateMotion(Motion::Down);
+}
+
 int BChara::getAtkDamage(int basedmg)
 {
 	if (this->isPowerUp == true)

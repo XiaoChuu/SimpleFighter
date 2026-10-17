@@ -47,6 +47,8 @@ public:
 		BackJumpAtk,
 		Hurt,
 		Guard,
+		Down,
+		Standing,
 		KO,
 		Hadouken,
 		Shoryuken,
@@ -71,6 +73,7 @@ public:
 	float powerUpTimer = 0;
 	const float MaxGauge = 100.0f;
 	float currentGauge;
+	int downTimer = 0;
 
 	bool isUsedPowerUp;
 	bool isUsedShoryu;
@@ -101,6 +104,7 @@ public:
 	bool UpdateMotion(Motion nm_);
 	void takeDamage(int dmg);
 	void takeGuardDamage(int dmg, bool isSpecial);
+	void takeShoryuDamange(int dmg);
 	int getAtkDamage(int basedmg);
 	void powerUpTimerUpdate();
 	bool isGaugeBarFull();
