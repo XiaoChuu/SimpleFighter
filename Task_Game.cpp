@@ -7,6 +7,7 @@
 #include  "Task_Ending.h"
 #include  "Task_player1.h"
 #include  "Task_player2.h"
+#include  "Task_EffectManager.h"
 
 bool onePWin;
 bool twoPWin;
@@ -43,7 +44,6 @@ namespace  Game
 		this->imgFight = DG::Image::Create("./data/image/FIGHT.png");
 		this->imgTimeOver = DG::Image::Create("./data/image/Timeover.png");
 		this->imgScore = DG::Image::Create("./data/image/VIcon.png");
-		this->imgScoreEffect = DG::Image::Create("./data/image/VEffect.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -76,7 +76,6 @@ namespace  Game
 		this->imgFight.reset();
 		this->imgTimeOver.reset();
 		this->imgScore.reset();
-		this->imgScoreEffect.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -107,6 +106,7 @@ namespace  Game
 		//★タスクの生成
 		auto p1 = Player1::Object::Create(true);
 		auto p2 = Player2::Object::Create(true);
+		auto eff = EffectManager::Object::Create(true);
 
 		return  true;
 	}
@@ -284,10 +284,6 @@ namespace  Game
 		{
 			this->res->imgScore->Draw(draw_Score[3], src_p2Score[1]);
 		}
-
-		//ML::Box2D draw_ScoreEffect(0, 0, 128, 128);
-		//ML::Box2D src_ScoreEffect(0, 2560, 256, 256);
-		//this->res->imgScoreEffect->Draw(draw_ScoreEffect, src_ScoreEffect);
 	}
 
 	void Object::UI_Render()

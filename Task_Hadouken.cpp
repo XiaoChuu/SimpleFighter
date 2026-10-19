@@ -5,6 +5,7 @@
 #include  "Task_Hadouken.h"
 #include  "Task_Player1.h"
 #include  "Task_Player2.h"
+#include  "Task_EffectManager.h"
 
 namespace  Hadouken
 {
@@ -64,6 +65,7 @@ namespace  Hadouken
 
 		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
 		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
+		auto eff = ge->GetTask<EffectManager::Object>(EffectManager::defGroupName, EffectManager::defName);
 
 		//Playerとの当たり判定
 		if (owner == Owner::Player1)
@@ -76,12 +78,16 @@ namespace  Hadouken
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
 				{
 					(*it)->takeDamage(p1->getAtkDamage(this->attackdmg));
+					eff->hitEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
+					eff->p1FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
 					this->Kill();
 					break;
 				}
 				else if (hit.Hit(me) && (*it)->motion == Motion::Guard)
 				{
 					(*it)->takeGuardDamage(p1->getAtkDamage(this->attackdmg), true);
+					eff->guardEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
+					eff->p1FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
 					if ((*it)->angle == Angle_LR::Right)
 					{
 						(*it)->moveVec.x = -10.0f;
@@ -105,12 +111,16 @@ namespace  Hadouken
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
 				{
 					(*it)->takeDamage(p2->getAtkDamage(this->attackdmg));
+					eff->hitEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
+					eff->p2FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
 					this->Kill();
 					break;
 				}
 				else if (hit.Hit(me) && (*it)->motion == Motion::Guard)
 				{
 					(*it)->takeGuardDamage(p1->getAtkDamage(this->attackdmg), true);
+					eff->guardEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
+					eff->p2FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
 					if ((*it)->angle == Angle_LR::Right)
 					{
 						(*it)->moveVec.x = -10.0f;
@@ -137,6 +147,8 @@ namespace  Hadouken
 			ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
 			if (hit.Hit(me))
 			{
+				eff->p1FBEffect.playEffect(this->pos, this->flyingSpeed > (*it)->flyingSpeed);
+				eff->p2FBEffect.playEffect((*it)->pos, this->flyingSpeed < (*it)->flyingSpeed);
 				this->Kill();
 				(*it)->Kill();
 				break;
@@ -175,9 +187,6 @@ namespace  Hadouken
 			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(128, 0, 64, 64), color}, //fireball 3
 			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(192, 0, 64, 64), color}, //fireball 4
 			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(256, 0, 64, 64), color}, //fireball 5
-			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(320, 0, 64, 64), color}, //hit effect 1
-			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(384, 0, 64, 64), color}, //hit effect 2
-			{ML::Box2D(-48, -48, 96, 96), ML::Box2D(448, 0, 64, 64), color}, //hit effect 3
 		};
 		Object::DrawInfo rtv;
 		int work;

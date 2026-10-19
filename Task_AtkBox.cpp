@@ -5,6 +5,7 @@
 #include  "Task_AtkBox.h"
 #include  "Task_Player1.h"
 #include  "Task_Player2.h"
+#include  "Task_EffectManager.h"
 
 namespace  AtkBox
 {
@@ -56,6 +57,7 @@ namespace  AtkBox
 	{
 		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
 		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
+		auto eff = ge->GetTask<EffectManager::Object>(EffectManager::defGroupName, EffectManager::defName);
 
 		if (p1->motion == Motion::Stand && owner == Owner::Player1)
 		{
@@ -80,6 +82,7 @@ namespace  AtkBox
 					if (p1->motion != Motion::Shoryuken)
 					{
 						(*it)->takeGuardDamage(attackdmg, false);
+						eff->guardEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
 						if (p1->angle == Angle_LR::Right)
 						{
 							p1->moveVec.x = -12.0f;
@@ -94,6 +97,7 @@ namespace  AtkBox
 					else
 					{
 						(*it)->takeGuardDamage(attackdmg, true);
+						eff->guardEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
 					}
 					this->Kill();
 					break;
@@ -103,6 +107,7 @@ namespace  AtkBox
 					if (p1->motion != Motion::Shoryuken)
 					{
 						(*it)->takeDamage(attackdmg);
+						eff->hitEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
 						if (p1->angle == Angle_LR::Right)
 						{
 							p1->moveVec.x = -5.0f;
@@ -117,6 +122,7 @@ namespace  AtkBox
 					else
 					{
 						(*it)->takeShoryuDamange(attackdmg);
+						eff->hitEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
 						if (p1->angle == Angle_LR::Right)
 						{
 							(*it)->moveVec.x = 20.0f;
@@ -143,6 +149,7 @@ namespace  AtkBox
 					if (p2->motion != Motion::Shoryuken)
 					{
 						(*it)->takeGuardDamage(attackdmg, false);
+						eff->guardEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
 						if (p2->angle == Angle_LR::Right)
 						{
 							p2->moveVec.x = -12.0f;
@@ -157,6 +164,7 @@ namespace  AtkBox
 					else
 					{
 						(*it)->takeGuardDamage(attackdmg, true);
+						eff->guardEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
 					}
 					this->Kill();
 					break;
@@ -166,6 +174,7 @@ namespace  AtkBox
 					if (p2->motion != Motion::Shoryuken)
 					{
 						(*it)->takeDamage(attackdmg);
+						eff->hitEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
 						if (p2->angle == Angle_LR::Right)
 						{
 							p2->moveVec.x = -5.0f;
@@ -180,6 +189,7 @@ namespace  AtkBox
 					else
 					{
 						(*it)->takeShoryuDamange(attackdmg);
+						eff->hitEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
 						if (p2->angle == Angle_LR::Right)
 						{
 							(*it)->moveVec.x = 20.0f;

@@ -58,7 +58,6 @@ namespace  Game
 		DG::Image::SP	imgFight;
 		DG::Image::SP	imgTimeOver;
 		DG::Image::SP	imgScore;
-		DG::Image::SP	imgScoreEffect;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
