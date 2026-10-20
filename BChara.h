@@ -102,14 +102,17 @@ public:
 	bool CheckHit(const ML::Box2D& hit_);
 	bool CheckFoot();
 	bool UpdateMotion(Motion nm_);
+
 	void takeDamage(int dmg);
 	void takeGuardDamage(int dmg, bool isSpecial);
 	void takeShoryuDamange(int dmg);
 	int getAtkDamage(int basedmg);
+
 	void powerUpTimerUpdate();
 	bool isGaugeBarFull();
 	void addGaugeBar(float gaugevalue);
 	void useGaugeBar();
+
 	void resetPlayer(int x, int y);
 	
 	struct DrawInfo

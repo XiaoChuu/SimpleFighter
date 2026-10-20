@@ -94,6 +94,7 @@ namespace  Game
 		int gameEndTime;
 
 		float push = 6.5f;
+		int hitStopCnt = 0;
 
 		GamePhase gamePhase;
 		int phaseTimer;
@@ -117,8 +118,11 @@ namespace  Game
 		void Round_Render();
 		void Score_Render();
 		void number_Render(int x, int y, int t);
+
 		void phaseChange();
 		bool canPlayerMove();
 		void nextRoundInitialize();
+		void startHitStop(int frame);
+		bool isHitStop() const;
 	};
 }

@@ -119,7 +119,7 @@ namespace  Game
 		//★データ＆タスク解放
 		mciSendString(TEXT("close TestBGM"), NULL, 0, NULL); //BGM
 		ge->KillAll_G("本編");
-		
+
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -138,11 +138,14 @@ namespace  Game
 		{
 			battleTime--;
 		}
-		
-		auto inp = ge->in1->GetState( );
-		
+
+		auto inp = ge->in1->GetState();
+
 		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
 		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
+
+		//HitStop処理
+		this->hitStopCnt--;
 
 		//向き変換
 		if (p1->CheckFoot() && p2->CheckFoot())
@@ -265,7 +268,7 @@ namespace  Game
 		//制限時間
 		number_Render(592, 80, battleTime / 600);//587
 		number_Render(638, 80, battleTime / 60);//642
-		
+
 		//PlayerUI
 		this->UI_Render();
 
@@ -437,7 +440,7 @@ namespace  Game
 		}
 	}
 
-	void Object::Score_Render() 
+	void Object::Score_Render()
 	{
 		ML::Box2D src_p1Score[2]
 		{
@@ -502,88 +505,88 @@ namespace  Game
 
 		switch (this->gamePhase)
 		{
-			case GamePhase::Round1:
+		case GamePhase::Round1:
 			if (this->phaseTimer >= ROUND_EFFECT_TIME)
-				{
-					this->gamePhase = GamePhase::Fight;
-					this->phaseTimer = 0;
-				}
-			break;
-			case GamePhase::Round2:
-			if (this->phaseTimer >= ROUND_EFFECT_TIME)
-				{
-					this->gamePhase = GamePhase::Fight;
-					this->phaseTimer = 0;
-				}
-			break;
-			case GamePhase::FinalRound:
-				if (this->phaseTimer >= ROUND_EFFECT_TIME)
-				{
-					this->gamePhase = GamePhase::Fight;
-					this->phaseTimer = 0;
-				}
-				break;
-			case GamePhase::Fight:
-				if (this->phaseTimer >= FIGHT_EFFECT_TIME)
-				{
-					this->gamePhase = GamePhase::Battle;
-					this->phaseTimer = 0;
-				}
-				break;
-			case GamePhase::Battle:
+			{
+				this->gamePhase = GamePhase::Fight;
 				this->phaseTimer = 0;
-				break;
-			case GamePhase::KO:
-				if (this->phaseTimer == KO_EFFECT_TIME)
+			}
+			break;
+		case GamePhase::Round2:
+			if (this->phaseTimer >= ROUND_EFFECT_TIME)
+			{
+				this->gamePhase = GamePhase::Fight;
+				this->phaseTimer = 0;
+			}
+			break;
+		case GamePhase::FinalRound:
+			if (this->phaseTimer >= ROUND_EFFECT_TIME)
+			{
+				this->gamePhase = GamePhase::Fight;
+				this->phaseTimer = 0;
+			}
+			break;
+		case GamePhase::Fight:
+			if (this->phaseTimer >= FIGHT_EFFECT_TIME)
+			{
+				this->gamePhase = GamePhase::Battle;
+				this->phaseTimer = 0;
+			}
+			break;
+		case GamePhase::Battle:
+			this->phaseTimer = 0;
+			break;
+		case GamePhase::KO:
+			if (this->phaseTimer == KO_EFFECT_TIME)
+			{
+				this->gamePhase = GamePhase::RoundTransition;
+				this->phaseTimer = 0;
+			}
+			break;
+		case GamePhase::TimeOver:
+			if (this->phaseTimer == KO_EFFECT_TIME)
+			{
+				this->gamePhase = GamePhase::RoundTransition;
+				this->phaseTimer = 0;
+			}
+			break;
+		case GamePhase::RoundTransition:
+			if (this->phaseTimer == 30)
+			{
+				if (onePWin)
 				{
-					this->gamePhase = GamePhase::RoundTransition;
-					this->phaseTimer = 0;
+					this->p1DisplayRound = p1Round;
+					eff->p1ScoreEffect.playEffect(draw_Score[this->p1Round - 1]);
 				}
-				break;
-			case GamePhase::TimeOver:
-				if (this->phaseTimer == KO_EFFECT_TIME)
+				else if (twoPWin)
 				{
-					this->gamePhase = GamePhase::RoundTransition;
-					this->phaseTimer = 0;
+					this->p2DisplayRound = p2Round;
+					eff->p2ScoreEffect.playEffect(draw_Score[2 + this->p2Round - 1]);
 				}
-				break;
-			case GamePhase::RoundTransition:
-				if (this->phaseTimer == 30)
+				else if (drawGame)
 				{
-					if (onePWin)
-					{
-						this->p1DisplayRound = p1Round;
-						eff->p1ScoreEffect.playEffect(draw_Score[this->p1Round - 1]);
-					}
-					else if (twoPWin)
-					{
-						this->p2DisplayRound = p2Round;
-						eff->p2ScoreEffect.playEffect(draw_Score[2 + this->p2Round - 1]);
-					}
-					else if (drawGame)
-					{
-						this->p1DisplayRound = p1Round;
-						this->p2DisplayRound = p2Round;
-						eff->p1ScoreEffect.playEffect(draw_Score[this->p1Round - 1]);
-						eff->p2ScoreEffect.playEffect(draw_Score[2 + this->p2Round - 1]);
-					}
+					this->p1DisplayRound = p1Round;
+					this->p2DisplayRound = p2Round;
+					eff->p1ScoreEffect.playEffect(draw_Score[this->p1Round - 1]);
+					eff->p2ScoreEffect.playEffect(draw_Score[2 + this->p2Round - 1]);
 				}
-				if (this->p1Round >= 2 || this->p2Round >= 2)
-				{
-					this->isGameEnd = true;
-					onePWin = false;
-					twoPWin = false;
-					drawGame = false;
-				}
-				else if (this->phaseTimer == ROUND_TRANSIT_EFFECT_TIME)
-				{
-					ge->CreateEffect(99, ML::Vec2(0, 0));
-				}
-				else if (this->phaseTimer >= KO_NEXT_ROUND_TIME)
-				{
-					this->nextRoundInitialize();
-				}
-				break;
+			}
+			if (this->p1Round >= 2 || this->p2Round >= 2)
+			{
+				this->isGameEnd = true;
+				onePWin = false;
+				twoPWin = false;
+				drawGame = false;
+			}
+			else if (this->phaseTimer == ROUND_TRANSIT_EFFECT_TIME)
+			{
+				ge->CreateEffect(99, ML::Vec2(0, 0));
+			}
+			else if (this->phaseTimer >= KO_NEXT_ROUND_TIME)
+			{
+				this->nextRoundInitialize();
+			}
+			break;
 		}
 	}
 
@@ -622,6 +625,19 @@ namespace  Game
 		this->battleTime = 3600;
 		this->gameEndTime = 0;
 		this->phaseTimer = 0;
+	}
+
+	void Object::startHitStop(int frame)
+	{
+		if (this->hitStopCnt < frame)
+		{
+			this->hitStopCnt = frame;
+		}
+	}
+
+	bool Object::isHitStop() const
+	{
+		return this->hitStopCnt > 0;
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

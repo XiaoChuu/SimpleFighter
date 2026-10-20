@@ -78,6 +78,11 @@ namespace  Player1
 			return;
 		}
 
+		if (game->isHitStop())
+		{
+			return;
+		}
+
 		if (this->pos.x <= 0 + 75)
 		{
 			this->pos.x = 0 + 75;

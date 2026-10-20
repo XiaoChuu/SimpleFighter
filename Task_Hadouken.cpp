@@ -6,6 +6,7 @@
 #include  "Task_Player1.h"
 #include  "Task_Player2.h"
 #include  "Task_EffectManager.h"
+#include  "Task_Game.h"
 
 namespace  Hadouken
 {
@@ -66,6 +67,7 @@ namespace  Hadouken
 		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
 		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
 		auto eff = ge->GetTask<EffectManager::Object>(EffectManager::defGroupName, EffectManager::defName);
+		auto game = ge->GetTask<Game::Object>("本編", "統括");
 
 		//Playerとの当たり判定
 		if (owner == Owner::Player1)
@@ -80,6 +82,7 @@ namespace  Hadouken
 					(*it)->takeDamage(p1->getAtkDamage(this->attackdmg));
 					eff->p1hitEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
 					eff->p1FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
+					game->startHitStop(6);
 					this->Kill();
 					break;
 				}
@@ -88,6 +91,7 @@ namespace  Hadouken
 					(*it)->takeGuardDamage(p1->getAtkDamage(this->attackdmg), true);
 					eff->p1guardEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
 					eff->p1FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
+					game->startHitStop(6);
 					if ((*it)->angle == Angle_LR::Right)
 					{
 						(*it)->moveVec.x = -10.0f;
@@ -113,6 +117,7 @@ namespace  Hadouken
 					(*it)->takeDamage(p2->getAtkDamage(this->attackdmg));
 					eff->p2hitEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
 					eff->p2FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
+					game->startHitStop(6);
 					this->Kill();
 					break;
 				}
@@ -121,6 +126,7 @@ namespace  Hadouken
 					(*it)->takeGuardDamage(p1->getAtkDamage(this->attackdmg), true);
 					eff->p2guardEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
 					eff->p2FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
+					game->startHitStop(6);
 					if ((*it)->angle == Angle_LR::Right)
 					{
 						(*it)->moveVec.x = -10.0f;
