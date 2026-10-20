@@ -93,6 +93,8 @@ namespace  Game
 		this->gameEndTime = 0;
 		this->p1Round = 0;
 		this->p2Round = 0;
+		this->p1DisplayRound = 0;
+		this->p2DisplayRound = 0;
 		onePWin = false;
 		twoPWin = false;
 		drawGame = false;
@@ -175,51 +177,71 @@ namespace  Game
 		}
 
 		//勝敗判定
-		if (p1->currentHp <= 0 && p2->currentHp <= 0 && this->gamePhase != GamePhase::KO)
+		if (this->gamePhase != GamePhase::RoundTransition)
 		{
-			this->gamePhase = GamePhase::KO;
-			drawGame = true;
-			this->p1Round++;
-			this->p2Round++;
-		}
-		else if (p1->currentHp <= 0 && this->gamePhase != GamePhase::KO)
-		{
-			this->gamePhase = GamePhase::KO;
-			twoPWin = true;
-			this->p2Round++;
-		}
-		else if (p2->currentHp <= 0 && this->gamePhase != GamePhase::KO)
-		{
-			this->gamePhase = GamePhase::KO;
-			onePWin = true;
-			this->p1Round++;
-		}
-		else if (this->battleTime <= 0 && this->gamePhase != GamePhase::TimeOver)
-		{
-			if (p1->currentHp > p2->currentHp)
+			if (p1->currentHp <= 0 && p2->currentHp <= 0)
 			{
-				this->gamePhase = GamePhase::TimeOver;
-				onePWin = true;
-				this->p1Round++;
-			}
-			else if (p2->currentHp > p1->currentHp)
-			{
-				this->gamePhase = GamePhase::TimeOver;
-				twoPWin = true;
-				this->p2Round++;
-			}
-			else
-			{
-				this->gamePhase = GamePhase::TimeOver;
+				if (this->gamePhase == GamePhase::KO)
+				{
+					return;
+				}
+				this->gamePhase = GamePhase::KO;
 				drawGame = true;
 				this->p1Round++;
 				this->p2Round++;
+			}
+			else if (p1->currentHp <= 0 && this->gamePhase != GamePhase::KO)
+			{
+				this->gamePhase = GamePhase::KO;
+				twoPWin = true;
+				this->p2Round++;
+			}
+			else if (p2->currentHp <= 0 && this->gamePhase != GamePhase::KO)
+			{
+				this->gamePhase = GamePhase::KO;
+				onePWin = true;
+				this->p1Round++;
+			}
+			else if (this->battleTime <= 0 && this->gamePhase != GamePhase::TimeOver)
+			{
+				if (p1->currentHp > p2->currentHp)
+				{
+					this->gamePhase = GamePhase::TimeOver;
+					onePWin = true;
+					this->p1Round++;
+				}
+				else if (p2->currentHp > p1->currentHp)
+				{
+					this->gamePhase = GamePhase::TimeOver;
+					twoPWin = true;
+					this->p2Round++;
+				}
+				else
+				{
+					this->gamePhase = GamePhase::TimeOver;
+					drawGame = true;
+					this->p1Round++;
+					this->p2Round++;
+				}
 			}
 		}
 
 		if (true == isGameEnd)
 		{
 			this->gameEndTime++;
+			if (this->p1Round > this->p2Round)
+			{
+				onePWin = true;
+			}
+			else if (this->p1Round < this->p2Round)
+			{
+				twoPWin = true;
+			}
+			else
+			{
+				drawGame = true;
+			}
+
 			if (gameEndTime == 120)
 			{
 				ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
@@ -251,39 +273,7 @@ namespace  Game
 		this->Round_Render();
 
 		//VictoryScore
-		ML::Box2D draw_Score[4]
-		{
-			ML::Box2D(536, 32, 48, 48),
-			ML::Box2D(488, 32, 48, 48),
-			ML::Box2D(697, 32, 48, 48),
-			ML::Box2D(745, 32, 48, 48),
-		};
-		ML::Box2D src_p1Score[2]
-		{
-			ML::Box2D(416, 0, -32, 32),
-			ML::Box2D(512, 0, -32, 32),
-		};
-		ML::Box2D src_p2Score[2]
-		{
-			ML::Box2D(384, 0, 32, 32),
-			ML::Box2D(480, 0, 32, 32),
-		};
-		if (this->p1Round >= 1)
-		{
-			this->res->imgScore->Draw(draw_Score[0], src_p1Score[0]);
-		}
-		if (this->p1Round >= 2)
-		{
-			this->res->imgScore->Draw(draw_Score[1], src_p1Score[1]);
-		}
-		if (this->p2Round >= 1)
-		{
-			this->res->imgScore->Draw(draw_Score[2], src_p2Score[0]);
-		}
-		if (this->p2Round >= 2)
-		{
-			this->res->imgScore->Draw(draw_Score[3], src_p2Score[1]);
-		}
+		this->Score_Render();
 	}
 
 	void Object::UI_Render()
@@ -447,11 +437,39 @@ namespace  Game
 		}
 	}
 
+	void Object::Score_Render() 
+	{
+		ML::Box2D src_p1Score[2]
+		{
+			ML::Box2D(416, 0, -32, 32),
+			ML::Box2D(512, 0, -32, 32),
+		};
+		ML::Box2D src_p2Score[2]
+		{
+			ML::Box2D(384, 0, 32, 32),
+			ML::Box2D(480, 0, 32, 32),
+		};
+		if (this->p1DisplayRound >= 1)
+		{
+			this->res->imgScore->Draw(draw_Score[0], src_p1Score[0]);
+		}
+		if (this->p1DisplayRound >= 2)
+		{
+			this->res->imgScore->Draw(draw_Score[1], src_p1Score[1]);
+		}
+		if (this->p2DisplayRound >= 1)
+		{
+			this->res->imgScore->Draw(draw_Score[2], src_p2Score[0]);
+		}
+		if (this->p2DisplayRound >= 2)
+		{
+			this->res->imgScore->Draw(draw_Score[3], src_p2Score[1]);
+		}
+	}
+
 	//-------------------------------------------------------------------
 	void Object::number_Render(int x, int y, int t)
 	{
-
-
 		int draw_x, draw_y;
 		int font_x, font_y;
 
@@ -477,8 +495,9 @@ namespace  Game
 
 	}
 
-	void Object::phaseChange() 
+	void Object::phaseChange()
 	{
+		auto eff = ge->GetTask<EffectManager::Object>(EffectManager::defGroupName, EffectManager::defName);
 		this->phaseTimer++;
 
 		switch (this->gamePhase)
@@ -515,25 +534,48 @@ namespace  Game
 				this->phaseTimer = 0;
 				break;
 			case GamePhase::KO:
-				if (this->p1Round >= 2 || this->p2Round >= 2)
+				if (this->phaseTimer == KO_EFFECT_TIME)
 				{
-					this->isGameEnd = true;
-				}
-				else if (this->phaseTimer == KO_EFFECT_TIME)
-				{
-					ge->CreateEffect(99, ML::Vec2(0, 0));
-				}
-				else if (this->phaseTimer >= KO_NEXT_ROUND_TIME)
-				{
-					this->nextRoundInitialize();
+					this->gamePhase = GamePhase::RoundTransition;
+					this->phaseTimer = 0;
 				}
 				break;
 			case GamePhase::TimeOver:
+				if (this->phaseTimer == KO_EFFECT_TIME)
+				{
+					this->gamePhase = GamePhase::RoundTransition;
+					this->phaseTimer = 0;
+				}
+				break;
+			case GamePhase::RoundTransition:
+				if (this->phaseTimer == 30)
+				{
+					if (onePWin)
+					{
+						this->p1DisplayRound = p1Round;
+						eff->p1ScoreEffect.playEffect(draw_Score[this->p1Round - 1]);
+					}
+					else if (twoPWin)
+					{
+						this->p2DisplayRound = p2Round;
+						eff->p2ScoreEffect.playEffect(draw_Score[2 + this->p2Round - 1]);
+					}
+					else if (drawGame)
+					{
+						this->p1DisplayRound = p1Round;
+						this->p2DisplayRound = p2Round;
+						eff->p1ScoreEffect.playEffect(draw_Score[this->p1Round - 1]);
+						eff->p2ScoreEffect.playEffect(draw_Score[2 + this->p2Round - 1]);
+					}
+				}
 				if (this->p1Round >= 2 || this->p2Round >= 2)
 				{
 					this->isGameEnd = true;
+					onePWin = false;
+					twoPWin = false;
+					drawGame = false;
 				}
-				else if (this->phaseTimer == KO_EFFECT_TIME)
+				else if (this->phaseTimer == ROUND_TRANSIT_EFFECT_TIME)
 				{
 					ge->CreateEffect(99, ML::Vec2(0, 0));
 				}
@@ -545,7 +587,7 @@ namespace  Game
 		}
 	}
 
-	bool Object::canPlayerMove() 
+	bool Object::canPlayerMove()
 	{
 		return gamePhase == GamePhase::Battle;
 	}

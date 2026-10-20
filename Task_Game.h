@@ -14,6 +14,7 @@ enum class GamePhase
 	Battle,
 	KO,
 	TimeOver,
+	RoundTransition,
 };
 
 namespace  Game
@@ -84,6 +85,8 @@ namespace  Game
 		
 		int p1Round;
 		int p2Round;
+		int p1DisplayRound;
+		int p2DisplayRound;
 		bool isGameEnd = false;
 
 		DG::Font::SP TestFont;
@@ -100,9 +103,19 @@ namespace  Game
 		const int KO_NEXT_ROUND_TIME = 130;
 		const int ROUND_EFFECT_TIME = 120;
 		const int FIGHT_EFFECT_TIME = 60;
+		const int ROUND_TRANSIT_EFFECT_TIME = 90;
+		ML::Box2D draw_Score[4]
+		{
+			ML::Box2D(536, 32, 48, 48),
+			ML::Box2D(488, 32, 48, 48),
+			ML::Box2D(697, 32, 48, 48),
+			ML::Box2D(745, 32, 48, 48),
+		};
+
 
 		void UI_Render();
 		void Round_Render();
+		void Score_Render();
 		void number_Render(int x, int y, int t);
 		void phaseChange();
 		bool canPlayerMove();

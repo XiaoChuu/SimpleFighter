@@ -78,7 +78,7 @@ namespace  Hadouken
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
 				{
 					(*it)->takeDamage(p1->getAtkDamage(this->attackdmg));
-					eff->hitEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
+					eff->p1hitEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
 					eff->p1FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
 					this->Kill();
 					break;
@@ -86,7 +86,7 @@ namespace  Hadouken
 				else if (hit.Hit(me) && (*it)->motion == Motion::Guard)
 				{
 					(*it)->takeGuardDamage(p1->getAtkDamage(this->attackdmg), true);
-					eff->guardEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
+					eff->p1guardEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
 					eff->p1FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
 					if ((*it)->angle == Angle_LR::Right)
 					{
@@ -111,7 +111,7 @@ namespace  Hadouken
 				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO)
 				{
 					(*it)->takeDamage(p2->getAtkDamage(this->attackdmg));
-					eff->hitEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
+					eff->p2hitEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
 					eff->p2FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
 					this->Kill();
 					break;
@@ -119,7 +119,7 @@ namespace  Hadouken
 				else if (hit.Hit(me) && (*it)->motion == Motion::Guard)
 				{
 					(*it)->takeGuardDamage(p1->getAtkDamage(this->attackdmg), true);
-					eff->guardEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
+					eff->p2guardEffect.playEffect((*it)->pos, this->pos.x < (*it)->pos.x);
 					eff->p2FBEffect.playEffect(this->pos, this->pos.x < (*it)->pos.x);
 					if ((*it)->angle == Angle_LR::Right)
 					{

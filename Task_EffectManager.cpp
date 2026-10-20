@@ -61,30 +61,50 @@ namespace  EffectManager
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		this->hitEffect.updateEffect(4, 5);
-		this->guardEffect.updateEffect(4, 5);
+		this->p1hitEffect.updateEffect(4, 5);
+		this->p1guardEffect.updateEffect(4, 5);
+		this->p2hitEffect.updateEffect(4, 5);
+		this->p2guardEffect.updateEffect(4, 5);
 		this->p1FBEffect.updateEffect(4, 3);
 		this->p2FBEffect.updateEffect(4, 3);
-		this->scoreEffect.updateEffect(8, 23);
+		this->p1ScoreEffect.updateEffect(4, 9);
+		this->p2ScoreEffect.updateEffect(4, 9);
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		Object::DrawInfo hitEffectDraw = this->hitEffectAnim();
-		if (hitEffect.isPlaying)
+		//p1 eff
+		Object::DrawInfo p1hitEffectDraw = this->hitEffectAnim(this->p1hitEffect);
+		if (p1hitEffect.isPlaying)
 		{
-			hitEffectDraw.draw.Offset(hitEffect.pos);
-			this->res->imgHitEffect->Draw(hitEffectDraw.draw, hitEffectDraw.src);
+			p1hitEffectDraw.draw.Offset(p1hitEffect.pos);
+			this->res->imgHitEffect->Draw(p1hitEffectDraw.draw, p1hitEffectDraw.src);
 		}
 		
-		Object::DrawInfo guardEffectDraw = this->guardEffectAnim();
-		if (guardEffect.isPlaying)
+		Object::DrawInfo guardEffectDraw = this->guardEffectAnim(this->p1guardEffect);
+		if (p1guardEffect.isPlaying)
 		{
-			guardEffectDraw.draw.Offset(guardEffect.pos);
+			guardEffectDraw.draw.Offset(p1guardEffect.pos);
 			this->res->imgGuardEffect->Draw(guardEffectDraw.draw, guardEffectDraw.src);
 		}
 		
+		//p2 eff
+		Object::DrawInfo p2hitEffectDraw = this->hitEffectAnim(this->p2hitEffect);
+		if (p2hitEffect.isPlaying)
+		{
+			p2hitEffectDraw.draw.Offset(p2hitEffect.pos);
+			this->res->imgHitEffect->Draw(p2hitEffectDraw.draw, p2hitEffectDraw.src);
+		}
+
+		Object::DrawInfo p2guardEffectDraw = this->guardEffectAnim(this->p2guardEffect);
+		if (p2guardEffect.isPlaying)
+		{
+			p2guardEffectDraw.draw.Offset(p2guardEffect.pos);
+			this->res->imgGuardEffect->Draw(p2guardEffectDraw.draw, p2guardEffectDraw.src);
+		}
+
+		//fireball eff
 		Object::DrawInfo p1HadouEffectDraw = this->p1FbEffectAnim();
 		if (p1FBEffect.isPlaying)
 		{
@@ -99,11 +119,19 @@ namespace  EffectManager
 			this->res->imgP2HadouEffect->Draw(p2HadouEffectDraw.draw, p2HadouEffectDraw.src, ML::Color(1, 0, 0, 1));
 		}
 		
-		Object::DrawInfo scoreEffectDraw = this->scoreEffectAnim();
-		if (scoreEffect.isPlaying)
+		//Score eff
+		Object::DrawInfo p1ScoreEffectDraw = this->scoreEffectAnim(this->p1ScoreEffect);
+		if (p1ScoreEffect.isPlaying)
 		{
-			scoreEffectDraw.draw.Offset(scoreEffect.pos);
-			this->res->imgScoreEffect->Draw(scoreEffectDraw.draw, scoreEffectDraw.src);
+			p1ScoreEffectDraw.draw.Offset(p1ScoreEffect.pos);
+			this->res->imgScoreEffect->Draw(p1ScoreEffectDraw.draw, p1ScoreEffectDraw.src);
+		}
+
+		Object::DrawInfo p2ScoreEffectDraw = this->scoreEffectAnim(this->p2ScoreEffect);
+		if (p2ScoreEffect.isPlaying)
+		{
+			p2ScoreEffectDraw.draw.Offset(p2ScoreEffect.pos);
+			this->res->imgScoreEffect->Draw(p2ScoreEffectDraw.draw, p2ScoreEffectDraw.src);
 		}
 	}
 
@@ -122,6 +150,22 @@ namespace  EffectManager
 		this->pos.y = pos.y;
 		this->animCnt = 0;
 		this->isFaceRight = isFaceRight;
+		this->isPlaying = true;
+	}
+
+	void Object::EffectInfo::playEffect(ML::Box2D pos)
+	{
+		this->pos.x = pos.x;
+		this->pos.y = pos.y;
+		this->animCnt = 0;
+		this->isPlaying = true;
+	}
+
+	void Object::EffectInfo::playEffect(ML::Vec2 pos)
+	{
+		this->pos.x = pos.x;
+		this->pos.y = pos.y;
+		this->animCnt = 0;
 		this->isPlaying = true;
 	}
 
@@ -148,7 +192,7 @@ namespace  EffectManager
 		}
 	}
 
-	Object::DrawInfo Object::hitEffectAnim()
+	Object::DrawInfo Object::hitEffectAnim(EffectInfo target)
 	{
 		Object::DrawInfo imageTable[]
 		{
@@ -161,13 +205,13 @@ namespace  EffectManager
 
 		Object::DrawInfo rtv;
 		int work;
-		work = min((this->hitEffect.animCnt / 4), sizeof(imageTable) / sizeof(imageTable[0]) - 1);
+		work = min((target.animCnt / 4), sizeof(imageTable) / sizeof(imageTable[0]) - 1);
 		rtv = imageTable[work];
-		effectDirection(rtv, this->hitEffect.isFaceRight);
+		effectDirection(rtv, target.isFaceRight);
 		return rtv;
 	}
 
-	Object::DrawInfo Object::guardEffectAnim()
+	Object::DrawInfo Object::guardEffectAnim(EffectInfo target)
 	{
 		Object::DrawInfo imageTable[]
 		{
@@ -180,9 +224,9 @@ namespace  EffectManager
 
 		Object::DrawInfo rtv;
 		int work;
-		work = min((this->guardEffect.animCnt / 4), sizeof(imageTable) / sizeof(imageTable[0]) - 1);
+		work = min((target.animCnt / 4), sizeof(imageTable) / sizeof(imageTable[0]) - 1);
 		rtv = imageTable[work];
-		effectDirection(rtv, this->guardEffect.isFaceRight);
+		effectDirection(rtv, target.isFaceRight);
 		return rtv;
 	}
 
@@ -220,37 +264,23 @@ namespace  EffectManager
 		return rtv;
 	}
 
-	Object::DrawInfo Object::scoreEffectAnim()
+	Object::DrawInfo Object::scoreEffectAnim(EffectInfo target)
 	{
 		Object::DrawInfo imageTable[]
 		{
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 0   , 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 256 , 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 512 , 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 768 , 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 1024, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 1280, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 1536, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 1792, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 2048, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 2304, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 2560, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 2816, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 3072, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 3328, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 3584, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 3840, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 4096, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 4352, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 4608, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 4864, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 5120, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 5376, 256, 256)},
-			{ML::Box2D(-32, -32, 64, 64),ML::Box2D(0, 5632, 256, 256)},
+			{ML::Box2D(-12, -12, 72, 72),ML::Box2D(384, 128, 128, 128)},
+			{ML::Box2D(-12, -12, 72, 72),ML::Box2D(256, 128, 128, 128)},
+			{ML::Box2D(-12, -12, 72, 72),ML::Box2D(128, 128, 128, 128)},
+			{ML::Box2D(-12, -12, 72, 72),ML::Box2D(0  , 128, 128, 128)},
+			{ML::Box2D(-12, -12, 72, 72),ML::Box2D(512, 0  , 128, 128)},
+			{ML::Box2D(-12, -12, 72, 72),ML::Box2D(384, 0  , 128, 128)},
+			{ML::Box2D(-12, -12, 72, 72),ML::Box2D(256, 0  , 128, 128)},
+			{ML::Box2D(-12, -12, 72, 72),ML::Box2D(128, 0  , 128, 128)},
+			{ML::Box2D(-12, -12, 72, 72),ML::Box2D(0  , 0  , 128, 128)},
 		};
 		Object::DrawInfo rtv;
 		int work;
-		work = min((this->scoreEffect.animCnt / 8), sizeof(imageTable) / sizeof(imageTable[0]) - 1);
+		work = min((target.animCnt / 4), sizeof(imageTable) / sizeof(imageTable[0]) - 1);
 		rtv = imageTable[work];
 		return rtv;
 	}

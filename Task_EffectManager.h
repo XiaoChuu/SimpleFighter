@@ -61,13 +61,15 @@ namespace  EffectManager
 
 			void playEffect(ML::Box2D pos, bool isFaceRight);
 			void playEffect(ML::Vec2 pos, bool isFaceRight);
+			void playEffect(ML::Box2D pos);
+			void playEffect(ML::Vec2 pos);
 			void updateEffect(int speed, int picCnt);
 		};
 		
-		EffectInfo hitEffect;
-		EffectInfo guardEffect;
+		EffectInfo p1hitEffect, p2hitEffect;
+		EffectInfo p1guardEffect, p2guardEffect;
 		EffectInfo p1FBEffect, p2FBEffect;
-		EffectInfo scoreEffect;
+		EffectInfo p1ScoreEffect, p2ScoreEffect;
 
 		struct DrawInfo
 		{
@@ -75,11 +77,11 @@ namespace  EffectManager
 		};
 
 		//Animation
-		DrawInfo hitEffectAnim();
-		DrawInfo guardEffectAnim();
+		DrawInfo hitEffectAnim(EffectInfo target);
+		DrawInfo guardEffectAnim(EffectInfo target);
 		DrawInfo p1FbEffectAnim();
 		DrawInfo p2FbEffectAnim();
-		DrawInfo scoreEffectAnim();
+		DrawInfo scoreEffectAnim(EffectInfo target);
 
 		void effectDirection(Object::DrawInfo& rtv, bool isFaceRight);
 	};
