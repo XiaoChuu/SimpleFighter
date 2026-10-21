@@ -8,6 +8,7 @@
 #include  "Task_player1.h"
 #include  "Task_player2.h"
 #include  "Task_EffectManager.h"
+#include  "Task_RoundRender.h"
 
 bool onePWin;
 bool twoPWin;
@@ -36,13 +37,7 @@ namespace  Game
 		this->imgShoryukenEmp = DG::Image::Create("./data/image/Skill_Left_Grey.png");
 		this->imgPlayer1Ava = DG::Image::Create("./data/image/Skill_Bottom_Chara2.png");
 		this->imgPlayer2Ava = DG::Image::Create("./data/image/Skill_Bottom_Chara1.png");
-		this->imgKO = DG::Image::Create("./data/image/KO.png");
 		this->imgTimeFont = DG::Image::Create("./data/image/Time.png");
-		this->imgRound1 = DG::Image::Create("./data/image/Round1.png");
-		this->imgRound2 = DG::Image::Create("./data/image/Round2.png");
-		this->imgFinalRound = DG::Image::Create("./data/image/FinalRound.png");
-		this->imgFight = DG::Image::Create("./data/image/FIGHT.png");
-		this->imgTimeOver = DG::Image::Create("./data/image/Timeover.png");
 		this->imgEmptyScore = DG::Image::Create("./data/image/VCup_Empty.png");
 		this->imgScore = DG::Image::Create("./data/image/VIcon.png");
 		return true;
@@ -69,13 +64,7 @@ namespace  Game
 		this->imgShoryukenEmp.reset();
 		this->imgPlayer1Ava.reset();
 		this->imgPlayer2Ava.reset();
-		this->imgKO.reset();
 		this->imgTimeFont.reset();
-		this->imgRound1.reset();
-		this->imgRound2.reset();
-		this->imgFinalRound.reset();
-		this->imgFight.reset();
-		this->imgTimeOver.reset();
 		this->imgEmptyScore.reset();
 		this->imgScore.reset();
 		return true;
@@ -102,7 +91,7 @@ namespace  Game
 		drawGame = false;
 		mciSendString(TEXT("open \".\\data\\sound\\bgm\\TestBGM.mp3\" alias TestBGM"), NULL, 0, NULL); //BGM read file
 		mciSendString(TEXT("play TestBGM repeat"), NULL, 0, NULL); //BGM repeat
-		this->gamePhase = GamePhase::Round1;
+		this->gamePhase = GamePhase::p1Entrance;
 
 		//デバッグ用フォントの準備
 		this->TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
@@ -111,7 +100,7 @@ namespace  Game
 		auto p1 = Player1::Object::Create(true);
 		auto p2 = Player2::Object::Create(true);
 		auto eff = EffectManager::Object::Create(true);
-
+		auto RRD = RoundRender::Object::Create(true);
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -274,9 +263,6 @@ namespace  Game
 		//PlayerUI
 		this->UI_Render();
 
-		//Round
-		this->Round_Render();
-
 		//VictoryScore
 		this->EmptyScore_Render();
 		this->Score_Render();
@@ -397,52 +383,6 @@ namespace  Game
 		}
 	}
 
-	void Object::Round_Render()
-	{
-		//KO
-		ML::Box2D draw_KO(384, 232, 512, 256);
-		ML::Box2D src_KO(0, 0, 256, 128);
-		if (this->gamePhase == GamePhase::KO)
-		{
-			this->res->imgKO->Draw(draw_KO, src_KO);
-		}
-		//Round 1
-		ML::Box2D draw_Round1(384, 232, 512, 256);
-		ML::Box2D src_Round1(0, 0, 1200, 400);
-		if (this->gamePhase == GamePhase::Round1)
-		{
-			this->res->imgRound1->Draw(draw_Round1, src_Round1);
-		}
-		//Round 2
-		ML::Box2D draw_Round2(384, 232, 512, 256);
-		ML::Box2D src_Round2(0, 0, 1200, 400);
-		if (this->gamePhase == GamePhase::Round2)
-		{
-			this->res->imgRound2->Draw(draw_Round2, src_Round2);
-		}
-		//FinalRound
-		ML::Box2D draw_FinalRound(384, 232, 512, 256);
-		ML::Box2D src_FinalRound(0, 0, 1200, 400);
-		if (this->gamePhase == GamePhase::FinalRound)
-		{
-			this->res->imgFinalRound->Draw(draw_FinalRound, src_FinalRound);
-		}
-		//Fight
-		ML::Box2D draw_Fight(384, 232, 512, 256);
-		ML::Box2D src_Fight(0, 0, 1200, 400);
-		if (this->gamePhase == GamePhase::Fight)
-		{
-			this->res->imgFight->Draw(draw_Fight, src_Fight);
-		}
-		//Time Over
-		ML::Box2D draw_TimeOver(384, 232, 512, 256);
-		ML::Box2D src_TimeOver(0, 0, 1200, 400);
-		if (this->gamePhase == GamePhase::TimeOver)
-		{
-			this->res->imgTimeOver->Draw(draw_TimeOver, src_TimeOver);
-		}
-	}
-
 	void Object::EmptyScore_Render()
 	{
 		ML::Box2D src_p1EmptyScore(32, 0, -32, 32);
@@ -508,18 +448,28 @@ namespace  Game
 		this->res->imgTimeFont->Draw(draw, src);
 		//一文字分ずらす
 		//draw_x += 240;
-
-
 	}
 
 	void Object::phaseChange()
 	{
 		auto eff = ge->GetTask<EffectManager::Object>(EffectManager::defGroupName, EffectManager::defName);
+		auto rrd = ge->GetTask<RoundRender::Object>(RoundRender::defGroupName, RoundRender::defName);
 		this->phaseTimer++;
 
 		switch (this->gamePhase)
 		{
+		case GamePhase::p1Entrance:
+			if (this->phaseTimer >= 30)
+			{
+				this->gamePhase = GamePhase::Round1;
+				this->phaseTimer = 0;
+			}
+			break;
 		case GamePhase::Round1:
+			if (this->phaseTimer == 1)
+			{
+				rrd->scale = 10.0f;
+			}
 			if (this->phaseTimer >= ROUND_EFFECT_TIME)
 			{
 				this->gamePhase = GamePhase::Fight;
@@ -527,6 +477,10 @@ namespace  Game
 			}
 			break;
 		case GamePhase::Round2:
+			if (this->phaseTimer == 1)
+			{
+				rrd->scale = 10.0f;
+			}
 			if (this->phaseTimer >= ROUND_EFFECT_TIME)
 			{
 				this->gamePhase = GamePhase::Fight;
@@ -534,6 +488,10 @@ namespace  Game
 			}
 			break;
 		case GamePhase::FinalRound:
+			if (this->phaseTimer == 1)
+			{
+				rrd->scale = 10.0f;
+			}
 			if (this->phaseTimer >= ROUND_EFFECT_TIME)
 			{
 				this->gamePhase = GamePhase::Fight;
@@ -541,6 +499,10 @@ namespace  Game
 			}
 			break;
 		case GamePhase::Fight:
+			if (this->phaseTimer == 1)
+			{
+				rrd->scale = 10.0f;
+			}
 			if (this->phaseTimer >= FIGHT_EFFECT_TIME)
 			{
 				this->gamePhase = GamePhase::Battle;
@@ -551,6 +513,10 @@ namespace  Game
 			this->phaseTimer = 0;
 			break;
 		case GamePhase::KO:
+			if (this->phaseTimer == 1)
+			{
+				rrd->scale = 10.0f;//仮
+			}
 			if (this->phaseTimer == KO_EFFECT_TIME)
 			{
 				this->gamePhase = GamePhase::RoundTransition;
@@ -598,7 +564,23 @@ namespace  Game
 			}
 			else if (this->phaseTimer >= KO_NEXT_ROUND_TIME)
 			{
+				this->phaseTimer = 0;
 				this->nextRoundInitialize();
+			}
+			break;
+		case GamePhase::BlankGap:
+			if (this->phaseTimer == 30)
+			{
+				//round reset
+				if (p1Round == 1 && p2Round == 1)
+				{
+					this->gamePhase = GamePhase::FinalRound;
+				}
+				else if (p1Round == 1 || p2Round == 1)
+				{
+					this->gamePhase = GamePhase::Round2;
+				}
+				this->phaseTimer = 0;
 			}
 			break;
 		}
@@ -620,15 +602,8 @@ namespace  Game
 		p1->isPowerUp = false;
 		p2->isPowerUp = false;
 
-		//round reset
-		if (p1Round == 1 && p2Round == 1)
-		{
-			this->gamePhase = GamePhase::FinalRound;
-		}
-		else if (p1Round == 1 || p2Round == 1)
-		{
-			this->gamePhase = GamePhase::Round2;
-		}
+		//ToTheGap
+		this->gamePhase = GamePhase::BlankGap;
 
 		//batte result reset
 		onePWin = false;

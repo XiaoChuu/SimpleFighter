@@ -7,6 +7,8 @@
 
 enum class GamePhase
 {
+	p1Entrance,
+	p2Entrance,
 	Round1,
 	Round2,
 	FinalRound,
@@ -15,6 +17,7 @@ enum class GamePhase
 	KO,
 	TimeOver,
 	RoundTransition,
+	BlankGap,
 };
 
 namespace  Game
@@ -51,13 +54,7 @@ namespace  Game
 		DG::Image::SP	imgShoryukenEmp;
 		DG::Image::SP	imgPlayer1Ava;
 		DG::Image::SP	imgPlayer2Ava;
-		DG::Image::SP	imgKO;
 		DG::Image::SP	imgTimeFont;
-		DG::Image::SP	imgRound1;
-		DG::Image::SP	imgRound2;
-		DG::Image::SP	imgFinalRound;
-		DG::Image::SP	imgFight;
-		DG::Image::SP	imgTimeOver;
 		DG::Image::SP   imgEmptyScore;
 		DG::Image::SP	imgScore;
 	};
@@ -116,7 +113,6 @@ namespace  Game
 
 
 		void UI_Render();
-		void Round_Render();
 		void EmptyScore_Render();
 		void Score_Render();
 		void number_Render(int x, int y, int t);
