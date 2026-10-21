@@ -32,6 +32,7 @@ namespace  Title
 		DG::Image::SP	PlayButtonHover;
 		DG::Image::SP	QuitButton;
 		DG::Image::SP	QuitButtonHover;
+		DG::Image::SP   ControlInfo;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -67,6 +68,8 @@ namespace  Title
 		int srcSet;
 		int timer;
 
+		bool info;
+		int infoTimer;
 		DG::Font::SP TestFont;
 	};
 }
