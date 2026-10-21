@@ -422,7 +422,7 @@ namespace  Game
 		}
 		//FinalRound
 		ML::Box2D draw_FinalRound(384, 232, 512, 256);
-		ML::Box2D src_FinalRound(0, 0, 1168, 784);
+		ML::Box2D src_FinalRound(0, 0, 1200, 400);
 		if (this->gamePhase == GamePhase::FinalRound)
 		{
 			this->res->imgFinalRound->Draw(draw_FinalRound, src_FinalRound);
@@ -436,7 +436,7 @@ namespace  Game
 		}
 		//Time Over
 		ML::Box2D draw_TimeOver(384, 232, 512, 256);
-		ML::Box2D src_TimeOver(0, 0, 1168, 784);
+		ML::Box2D src_TimeOver(0, 0, 1200, 400);
 		if (this->gamePhase == GamePhase::TimeOver)
 		{
 			this->res->imgTimeOver->Draw(draw_TimeOver, src_TimeOver);
