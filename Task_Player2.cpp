@@ -15,7 +15,7 @@ namespace  Player2
 	bool  Resource::Initialize()
 	{
 		this->player2Img = DG::Image::Create("./data/image/Player2Large.png");
-		this->powerUpImg = DG::Image::Create("./data/image/Player2Large.png");
+		this->powerUpImg = DG::Image::Create("./data/image/Player2power.png");
 		this->playerhitbasedebug = DG::Image::Create("./data/image/debug.png");
 		return true;
 	}
@@ -309,6 +309,10 @@ namespace  Player2
 			{
 				nm = Motion::Stand;
 			}
+			break;
+		case Motion::ForwardDash:
+			break;
+		case Motion::BackDash:
 			break;
 		case Motion::NaturalJumpAtk:
 			if (this->CheckFoot() == true)
@@ -641,6 +645,10 @@ namespace  Player2
 			{
 				this->moveVec.x = -this->maxSpeed;
 			}
+			break;
+		case Motion::ForwardDash:
+			break;
+		case Motion::BackDash:
 			break;
 		case Motion::NaturalJumpAtk:
 			if (this->moveCnt == 3)

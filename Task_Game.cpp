@@ -43,6 +43,7 @@ namespace  Game
 		this->imgFinalRound = DG::Image::Create("./data/image/FinalRound.png");
 		this->imgFight = DG::Image::Create("./data/image/FIGHT.png");
 		this->imgTimeOver = DG::Image::Create("./data/image/Timeover.png");
+		this->imgEmptyScore = DG::Image::Create("./data/image/VCup_Empty.png");
 		this->imgScore = DG::Image::Create("./data/image/VIcon.png");
 		return true;
 	}
@@ -75,6 +76,7 @@ namespace  Game
 		this->imgFinalRound.reset();
 		this->imgFight.reset();
 		this->imgTimeOver.reset();
+		this->imgEmptyScore.reset();
 		this->imgScore.reset();
 		return true;
 	}
@@ -276,6 +278,7 @@ namespace  Game
 		this->Round_Render();
 
 		//VictoryScore
+		this->EmptyScore_Render();
 		this->Score_Render();
 	}
 
@@ -405,14 +408,14 @@ namespace  Game
 		}
 		//Round 1
 		ML::Box2D draw_Round1(384, 232, 512, 256);
-		ML::Box2D src_Round1(0, 0, 1168, 784);
+		ML::Box2D src_Round1(0, 0, 1200, 400);
 		if (this->gamePhase == GamePhase::Round1)
 		{
 			this->res->imgRound1->Draw(draw_Round1, src_Round1);
 		}
 		//Round 2
 		ML::Box2D draw_Round2(384, 232, 512, 256);
-		ML::Box2D src_Round2(0, 0, 1168, 784);
+		ML::Box2D src_Round2(0, 0, 1200, 400);
 		if (this->gamePhase == GamePhase::Round2)
 		{
 			this->res->imgRound2->Draw(draw_Round2, src_Round2);
@@ -426,7 +429,7 @@ namespace  Game
 		}
 		//Fight
 		ML::Box2D draw_Fight(384, 232, 512, 256);
-		ML::Box2D src_Fight(0, 0, 269, 80);
+		ML::Box2D src_Fight(0, 0, 1200, 400);
 		if (this->gamePhase == GamePhase::Fight)
 		{
 			this->res->imgFight->Draw(draw_Fight, src_Fight);
@@ -438,6 +441,17 @@ namespace  Game
 		{
 			this->res->imgTimeOver->Draw(draw_TimeOver, src_TimeOver);
 		}
+	}
+
+	void Object::EmptyScore_Render()
+	{
+		ML::Box2D src_p1EmptyScore(32, 0, -32, 32);
+		ML::Box2D src_p2EmptyScore(0, 0, 32, 32);
+
+		this->res->imgEmptyScore->Draw(this->draw_Score[0], src_p1EmptyScore);
+		this->res->imgEmptyScore->Draw(this->draw_Score[1], src_p1EmptyScore);
+		this->res->imgEmptyScore->Draw(this->draw_Score[2], src_p2EmptyScore);
+		this->res->imgEmptyScore->Draw(this->draw_Score[3], src_p2EmptyScore);
 	}
 
 	void Object::Score_Render()
@@ -454,19 +468,19 @@ namespace  Game
 		};
 		if (this->p1DisplayRound >= 1)
 		{
-			this->res->imgScore->Draw(draw_Score[0], src_p1Score[0]);
+			this->res->imgScore->Draw(this->draw_Score[0], src_p1Score[0]);
 		}
 		if (this->p1DisplayRound >= 2)
 		{
-			this->res->imgScore->Draw(draw_Score[1], src_p1Score[1]);
+			this->res->imgScore->Draw(this->draw_Score[1], src_p1Score[1]);
 		}
 		if (this->p2DisplayRound >= 1)
 		{
-			this->res->imgScore->Draw(draw_Score[2], src_p2Score[0]);
+			this->res->imgScore->Draw(this->draw_Score[2], src_p2Score[0]);
 		}
 		if (this->p2DisplayRound >= 2)
 		{
-			this->res->imgScore->Draw(draw_Score[3], src_p2Score[1]);
+			this->res->imgScore->Draw(this->draw_Score[3], src_p2Score[1]);
 		}
 	}
 

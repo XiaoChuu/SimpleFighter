@@ -42,6 +42,8 @@ public:
 		NaturalFall,
 		ForwardFall,
 		BackFall,
+		ForwardDash,
+		BackDash,
 		NaturalJumpAtk,
 		ForwardJumpAtk,
 		BackJumpAtk,
@@ -64,8 +66,10 @@ public:
 	float maxSpeed;
 	float addSpeed;
 	float decSpeed;
+
 	bool isAttacking;
 	bool isPowerUp;
+
 	const int maxHp = 100;
 	int currentHp;
 	int attackdmg;
@@ -73,7 +77,11 @@ public:
 	float powerUpTimer = 0;
 	const float MaxGauge = 100.0f;
 	float currentGauge;
+
 	int downTimer = 0;
+
+	int forwardDashTimer = -1;
+	int fDashTimer = -1;
 
 	bool isUsedPowerUp;
 	bool isUsedShoryu;

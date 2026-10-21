@@ -58,6 +58,7 @@ namespace  Game
 		DG::Image::SP	imgFinalRound;
 		DG::Image::SP	imgFight;
 		DG::Image::SP	imgTimeOver;
+		DG::Image::SP   imgEmptyScore;
 		DG::Image::SP	imgScore;
 	};
 	//-------------------------------------------------------------------
@@ -116,6 +117,7 @@ namespace  Game
 
 		void UI_Render();
 		void Round_Render();
+		void EmptyScore_Render();
 		void Score_Render();
 		void number_Render(int x, int y, int t);
 
