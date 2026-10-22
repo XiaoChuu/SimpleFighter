@@ -81,7 +81,9 @@ public:
 	int downTimer = 0;
 
 	int forwardDashTimer = -1;
-	int fDashTimer = -1;
+	int BackDashTimer = -1;
+	bool isForwardDash = false;
+	bool isBackDash = false;
 
 	bool isUsedPowerUp;
 	bool isUsedShoryu;

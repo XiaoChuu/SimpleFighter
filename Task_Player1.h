@@ -53,6 +53,7 @@ namespace  Player1
 
 		void Think();
 		void Move();
+		void CheckDashInput();
 
 		BChara::DrawInfo Anim();
 		BChara::DrawInfo PowerUpAnim();

@@ -96,6 +96,7 @@ namespace  Player2
 		this->Think();
 		if (game->canPlayerMove())
 		{
+			this->CheckDashInput();
 			this->Move();
 			ML::Vec2 est = this->moveVec;
 			this->CheckMove(est);
@@ -151,7 +152,7 @@ namespace  Player2
 		switch (nm)
 		{
 		case Motion::Stand:
-			if (inp.LStick.BU.on && CheckFoot())//W:R1 A:SE S:ST D:L3
+			if (inp.LStick.BU.on && CheckFoot())//↑:BU ↓:BD ←:BL →:BR
 			{
 				nm = Motion::NaturalJump;
 			}
@@ -184,6 +185,14 @@ namespace  Player2
 			if (inp.LStick.BR.on && inp.LStick.BD.on && this->angle == Angle_LR::Left&& CheckFoot())
 			{
 				nm = Motion::Guard;
+			}
+			if (this->isForwardDash)
+			{
+				nm = Motion::ForwardDash;
+			}
+			if (this->isBackDash)
+			{
+				nm = Motion::BackDash;
 			}
 			break;
 		case Motion::ForwardWalk:
@@ -218,6 +227,14 @@ namespace  Player2
 			if (inp.LStick.BL.off && inp.LStick.BR.off)
 			{
 				nm = Motion::Stand;
+			}
+			if (this->isForwardDash)
+			{
+				nm = Motion::ForwardDash;
+			}
+			if (this->isBackDash)
+			{
+				nm = Motion::BackDash;
 			}
 			break;
 		case Motion::BackWalk:
@@ -260,6 +277,14 @@ namespace  Player2
 			if (inp.LStick.BR.on && inp.LStick.BD.on && this->angle == Angle_LR::Left)
 			{
 				nm = Motion::Guard;
+			}
+			if (this->isForwardDash)
+			{
+				nm = Motion::ForwardDash;
+			}
+			if (this->isBackDash)
+			{
+				nm = Motion::BackDash;
 			}
 			break;
 		case Motion::AttackPunch:
@@ -311,8 +336,16 @@ namespace  Player2
 			}
 			break;
 		case Motion::ForwardDash:
+			if (this->moveCnt == 18)
+			{
+				nm = Motion::Stand;
+			}
 			break;
 		case Motion::BackDash:
+			if (this->moveCnt == 23)
+			{
+				nm = Motion::Stand;
+			}
 			break;
 		case Motion::NaturalJumpAtk:
 			if (this->CheckFoot() == true)
@@ -479,6 +512,17 @@ namespace  Player2
 			}
 			break;
 		case Motion::Unnon:
+			break;
+		case Motion::ForwardDash:
+		case Motion::BackDash:
+			if (this->moveVec.x > 0)
+			{
+				this->moveVec.x--;
+			}
+			else if (this->moveVec.x < 0)
+			{
+				this->moveVec.x++;
+			}
 			break;
 		}
 
@@ -647,8 +691,32 @@ namespace  Player2
 			}
 			break;
 		case Motion::ForwardDash:
+			this->isForwardDash = false;
+			if (this->moveCnt == 0)
+			{
+				if (this->angle == Angle_LR::Right)
+				{
+					this->moveVec.x = this->maxSpeed * 3.0f;
+				}
+				else
+				{
+					this->moveVec.x = -this->maxSpeed * 3.0f;
+				}
+			}
 			break;
 		case Motion::BackDash:
+			this->isBackDash = false;
+			if (this->moveCnt == 0)
+			{
+				if (this->angle == Angle_LR::Left)
+				{
+					this->moveVec.x = this->maxSpeed * 2.5f;
+				}
+				else
+				{
+					this->moveVec.x = -this->maxSpeed * 2.5f;
+				}
+			}
 			break;
 		case Motion::NaturalJumpAtk:
 			if (this->moveCnt == 3)
@@ -780,6 +848,80 @@ namespace  Player2
 		}
 	}
 
+	void Object::CheckDashInput()
+	{
+		auto inp = this->controller->GetState(); //←:BL →:BR
+
+		if (forwardDashTimer != -1)
+		{
+			forwardDashTimer++;
+		}
+		if (BackDashTimer != -1)
+		{
+			BackDashTimer++;
+		}
+
+		if (this->motion == Motion::Hurt || this->motion == Motion::Guard)
+		{
+			return;
+		}
+
+		if (inp.LStick.BR.down) 
+		{
+			if (this->angle == Angle_LR::Right) 
+			{
+				if (this->forwardDashTimer >= 0 && this->forwardDashTimer <= 12 && this->CheckFoot())
+				{
+					this->forwardDashTimer = -1;
+					this->isForwardDash = true;
+				}
+				else
+				{
+					this->forwardDashTimer = 0;
+				}
+			}
+			else
+			{
+				if (this->BackDashTimer >= 0 && this->BackDashTimer <= 12 && this->CheckFoot())
+				{
+					this->BackDashTimer = -1;
+					this->isBackDash = true;
+				}
+				else
+				{
+					this->BackDashTimer = 0;
+				}
+			}
+		}
+		if (inp.LStick.BL.down)
+		{
+			if (this->angle == Angle_LR::Left)
+			{
+				if (this->forwardDashTimer >= 0 && this->forwardDashTimer <= 12 && this->CheckFoot())
+				{
+					this->forwardDashTimer = -1;
+					this->isForwardDash = true;
+				}
+				else
+				{
+					this->forwardDashTimer = 0;
+				}
+			}
+			else
+			{
+				if (this->BackDashTimer >= 0 && this->BackDashTimer <= 12 && this->CheckFoot())
+				{
+					this->BackDashTimer = -1;
+					this->isBackDash = true;
+				}
+				else
+				{
+					this->BackDashTimer = 0;
+				}
+			}
+		}
+	}
+
 	BChara::DrawInfo Object::PowerUpAnim() 
 	{
 		BChara::DrawInfo imageTable[] =
@@ -869,6 +1011,8 @@ namespace  Player2
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448  * 4, 192 * 4, 64 * 4, 64 * 4)}, //KO
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088 * 4, 128 * 4, 64 * 4, 64 * 4)}, //JumpAtk 10番目
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640  * 4, 192 * 4, 64 * 4, 64 * 4)}, //Standing
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448  * 4, 0   * 4, 64 * 4, 64 * 4)}, //ForwardDash
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(128  * 4, 0   * 4, 64 * 4, 64 * 4)}, //BackDash
 		};
 		BChara::DrawInfo rtv;
 		int work;
@@ -937,6 +1081,12 @@ namespace  Player2
 			break;
 		case Motion::Standing:
 			rtv = imageTable[10];
+			break;
+		case Motion::ForwardDash:
+			rtv = imageTable[11];
+			break;
+		case Motion::BackDash:
+			rtv = imageTable[12];
 			break;
 		}
 		
