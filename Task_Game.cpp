@@ -515,7 +515,11 @@ namespace  Game
 		case GamePhase::KO:
 			if (this->phaseTimer == 1)
 			{
-				rrd->scale = 10.0f;//仮
+				rrd->scaleK = 10.0f;
+			}
+			if (rrd->scaleK <= 1.0f && this->phaseTimer == KO_O_DRAW_TIME)
+			{
+				rrd->scaleO = 10.0f;
 			}
 			if (this->phaseTimer == KO_EFFECT_TIME)
 			{

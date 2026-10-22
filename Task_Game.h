@@ -103,6 +103,7 @@ namespace  Game
 		const int ROUND_EFFECT_TIME = 120;
 		const int FIGHT_EFFECT_TIME = 60;
 		const int ROUND_TRANSIT_EFFECT_TIME = 90;
+		const int KO_O_DRAW_TIME = 16;
 		ML::Box2D draw_Score[4]
 		{
 			ML::Box2D(536, 32, 48, 48),

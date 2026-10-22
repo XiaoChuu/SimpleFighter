@@ -68,11 +68,25 @@ namespace  RoundRender
 	{
 		auto game = ge->GetTask<Game::Object>("本編", "統括");
 
-		scale -= 1.0f;
+		this->scale -= 1.0f;
 
-		if (scale <= 1.0f)
+		if (this->scale <= 1.0f)
 		{
-			scale = 1.0f;
+			this->scale = 1.0f;
+		}
+
+		this->scaleK -= 1.0f;
+
+		if (this->scaleK <= 1.0f)
+		{
+			this->scaleK = 1.0f;
+		}
+
+		this->scaleO -= 1.0f;
+
+		if (this->scaleO <= 1.0f)
+		{
+			this->scaleO = 1.0f;
 		}
 	}
 	//-------------------------------------------------------------------
@@ -82,7 +96,7 @@ namespace  RoundRender
 		auto game = ge->GetTask<Game::Object>("本編", "統括");
 		
 		//K
-		ML::Box2D draw_K(-384 * this->scale, -128 * this->scale, 768 * this->scale, 256 * this->scale);
+		ML::Box2D draw_K(-384 * this->scaleK, -128 * this->scaleK, 768 * this->scaleK, 256 * this->scaleK);
 		draw_K.Offset(640, 360);//画面中心
 		ML::Box2D src_K(0, 0, 1200, 400);
 		if (game->gamePhase == GamePhase::KO)
@@ -90,10 +104,10 @@ namespace  RoundRender
 			this->res->imgK->Draw(draw_K, src_K);
 		}
 		//O
-		ML::Box2D draw_O(-384 * this->scale, -128 * this->scale, 768 * this->scale, 256 * this->scale);
+		ML::Box2D draw_O(-384 * this->scaleO, -128 * this->scaleO, 768 * this->scaleO, 256 * this->scaleO);
 		draw_O.Offset(640, 360);//画面中心
 		ML::Box2D src_O(0, 0, 1200, 400);
-		if (game->gamePhase == GamePhase::KO)
+		if (game->gamePhase == GamePhase::KO && this->scaleK == 1.0f && game->phaseTimer >= game->KO_O_DRAW_TIME)
 		{
 			this->res->imgO->Draw(draw_O, src_O);
 		}
