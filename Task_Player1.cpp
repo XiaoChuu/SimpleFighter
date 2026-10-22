@@ -806,12 +806,12 @@ namespace  Player1
 				if (this->angle == Angle_LR::Right)
 				{
 					hadouken->pos.x += 20;
-					hadouken->flyingSpeed = 10.0f;
+					hadouken->flyingSpeed = 25.0f;
 				}
 				else
 				{
 					hadouken->pos.x -= 20;
-					hadouken->flyingSpeed = -10.0f;
+					hadouken->flyingSpeed = -25.0f;
 				}
 			}
 			break;
