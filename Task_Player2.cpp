@@ -6,6 +6,7 @@
 #include  "Task_Hadouken.h"
 #include  "Task_AtkBox.h"
 #include  "Task_Game.h"
+#include  "Task_SoundManager.h"
 
 namespace  Player2
 {
@@ -78,7 +79,7 @@ namespace  Player2
 			return;
 		}
 
-		if (game->isHitStop())
+		if (game->isHitStop() || game->gamePhase == GamePhase::KO)
 		{
 			return;
 		}
@@ -336,13 +337,13 @@ namespace  Player2
 			}
 			break;
 		case Motion::ForwardDash:
-			if (this->moveCnt == 18)
+			if (this->moveCnt == 15)
 			{
 				nm = Motion::Stand;
 			}
 			break;
 		case Motion::BackDash:
-			if (this->moveCnt == 23)
+			if (this->moveCnt == 18)
 			{
 				nm = Motion::Stand;
 			}
@@ -479,6 +480,7 @@ namespace  Player2
 	void Object::Move()
 	{
 		auto inp = this->controller->GetState();
+		auto sdm = ge->GetTask<SoundManager::Object>(SoundManager::defGroupName, SoundManager::defName);
 		BChara::Motion nm = this->motion;
 
 		//重力加速
@@ -803,6 +805,7 @@ namespace  Player2
 				auto hadouken = Hadouken::Object::Create(true);
 				hadouken->owner = Hadouken::Object::Owner::Player2;
 				hadouken->pos = this->pos;
+				sdm->playHadouSE();
 				if (this->angle == Angle_LR::Right)
 				{
 					hadouken->pos.x += 20;
@@ -820,6 +823,7 @@ namespace  Player2
 			this->isUsedShoryu = true;
 			if (this->moveCnt == 0)
 			{
+				sdm->playShoryuSE();
 				moveVec.y = this->jumpPow;
 				if (this->angle == Angle_LR::Right)
 				{

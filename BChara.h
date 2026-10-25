@@ -115,7 +115,7 @@ public:
 
 	void takeDamage(int dmg);
 	void takeGuardDamage(int dmg, bool isSpecial);
-	void takeShoryuDamange(int dmg);
+	void takeShoryuDamage(int dmg);
 	int getAtkDamage(int basedmg);
 
 	void powerUpTimerUpdate();

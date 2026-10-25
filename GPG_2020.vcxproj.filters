@@ -130,6 +130,9 @@
     <ClCompile Include="Task_RoundRender.cpp">
       <Filter>MyPG\Task</Filter>
     </ClCompile>
+    <ClCompile Include="Task_SoundManager.cpp">
+      <Filter>MyPG\Task</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -224,6 +227,9 @@
       <Filter>MyPG\Task</Filter>
     </ClInclude>
     <ClInclude Include="Task_RoundRender.h">
+      <Filter>MyPG\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task_SoundManager.h">
       <Filter>MyPG\Task</Filter>
     </ClInclude>
   </ItemGroup>

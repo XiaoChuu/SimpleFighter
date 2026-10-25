@@ -81,11 +81,10 @@ namespace  Game
 	public:
 		//追加したい変数・メソッドはここに追加する
 		
-		int p1Round;
-		int p2Round;
-		int p1DisplayRound;
-		int p2DisplayRound;
+		int p1Round, p2Round;
+		int p1DisplayRound, p2DisplayRound;
 		bool isGameEnd = false;
+		bool p1RoundWin, p2RoundWin, drawRound;
 
 		DG::Font::SP TestFont;
 		int battleTime;

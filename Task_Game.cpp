@@ -9,6 +9,7 @@
 #include  "Task_player2.h"
 #include  "Task_EffectManager.h"
 #include  "Task_RoundRender.h"
+#include  "Task_SoundManager.h"
 
 bool onePWin;
 bool twoPWin;
@@ -89,8 +90,11 @@ namespace  Game
 		onePWin = false;
 		twoPWin = false;
 		drawGame = false;
-		mciSendString(TEXT("open \".\\data\\sound\\bgm\\TestBGM.mp3\" alias TestBGM"), NULL, 0, NULL); //BGM read file
-		mciSendString(TEXT("play TestBGM repeat"), NULL, 0, NULL); //BGM repeat
+		this->p1RoundWin = false;
+		this->p2RoundWin = false;
+		this->drawRound = false;
+		//mciSendString(TEXT("open \".\\data\\sound\\bgm\\TestBGM.mp3\" alias TestBGM"), NULL, 0, NULL); //BGM read file
+		//mciSendString(TEXT("play TestBGM repeat"), NULL, 0, NULL); //BGM repeat
 		this->gamePhase = GamePhase::p1Entrance;
 
 		//デバッグ用フォントの準備
@@ -101,6 +105,7 @@ namespace  Game
 		auto p2 = Player2::Object::Create(true);
 		auto eff = EffectManager::Object::Create(true);
 		auto RRD = RoundRender::Object::Create(true);
+		auto SDM = SoundManager::Object::Create(true);
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -180,20 +185,20 @@ namespace  Game
 					return;
 				}
 				this->gamePhase = GamePhase::KO;
-				drawGame = true;
+				this->drawRound = true;
 				this->p1Round++;
 				this->p2Round++;
 			}
 			else if (p1->currentHp <= 0 && this->gamePhase != GamePhase::KO)
 			{
 				this->gamePhase = GamePhase::KO;
-				twoPWin = true;
+				this->p2RoundWin = true;
 				this->p2Round++;
 			}
 			else if (p2->currentHp <= 0 && this->gamePhase != GamePhase::KO)
 			{
 				this->gamePhase = GamePhase::KO;
-				onePWin = true;
+				this->p1RoundWin = true;
 				this->p1Round++;
 			}
 			else if (this->battleTime <= 0 && this->gamePhase != GamePhase::TimeOver)
@@ -201,19 +206,19 @@ namespace  Game
 				if (p1->currentHp > p2->currentHp)
 				{
 					this->gamePhase = GamePhase::TimeOver;
-					onePWin = true;
+					this->p1RoundWin = true;
 					this->p1Round++;
 				}
 				else if (p2->currentHp > p1->currentHp)
 				{
 					this->gamePhase = GamePhase::TimeOver;
-					twoPWin = true;
+					this->p2RoundWin = true;
 					this->p2Round++;
 				}
 				else
 				{
 					this->gamePhase = GamePhase::TimeOver;
-					drawGame = true;
+					this->drawRound = true;
 					this->p1Round++;
 					this->p2Round++;
 				}
@@ -454,6 +459,7 @@ namespace  Game
 	{
 		auto eff = ge->GetTask<EffectManager::Object>(EffectManager::defGroupName, EffectManager::defName);
 		auto rrd = ge->GetTask<RoundRender::Object>(RoundRender::defGroupName, RoundRender::defName);
+		auto sdm = ge->GetTask<SoundManager::Object>(SoundManager::defGroupName, SoundManager::defName);
 		this->phaseTimer++;
 
 		switch (this->gamePhase)
@@ -469,6 +475,7 @@ namespace  Game
 			if (this->phaseTimer == 1)
 			{
 				rrd->scale = 10.0f;
+				sdm->playRound1SE();
 			}
 			if (this->phaseTimer >= ROUND_EFFECT_TIME)
 			{
@@ -480,6 +487,7 @@ namespace  Game
 			if (this->phaseTimer == 1)
 			{
 				rrd->scale = 10.0f;
+				sdm->playRound2SE();
 			}
 			if (this->phaseTimer >= ROUND_EFFECT_TIME)
 			{
@@ -491,6 +499,7 @@ namespace  Game
 			if (this->phaseTimer == 1)
 			{
 				rrd->scale = 10.0f;
+				sdm->playFinalRoundSE();
 			}
 			if (this->phaseTimer >= ROUND_EFFECT_TIME)
 			{
@@ -502,6 +511,7 @@ namespace  Game
 			if (this->phaseTimer == 1)
 			{
 				rrd->scale = 10.0f;
+				sdm->playFightSE();
 			}
 			if (this->phaseTimer >= FIGHT_EFFECT_TIME)
 			{
@@ -516,6 +526,7 @@ namespace  Game
 			if (this->phaseTimer == 1)
 			{
 				rrd->scaleK = 10.0f;
+				sdm->playKOSE();
 			}
 			if (rrd->scaleK <= 1.0f && this->phaseTimer == KO_O_DRAW_TIME)
 			{
@@ -528,6 +539,10 @@ namespace  Game
 			}
 			break;
 		case GamePhase::TimeOver:
+			if (this->phaseTimer == 1)
+			{
+				sdm->playTimeoverSE();
+			}
 			if (this->phaseTimer == KO_EFFECT_TIME)
 			{
 				this->gamePhase = GamePhase::RoundTransition;
@@ -537,17 +552,17 @@ namespace  Game
 		case GamePhase::RoundTransition:
 			if (this->phaseTimer == 30)
 			{
-				if (onePWin)
+				if (this->p1RoundWin)
 				{
 					this->p1DisplayRound = p1Round;
 					eff->p1ScoreEffect.playEffect(draw_Score[this->p1Round - 1]);
 				}
-				else if (twoPWin)
+				if (this->p2RoundWin)
 				{
 					this->p2DisplayRound = p2Round;
 					eff->p2ScoreEffect.playEffect(draw_Score[2 + this->p2Round - 1]);
 				}
-				else if (drawGame)
+				if (this->drawRound)
 				{
 					this->p1DisplayRound = p1Round;
 					this->p2DisplayRound = p2Round;
@@ -558,9 +573,6 @@ namespace  Game
 			if (this->p1Round >= 2 || this->p2Round >= 2)
 			{
 				this->isGameEnd = true;
-				onePWin = false;
-				twoPWin = false;
-				drawGame = false;
 			}
 			else if (this->phaseTimer == ROUND_TRANSIT_EFFECT_TIME)
 			{
@@ -610,9 +622,9 @@ namespace  Game
 		this->gamePhase = GamePhase::BlankGap;
 
 		//batte result reset
-		onePWin = false;
-		twoPWin = false;
-		drawGame = false;
+		this->p1RoundWin = false;
+		this->p2RoundWin = false;
+		this->drawRound = false;
 
 		//timereset
 		this->battleTime = 3600;

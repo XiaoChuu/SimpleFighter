@@ -135,7 +135,7 @@ void BChara::takeGuardDamage(int dmg, bool isSpecial)
 	}
 }
 
-void BChara::takeShoryuDamange(int dmg)
+void BChara::takeShoryuDamage(int dmg)
 {
 	addGaugeBar(5.0f);
 	this->currentHp -= dmg;

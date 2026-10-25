@@ -6,6 +6,7 @@
 #include  "Task_Player1.h"
 #include  "Task_Player2.h"
 #include  "Task_EffectManager.h"
+#include  "Task_SoundManager.h"
 #include  "Task_Game.h"
 
 namespace  AtkBox
@@ -59,6 +60,7 @@ namespace  AtkBox
 		auto p1 = ge->GetTask<Player1::Object>(Player1::defGroupName, Player1::defName);
 		auto p2 = ge->GetTask<Player2::Object>(Player2::defGroupName, Player2::defName);
 		auto eff = ge->GetTask<EffectManager::Object>(EffectManager::defGroupName, EffectManager::defName);
+		auto sdm = ge->GetTask<SoundManager::Object>(SoundManager::defGroupName, SoundManager::defName);
 		auto game = ge->GetTask<Game::Object>("本編", "統括");
 
 		if (p1->motion == Motion::Stand && owner == Owner::Player1)
@@ -79,12 +81,13 @@ namespace  AtkBox
 			for (auto it = target->begin(); it != target->end(); it++)
 			{
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
-				if (hit.Hit(me) && (*it)->motion == Motion::Guard && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing)
+				if (hit.Hit(me) && (*it)->motion == Motion::Guard && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing) //ガードに当たる際
 				{	
 					if (p1->motion != Motion::Shoryuken)
 					{
 						(*it)->takeGuardDamage(attackdmg, false);
 						eff->p1guardEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
+						sdm->playGuardSE();
 						game->startHitStop(4);
 						if (p1->angle == Angle_LR::Right)
 						{
@@ -101,17 +104,19 @@ namespace  AtkBox
 					{
 						(*it)->takeGuardDamage(attackdmg, true);
 						eff->p1guardEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
+						sdm->playGuardSE();
 						game->startHitStop(4);
 					}
 					this->Kill();
 					break;
 				}
-				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing)
+				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing) //当たる際
 				{
 					if (p1->motion != Motion::Shoryuken)
 					{
 						(*it)->takeDamage(attackdmg);
 						eff->p1hitEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
+						sdm->playHitSE();
 						game->startHitStop(6);
 						if (p1->angle == Angle_LR::Right)
 						{
@@ -126,8 +131,9 @@ namespace  AtkBox
 					}
 					else
 					{
-						(*it)->takeShoryuDamange(attackdmg);
+						(*it)->takeShoryuDamage(attackdmg);
 						eff->p1hitEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
+						sdm->playHitSE();
 						game->startHitStop(6);
 						if (p1->angle == Angle_LR::Right)
 						{
@@ -150,12 +156,13 @@ namespace  AtkBox
 			for (auto it = target->begin(); it != target->end(); it++)
 			{
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
-				if (hit.Hit(me) && (*it)->motion == Motion::Guard)
+				if (hit.Hit(me) && (*it)->motion == Motion::Guard && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing) //ガードに当たる際
 				{
 					if (p2->motion != Motion::Shoryuken)
 					{
 						(*it)->takeGuardDamage(attackdmg, false);
 						eff->p2guardEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
+						sdm->playGuardSE();
 						game->startHitStop(4);
 						if (p2->angle == Angle_LR::Right)
 						{
@@ -172,17 +179,19 @@ namespace  AtkBox
 					{
 						(*it)->takeGuardDamage(attackdmg, true);
 						eff->p2guardEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
+						sdm->playGuardSE();
 						game->startHitStop(4);
 					}
 					this->Kill();
 					break;
 				}
-				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing)
+				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing) //当たる際
 				{
 					if (p2->motion != Motion::Shoryuken)
 					{
 						(*it)->takeDamage(attackdmg);
 						eff->p2hitEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
+						sdm->playHitSE();
 						game->startHitStop(6);
 						if (p2->angle == Angle_LR::Right)
 						{
@@ -197,8 +206,9 @@ namespace  AtkBox
 					}
 					else
 					{
-						(*it)->takeShoryuDamange(attackdmg);
+						(*it)->takeShoryuDamage(attackdmg);
 						eff->p2hitEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
+						sdm->playHitSE();
 						game->startHitStop(6);
 						if (p2->angle == Angle_LR::Right)
 						{
