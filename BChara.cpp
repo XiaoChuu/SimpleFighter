@@ -131,6 +131,7 @@ void BChara::takeGuardDamage(int dmg, bool isSpecial)
 	}
 	else if(currentHp <= 0 && isSpecial == true)
 	{
+		this->UpdateMotion(Motion::Hurt);
 		currentHp = 0;
 	}
 }

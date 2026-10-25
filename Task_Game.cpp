@@ -334,6 +334,12 @@ namespace  Game
 		{
 			this->res->imgPowerUpFull->Draw(draw_POWERUP_F, src_POWERUP_F);
 		}
+		ML::Box2D draw_POWERUP_USING_F(100 - imgOffset, 40 + (64 - 64 * (p1->powerUpTimer / p1->maxPowerUpTime)), 512, 128 - (64 - 64 * (p1->powerUpTimer / p1->maxPowerUpTime)));
+		ML::Box2D src_POWERUP_USING_F(0, 0 + (64 - 64 * (p1->powerUpTimer / p1->maxPowerUpTime)), 512, 128 - (64 - 64 * (p1->powerUpTimer / p1->maxPowerUpTime)));
+		if (p1->isPowerUp)
+		{
+			this->res->imgPowerUpFull->Draw(draw_POWERUP_USING_F, src_POWERUP_USING_F);
+		}
 		//Hadouken
 		ML::Box2D draw_HADOU_E(100 - imgOffset, 40, 512, 128);
 		ML::Box2D src_HADOU_E(0, 0, 512, 128);
@@ -365,6 +371,12 @@ namespace  Game
 		if (!p2->isUsedPowerUp)
 		{
 			this->res->imgPowerUpFull->Draw(draw_POWERUP_F2, src_POWERUP_F2);
+		}
+		ML::Box2D draw_POWERUP_USING_F2(668 + imgOffset, 40 + (64 - 64 * (p2->powerUpTimer / p2->maxPowerUpTime)), 512, 128 - (64 - 64 * (p2->powerUpTimer / p2->maxPowerUpTime)));
+		ML::Box2D src_POWERUP_USING_F2(512, 0 + (64 - 64 * (p2->powerUpTimer / p2->maxPowerUpTime)), -512, 128 - (64 - 64 * (p2->powerUpTimer / p2->maxPowerUpTime)));
+		if (p2->isPowerUp)
+		{
+			this->res->imgPowerUpFull->Draw(draw_POWERUP_USING_F2, src_POWERUP_USING_F2);
 		}
 		//Hadouken
 		ML::Box2D draw_HADOU_E2(668 + imgOffset, 40, 512, 128);
