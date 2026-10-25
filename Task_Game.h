@@ -90,8 +90,11 @@ namespace  Game
 		int battleTime;
 		int gameEndTime;
 
-		float push = 6.5f;
 		int hitStopCnt = 0;
+		float p1LastX = 0.0f;
+		float p2LastX = 0.0f;
+		bool hasLastPos = false;
+
 
 		GamePhase gamePhase;
 		int phaseTimer;

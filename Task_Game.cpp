@@ -158,20 +158,40 @@ namespace  Game
 			}
 		}
 
-		//プレイヤー二人重ねなし処理
+		// Dashによるすり抜け防止 これなければoverlapの力でdashで重ねた部分を強く押されるので
+		if (hasLastPos)
+		{
+			bool p1Dash = p1->motion == Player1::Object::Motion::ForwardDash || p1->motion == Player1::Object::Motion::BackDash;
+			bool p2Dash = p2->motion == Player1::Object::Motion::ForwardDash || p2->motion == Player1::Object::Motion::BackDash;
+
+			// 前のフレームと左右の位置関係が逆転したか
+			bool crossed = (p1LastX < p2LastX && p1->pos.x >= p2->pos.x) || (p1LastX > p2LastX && p1->pos.x <= p2->pos.x);
+			if ((p1Dash || p2Dash) && crossed)
+			{
+				p1->pos.x = p1LastX;
+				p2->pos.x = p2LastX;
+			}
+		}
+		p1LastX = p1->pos.x;
+		p2LastX = p2->pos.x;
+		hasLastPos = true;
+
+		// プレイヤー二人重ねなし処理
 		ML::Box2D p1HB = p1->hitBase.OffsetCopy(p1->pos);
 		ML::Box2D p2HB = p2->hitBase.OffsetCopy(p2->pos);
 		if (p1HB.Hit(p2HB))
 		{
-			if (p1HB.x < p2HB.x)
+			if (p1HB.x + p1HB.w / 2 < p2HB.x + p2HB.w / 2)
 			{
-				p1->pos.x -= push;
-				p2->pos.x += push;
+				float overlap = (p1HB.x + p1HB.w) - p2HB.x;
+				p1->pos.x -= overlap / 2.0f;
+				p2->pos.x += overlap / 2.0f;
 			}
 			else
 			{
-				p1->pos.x += push;
-				p2->pos.x -= push;
+				float overlap = (p2HB.x + p2HB.w) - p1HB.x;
+				p1->pos.x += overlap / 2.0f;
+				p2->pos.x -= overlap / 2.0f;
 			}
 		}
 

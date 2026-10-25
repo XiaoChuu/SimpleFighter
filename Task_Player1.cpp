@@ -377,11 +377,20 @@ namespace  Player1
 			{
 				nm = Motion::BackWalk;
 			}
-			if (inp.SE.off && inp.ST.off && this->angle == Angle_LR::Right)
+			if (inp.SE.up || inp.ST.up && this->angle == Angle_LR::Right)
 			{
 				nm = Motion::Stand;
 			}
-			if (inp.L3.off && inp.ST.off && this->angle == Angle_LR::Left)
+			if (inp.L3.up || inp.ST.up && this->angle == Angle_LR::Left)
+			{
+				nm = Motion::Stand;
+			}
+			//仮　もしかしたらもっといい方法がある
+			if (inp.SE.on && inp.ST.on && this->angle != Angle_LR::Right)
+			{
+				nm = Motion::Stand;
+			}
+			if (inp.L3.on && inp.ST.on && this->angle != Angle_LR::Left)
 			{
 				nm = Motion::Stand;
 			}
