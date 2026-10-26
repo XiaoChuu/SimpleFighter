@@ -24,6 +24,7 @@ namespace  Game
 	{
 		this->imgHPFull = DG::Image::Create("./data/image/HPBAR_Full.png");
 		this->imgHPEmp = DG::Image::Create("./data/image/HPBAR_Empty.png");
+		this->imgHPDelay = DG::Image::Create("./data/image/HPBAR_Delay.png");
 		this->imgGaugeFull = DG::Image::Create("./data/image/SUPER_BAR_Full.png");
 		this->imgGaugeEmp = DG::Image::Create("./data/image/SUPER_BAR_Empty.png");
 		this->imgGaugeFullR = DG::Image::Create("./data/image/SUPER_BAR_Full_R.png");
@@ -49,6 +50,7 @@ namespace  Game
 	{
 		this->imgHPFull.reset();
 		this->imgHPEmp.reset();
+		this->imgHPDelay.reset();
 		this->imgGaugeEmp.reset();
 		this->imgGaugeFull.reset();
 		this->imgGaugeEmpR.reset();
@@ -304,16 +306,28 @@ namespace  Game
 		//Player1
 		ML::Box2D draw_HP_E(100 - imgOffset, 40, 512, 128);
 		ML::Box2D src_HP_E(0, 0, 512, 128);
+		draw_HP_E.Offset(p1->shakeX, p1->shakeY);
 		this->res->imgHPEmp->Draw(draw_HP_E, src_HP_E);
+		ML::Box2D draw_HP_DD(100 - imgOffset, 40, 107 + (405 * p1->displayDelayHP / p1->maxHp), 128);
+		ML::Box2D src_HP_DD(0, 0, 107 + (405 * p1->displayDelayHP / p1->maxHp), 128); //HP0の時wはちょうど107のとこ
+		draw_HP_DD.Offset(p1->shakeX, p1->shakeY);
+		this->res->imgHPDelay->Draw(draw_HP_DD, src_HP_DD);
 		ML::Box2D draw_HP_F(100 - imgOffset, 40, 107 + (405 * p1->currentHp / p1->maxHp), 128);
 		ML::Box2D src_HP_F(0, 0, 107 + (405 * p1->currentHp / p1->maxHp), 128); //HP0の時wはちょうど107のとこ
+		draw_HP_F.Offset(p1->shakeX, p1->shakeY);
 		this->res->imgHPFull->Draw(draw_HP_F, src_HP_F);
 		//Player2
 		ML::Box2D draw_HP_E2(668 + imgOffset, 40, 512, 128);
 		ML::Box2D src_HP_E2(512, 0, -512, 128);
+		draw_HP_E2.Offset(p2->shakeX, p2->shakeY);
 		this->res->imgHPEmp->Draw(draw_HP_E2, src_HP_E2);
+		ML::Box2D draw_HP_DD2(668 + imgOffset + (512 - (107 + (405 * p2->displayDelayHP / p2->maxHp))), 40, 107 + (405 * p2->displayDelayHP / p2->maxHp), 128);
+		ML::Box2D src_HP_DD2(107 + (405 * p2->displayDelayHP / p2->maxHp), 0, -107 - (405 * p2->displayDelayHP / p2->maxHp), 128); //HP0の時wはちょうど107のとこ
+		draw_HP_DD2.Offset(p2->shakeX, p2->shakeY);
+		this->res->imgHPDelay->Draw(draw_HP_DD2, src_HP_DD2);
 		ML::Box2D draw_HP_F2(668 + imgOffset + (512 - (107 + (405 * p2->currentHp / p2->maxHp))), 40, 107 + (405 * p2->currentHp / p2->maxHp), 128);
 		ML::Box2D src_HP_F2(107 + (405 * p2->currentHp / p2->maxHp), 0, -107 - (405 * p2->currentHp / p2->maxHp), 128); //HP0の時wはちょうど107のとこ
+		draw_HP_F2.Offset(p2->shakeX, p2->shakeY);
 		this->res->imgHPFull->Draw(draw_HP_F2, src_HP_F2);
 
 		//必殺技ゲージ

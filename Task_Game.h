@@ -15,6 +15,7 @@ enum class GamePhase
 	Fight,
 	Battle,
 	KO,
+	DoubleKO,
 	TimeOver,
 	RoundTransition,
 	BlankGap,
@@ -40,6 +41,7 @@ namespace  Game
 		//共有する変数はここに追加する
 		DG::Image::SP	imgHPFull;
 		DG::Image::SP	imgHPEmp;
+		DG::Image::SP	imgHPDelay;
 		DG::Image::SP	imgGaugeFull;
 		DG::Image::SP	imgGaugeEmp;
 		DG::Image::SP	imgGaugeFullR;

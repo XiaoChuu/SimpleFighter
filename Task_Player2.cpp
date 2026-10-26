@@ -51,6 +51,7 @@ namespace  Player2
 		this->pos.x = 1000;
 		this->pos.y = 458;
 		this->currentHp = this->maxHp;
+		this->displayDelayHP = this->currentHp;
 		//★タスクの生成
 
 		return  true;
@@ -78,6 +79,8 @@ namespace  Player2
 		{
 			return;
 		}
+
+		this->shakeHPBar(this->shakeX, this->shakeY);
 
 		if (game->isHitStop() || game->gamePhase == GamePhase::KO)
 		{
@@ -118,6 +121,7 @@ namespace  Player2
 		}
 
 		this->powerUpTimerUpdate();
+		this->delayDamageHPBarUpdate();
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理

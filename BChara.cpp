@@ -113,6 +113,7 @@ void BChara::takeDamage(int dmg)
 {
 	addGaugeBar(5.0f);
 	this->currentHp -= dmg;
+	this->shakeTimer = this->shakeMaxTime; //HPBarShake
 	if (currentHp <= 0)
 	{
 		currentHp = 0;
@@ -141,6 +142,7 @@ void BChara::takeShoryuDamage(int dmg)
 	addGaugeBar(5.0f);
 	this->currentHp -= dmg;
 	this->moveVec.y = this->jumpPow;
+	this->shakeTimer = this->shakeMaxTime; //HPBarShake
 	if (currentHp <= 0)
 	{
 		currentHp = 0;
@@ -156,6 +158,44 @@ int BChara::getAtkDamage(int basedmg)
 		return basedmg * 2;
 	}
 	return basedmg;
+}
+
+void BChara::shakeHPBar(int& sx, int& sy)
+{
+	this->shakeTimer--;
+	if (this->shakeTimer >= 0)
+	{
+		float shakeScale = this->shakeTimer / this->shakeMaxTime;
+		float shakePower = shakeScale * this->shakeMaxPower;
+		sx = rand() % int(shakePower * 2 + 1) - int(shakePower);
+		sy = rand() % int(shakePower * 2 + 1) - int(shakePower);
+	}
+	else
+	{
+		sx = 0;
+		sy = 0;
+	}
+}
+
+void BChara::delayDamageHPBarUpdate()
+{
+	this->delayHPTimer--;
+	if (this->currentHp <= 0)
+	{
+		this->displayDelayHP = 0;
+	}
+	else if (delayHPTimer > 0)
+	{
+		delayHPTimer--;
+	}
+	else if (this->displayDelayHP > this->currentHp)
+	{
+		this->displayDelayHP--;
+		if (this->displayDelayHP < this->currentHp)
+		{
+			this->displayDelayHP = this->currentHp;
+		}
+	}
 }
 
 void BChara::powerUpTimerUpdate() 
@@ -196,6 +236,7 @@ void BChara::resetPlayer(int x, int y)
 	this->pos.x = x;
 	this->pos.y = y;
 	this->currentHp = this->maxHp;
+	this->displayDelayHP = this->currentHp;
 	this->motion = Motion::Stand;
 	this->moveVec.x = 0;
 	this->moveVec.y = 0;
