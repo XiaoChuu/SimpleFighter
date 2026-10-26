@@ -114,6 +114,7 @@ void BChara::takeDamage(int dmg)
 	addGaugeBar(5.0f);
 	this->currentHp -= dmg;
 	this->shakeTimer = this->shakeMaxTime; //HPBarShake
+	this->delayHPTimer = this->delayHPMaxTime;
 	if (currentHp <= 0)
 	{
 		currentHp = 0;
@@ -143,6 +144,7 @@ void BChara::takeShoryuDamage(int dmg)
 	this->currentHp -= dmg;
 	this->moveVec.y = this->jumpPow;
 	this->shakeTimer = this->shakeMaxTime; //HPBarShake
+	this->delayHPTimer = this->delayHPMaxTime;
 	if (currentHp <= 0)
 	{
 		currentHp = 0;
