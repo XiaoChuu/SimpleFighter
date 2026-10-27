@@ -62,5 +62,11 @@ namespace  AtkBox
 
 		Owner owner;
 		int lifeTime;
+
+		bool isGuarding(const std::shared_ptr<BChara> target);
+		bool isNotGuarding(const std::shared_ptr<BChara> target);
+		void handle_Guard(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target);
+		void handle_Atk(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target);
+		void handle_ShoryuAtk(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target);
 	};
 }

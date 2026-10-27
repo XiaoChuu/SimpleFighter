@@ -81,28 +81,18 @@ namespace  AtkBox
 			for (auto it = target->begin(); it != target->end(); it++)
 			{
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
-				if (hit.Hit(me) && (*it)->motion == Motion::Guard && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing) //ガードに当たる際
+				if (hit.Hit(me) && isGuarding(*it)) //ガードに当たる際
 				{	
-					if (p1->motion != Motion::Shoryuken)
+					if (p1->motion == Motion::Shoryuken)
 					{
-						(*it)->takeGuardDamage(attackdmg, false);
+						(*it)->takeGuardDamage(attackdmg, true);
 						eff->p1guardEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
 						sdm->playGuardSE();
 						game->startHitStop(4);
-						if (p1->angle == Angle_LR::Right)
-						{
-							p1->moveVec.x = -12.0f;
-							(*it)->moveVec.x = 5.0f;
-						}
-						else
-						{
-							p1->moveVec.x = 12.0f;
-							(*it)->moveVec.x = -5.0f;
-						}
 					}
 					else
 					{
-						(*it)->takeGuardDamage(attackdmg, true);
+						handle_Guard(p1, (*it));
 						eff->p1guardEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
 						sdm->playGuardSE();
 						game->startHitStop(4);
@@ -110,39 +100,21 @@ namespace  AtkBox
 					this->Kill();
 					break;
 				}
-				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing) //当たる際
+				if (hit.Hit(me) && isNotGuarding(*it)) //当たる際
 				{
-					if (p1->motion != Motion::Shoryuken)
+					if (p1->motion == Motion::Shoryuken)
 					{
-						(*it)->takeDamage(attackdmg);
+						this->handle_ShoryuAtk(p1, (*it));
 						eff->p1hitEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
 						sdm->playHitSE();
 						game->startHitStop(6);
-						if (p1->angle == Angle_LR::Right)
-						{
-							p1->moveVec.x = -5.0f;
-							(*it)->moveVec.x = 8.0f;
-						}
-						else
-						{
-							p1->moveVec.x = 5.0f;
-							(*it)->moveVec.x = -8.0f;
-						}
 					}
 					else
 					{
-						(*it)->takeShoryuDamage(attackdmg);
+						this->handle_Atk(p1, (*it));
 						eff->p1hitEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
 						sdm->playHitSE();
 						game->startHitStop(6);
-						if (p1->angle == Angle_LR::Right)
-						{
-							(*it)->moveVec.x = 20.0f;
-						}
-						else
-						{
-							(*it)->moveVec.x = -20.0f;
-						}
 					}
 					this->Kill();
 					break;
@@ -156,28 +128,18 @@ namespace  AtkBox
 			for (auto it = target->begin(); it != target->end(); it++)
 			{
 				ML::Box2D hit = (*it)->hitBase.OffsetCopy((*it)->pos);
-				if (hit.Hit(me) && (*it)->motion == Motion::Guard && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing) //ガードに当たる際
+				if (hit.Hit(me) && isGuarding(*it)) //ガードに当たる際
 				{
-					if (p2->motion != Motion::Shoryuken)
+					if (p2->motion == Motion::Shoryuken)
 					{
-						(*it)->takeGuardDamage(attackdmg, false);
+						(*it)->takeGuardDamage(attackdmg, true);
 						eff->p2guardEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
 						sdm->playGuardSE();
 						game->startHitStop(4);
-						if (p2->angle == Angle_LR::Right)
-						{
-							p2->moveVec.x = -12.0f;
-							(*it)->moveVec.x = 5.0f;
-						}
-						else
-						{
-							p2->moveVec.x = 12.0f;
-							(*it)->moveVec.x = -5.0f;
-						}
 					}
 					else
 					{
-						(*it)->takeGuardDamage(attackdmg, true);
+						this->handle_Guard(p2, (*it));
 						eff->p2guardEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
 						sdm->playGuardSE();
 						game->startHitStop(4);
@@ -185,39 +147,21 @@ namespace  AtkBox
 					this->Kill();
 					break;
 				}
-				if (hit.Hit(me) && (*it)->motion != Motion::Guard && (*it)->motion != Motion::KO && (*it)->motion != Motion::Down && (*it)->motion != Motion::Standing) //当たる際
+				if (hit.Hit(me) && isNotGuarding(*it)) //当たる際
 				{
-					if (p2->motion != Motion::Shoryuken)
+					if (p2->motion == Motion::Shoryuken)
 					{
-						(*it)->takeDamage(attackdmg);
+						this->handle_ShoryuAtk(p2, (*it));
 						eff->p2hitEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
 						sdm->playHitSE();
 						game->startHitStop(6);
-						if (p2->angle == Angle_LR::Right)
-						{
-							p2->moveVec.x = -5.0f;
-							(*it)->moveVec.x = 8.0f;
-						}
-						else
-						{
-							p2->moveVec.x = 5.0f;
-							(*it)->moveVec.x = -8.0f;
-						}
 					}
 					else
 					{
-						(*it)->takeShoryuDamage(attackdmg);
+						this->handle_Atk(p2, (*it));
 						eff->p2hitEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
 						sdm->playHitSE();
 						game->startHitStop(6);
-						if (p2->angle == Angle_LR::Right)
-						{
-							(*it)->moveVec.x = 20.0f;
-						}
-						else
-						{
-							(*it)->moveVec.x = -20.0f;
-						}
 					}
 					this->Kill();
 					break;
@@ -246,6 +190,60 @@ namespace  AtkBox
 		{
 			this->res->atkboxdebug->Draw(this->attackBox.OffsetCopy(p2->pos), src);
 		}*/
+	}
+
+	bool Object::isGuarding(const std::shared_ptr<BChara> target)
+	{
+		return target->motion == Motion::Guard && target->motion != Motion::Down && target->motion != Motion::Standing;
+	}
+
+	bool Object::isNotGuarding(const std::shared_ptr<BChara> target)
+	{
+		return target->motion != Motion::Guard && target->motion != Motion::KO && target->motion != Motion::Down && target->motion != Motion::Standing;
+	}
+
+	void Object::handle_Guard(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target)
+	{
+		target->takeGuardDamage(this->attackdmg, false);
+
+		if (attacker->angle == Angle_LR::Right)
+		{
+			attacker->moveVec.x = -12.0f;
+			target->moveVec.x = 5.0f;
+		}
+		else
+		{
+			attacker->moveVec.x = 12.0f;
+			target->moveVec.x = -5.0f;
+		}
+	}
+
+	void Object::handle_Atk(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target)
+	{
+		target->takeDamage(this->attackdmg);
+		if (attacker->angle == Angle_LR::Right)
+		{
+			attacker->moveVec.x = -5.0f;
+			target->moveVec.x = 8.0f;
+		}
+		else
+		{
+			attacker->moveVec.x = 5.0f;
+			target->moveVec.x = -8.0f;
+		}
+	}
+
+	void Object::handle_ShoryuAtk(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target)
+	{
+		target->takeShoryuDamage(attackdmg);
+		if (attacker->angle == Angle_LR::Right)
+		{
+			target->moveVec.x = 20.0f;
+		}
+		else
+		{
+			target->moveVec.x = -20.0f;
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
