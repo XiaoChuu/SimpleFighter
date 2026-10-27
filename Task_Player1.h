@@ -25,6 +25,7 @@ namespace  Player1
 		//共有する変数はここに追加する
 		DG::Image::SP player1Img;
 		DG::Image::SP powerUpImg;
+		DG::Image::SP atkChargeImg;
 		DG::Image::SP playerhitbasedebug;
 	};
 	//-------------------------------------------------------------------
@@ -57,5 +58,6 @@ namespace  Player1
 
 		BChara::DrawInfo Anim();
 		BChara::DrawInfo PowerUpAnim();
+		BChara::DrawInfo AtkChargingAnim();
 	};
 }

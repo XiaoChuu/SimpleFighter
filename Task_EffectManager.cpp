@@ -15,6 +15,8 @@ namespace  EffectManager
 		this->imgGuardEffect = DG::Image::Create("./data/image/SmokeEffect_Blue.png");
 		this->imgP1HadouEffect = DG::Image::Create("./data/image/FireBall.png");
 		this->imgP2HadouEffect = DG::Image::Create("./data/image/FireBall.png");
+		this->imgP1CExpodeEffect = DG::Image::Create("./data/image/ChargeExplodeEffect.png");
+		this->imgP2CExpodeEffect = DG::Image::Create("./data/image/ChargeExplodeEffect.png");
 		this->imgScoreEffect = DG::Image::Create("./data/image/VEffect.png");
 		return true;
 	}
@@ -26,6 +28,8 @@ namespace  EffectManager
 		this->imgGuardEffect.reset();
 		this->imgP1HadouEffect.reset();
 		this->imgP2HadouEffect.reset();
+		this->imgP1CExpodeEffect.reset();
+		this->imgP2CExpodeEffect.reset();
 		this->imgScoreEffect.reset();
 		return true;
 	}
@@ -67,6 +71,8 @@ namespace  EffectManager
 		this->p2guardEffect.updateEffect(4, 5);
 		this->p1FBEffect.updateEffect(4, 3);
 		this->p2FBEffect.updateEffect(4, 3);
+		this->p1CExpodeEffect.updateEffect(4, 10);
+		this->p2CExpodeEffect.updateEffect(4, 10);
 		this->p1ScoreEffect.updateEffect(4, 9);
 		this->p2ScoreEffect.updateEffect(4, 9);
 	}
@@ -119,6 +125,21 @@ namespace  EffectManager
 			this->res->imgP2HadouEffect->Draw(p2HadouEffectDraw.draw, p2HadouEffectDraw.src, ML::Color(1, 0, 0, 1));
 		}
 		
+		//explode eff
+		Object::DrawInfo p1CExpodeEffectDraw = this->p1CExpodeEffectAnim();
+		if (p1CExpodeEffect.isPlaying)
+		{
+			p1CExpodeEffectDraw.draw.Offset(p1CExpodeEffect.pos);
+			this->res->imgP1CExpodeEffect->Draw(p1CExpodeEffectDraw.draw, p1CExpodeEffectDraw.src, ML::Color(1, 1, 1, 1));
+		}
+
+		Object::DrawInfo p2CExpodeEffectDraw = this->p2CExpodeEffectAnim();
+		if (p2CExpodeEffect.isPlaying)
+		{
+			p2CExpodeEffectDraw.draw.Offset(p2CExpodeEffect.pos);
+			this->res->imgP2CExpodeEffect->Draw(p2CExpodeEffectDraw.draw, p2CExpodeEffectDraw.src, ML::Color(1, 0, 0, 1));
+		}
+
 		//Score eff
 		Object::DrawInfo p1ScoreEffectDraw = this->scoreEffectAnim(this->p1ScoreEffect);
 		if (p1ScoreEffect.isPlaying)
@@ -261,6 +282,52 @@ namespace  EffectManager
 		work = min((this->p2FBEffect.animCnt / 4), sizeof(imageTable) / sizeof(imageTable[0]) - 1);
 		rtv = imageTable[work];
 		effectDirection(rtv, this->p2FBEffect.isFaceRight);
+		return rtv;
+	}
+
+	Object::DrawInfo Object::p1CExpodeEffectAnim()
+	{
+		Object::DrawInfo imageTable[]
+		{
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0  , 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(96 , 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(288, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(384, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(480, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(672, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(768, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(864, 0, 96, 96)},
+		};
+
+		Object::DrawInfo rtv;
+		int work;
+		work = min((this->p1CExpodeEffect.animCnt / 4), sizeof(imageTable) / sizeof(imageTable[0]) - 1);
+		rtv = imageTable[work];
+		return rtv;
+	}
+
+	Object::DrawInfo Object::p2CExpodeEffectAnim()
+	{
+		Object::DrawInfo imageTable[]
+		{
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0  , 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(96 , 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(288, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(384, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(480, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(672, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(768, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(864, 0, 96, 96)},
+		};
+
+		Object::DrawInfo rtv;
+		int work;
+		work = min((this->p2CExpodeEffect.animCnt / 4), sizeof(imageTable) / sizeof(imageTable[0]) - 1);
+		rtv = imageTable[work];
 		return rtv;
 	}
 

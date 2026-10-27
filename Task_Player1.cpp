@@ -17,6 +17,7 @@ namespace  Player1
 	{
 		this->player1Img = DG::Image::Create("./data/image/Player1Large.png");
 		this->powerUpImg = DG::Image::Create("./data/image/Player1power.png");
+		this->atkChargeImg = DG::Image::Create("./data/image/ChargingEffect.png");
 		this->playerhitbasedebug = DG::Image::Create("./data/image/debug.png");
 		return true;
 	}
@@ -25,6 +26,9 @@ namespace  Player1
 	bool  Resource::Finalize()
 	{
 		this->player1Img.reset();
+		this->powerUpImg.reset();
+		this->atkChargeImg.reset();
+		this->playerhitbasedebug.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -138,6 +142,13 @@ namespace  Player1
 		if (isPowerUp == true)
 		{
 			this->res->powerUpImg->Draw(pdi.draw, pdi.src);
+		}
+
+		BChara::DrawInfo cdi = this->AtkChargingAnim();
+		cdi.draw.Offset(this->pos);
+		if (this->isAtkCharging())
+		{
+			this->res->atkChargeImg->Draw(cdi.draw, cdi.src);
 		}
 
 		/*ML::Box2D src(0, 0, 32, 32);
@@ -304,6 +315,26 @@ namespace  Player1
 				nm = Motion::Stand;
 			}
 			break;
+		case Motion::AttackCharging:
+			if (this->moveCnt >= 75)
+			{
+				nm = Motion::AttackChargeAtk;
+			}
+			if (this->isForwardDash)
+			{
+				nm = Motion::ForwardDash;
+			}
+			if (this->isBackDash)
+			{
+				nm = Motion::BackDash;
+			}
+			break;
+		case Motion::AttackChargeAtk:
+			if (this->moveCnt >= 120)
+			{
+				nm = Motion::Stand;
+			}
+			break;
 		case Motion::NaturalJump:
 			if (this->moveVec.y >= 0)
 			{
@@ -462,13 +493,17 @@ namespace  Player1
 
 		if (motion == Motion::Stand || motion == Motion::ForwardWalk || motion == Motion::BackWalk || motion == Motion::Guard)
 		{
-			if (inp.B1.down) //U:B1 J:B2 I:B3 K:B4 O:L1
+			if (inp.B1.down) //U:B1 J:B2 I:B3 K:B4 O:L1 L:R3
 			{
 				nm = Motion::AttackPunch;
 			}
 			else if (inp.B2.down)
 			{
 				nm = Motion::AttackKick;
+			}
+			else if (inp.R3.down)
+			{
+				nm = Motion::AttackCharging;
 			}
 			else if (this->isGaugeBarFull())
 			{
@@ -511,6 +546,12 @@ namespace  Player1
 			break;
 		case Motion::Unnon:
 			break;
+		}
+
+		//ボーダー移動速度強制的0にする
+		if (this->pos.x <= 0 + 75 || this->pos.x >= 1280 - 75)
+		{
+			this->moveVec.x = 0;
 		}
 
 		//移動速度減衰
@@ -647,6 +688,27 @@ namespace  Player1
 				}
 				AtkBox->attackdmg = getAtkDamage(15);
 				AtkBox->lifeTime = 12;
+			}
+			break;
+		case Motion::AttackCharging:
+			break;
+		case Motion::AttackChargeAtk:
+			if (this->moveCnt == 0)
+			{
+				auto AtkBox = AtkBox::Object::Create(true);
+				AtkBox->owner = AtkBox::Object::Owner::Player1;
+				if (this->angle == Angle_LR::Right)
+				{
+					this->moveVec.x = 100;
+					AtkBox->attackBox = ML::Box2D(this->hitBase.w - 60, -15, 55, 20);
+				}
+				else
+				{
+					this->moveVec.x = -100;
+					AtkBox->attackBox = ML::Box2D(-this->hitBase.w + 5, -15, 55, 20);
+				}
+				AtkBox->attackdmg = getAtkDamage(75);
+				AtkBox->lifeTime = 10;
 			}
 			break;
 		case Motion::NaturalJump:
@@ -878,7 +940,7 @@ namespace  Player1
 			BackDashTimer++;
 		}
 
-		if (this->motion == Motion::Hurt || this->motion == Motion::Guard)
+		if (this->motion == Motion::Hurt || this->motion == Motion::Guard || this->motion == Motion::AttackChargeAtk)
 		{
 			return;
 		}
@@ -954,14 +1016,33 @@ namespace  Player1
 		return rtv;
 	}
 
+	BChara::DrawInfo Object::AtkChargingAnim()
+	{
+		BChara::DrawInfo imageTable[] =
+		{
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0  , 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(96 , 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(288, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(384, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(480, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(672, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(768, 0, 96, 96)},
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(864, 0, 96, 96)},
+		};
+		BChara::DrawInfo rtv;
+		int work;
+		work = (this->animCnt / 2) % 10;
+		rtv = imageTable[work];
+		return rtv;
+	}
+
 	//Animation
 	BChara::DrawInfo Object::Anim() 
 	{
 		BChara::DrawInfo Punch[] =
 		{
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192, 128, 64, 64)}, //Punch 1
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(256, 128, 64, 64)}, //Punch 2
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(320, 128, 64, 64)}, //Punch 3
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192*4, 128*4, 64*4, 64*4)}, //Punch 1
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(256*4, 128*4, 64*4, 64*4)}, //Punch 2
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(320*4, 128*4, 64*4, 64*4)}, //Punch 3
@@ -969,9 +1050,6 @@ namespace  Player1
 
 		BChara::DrawInfo Kick[] =
 		{
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 , 0, 64, 64)}, //Kick 1
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 , 0, 64, 64)}, //Kick 2
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024, 0, 64, 64)}, //Kick 3
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 *4, 0*4, 64*4, 64*4)}, //Kick 1
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 *4, 0*4, 64*4, 64*4)}, //Kick 2
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024*4, 0*4, 64*4, 64*4)}, //Kick 3
@@ -979,13 +1057,6 @@ namespace  Player1
 
 		BChara::DrawInfo Shoryuken[] =
 		{
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(512, 128, 64, 64)}, //Shoryuken 1
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 128, 64, 64)}, //Shoryuken 2
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 128, 64, 64)}, //Shoryuken 3
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 128, 64, 64)}, //Shoryuken 4
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(768, 128, 64, 64)}, //Shoryuken 5
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(832, 128, 64, 64)}, //Shoryuken 6
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0  , 0  , 64, 64)}, //Shoryuken 7
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(512*4, 128*4, 64*4, 64*4)}, //Shoryuken 1
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576*4, 128*4, 64*4, 64*4)}, //Shoryuken 2
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640*4, 128*4, 64*4, 64*4)}, //Shoryuken 3
@@ -997,9 +1068,6 @@ namespace  Player1
 
 		BChara::DrawInfo Hadouken[] =
 		{
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576, 320, 64, 64)}, //Hadouken 1
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640, 320, 64, 64)}, //Hadouken 2
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704, 320, 64, 64)}, //Hadouken 3
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(576*4, 320*4, 64*4, 64*4)}, //Hadouken 1
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640*4, 320*4, 64*4, 64*4)}, //Hadouken 2
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(704*4, 320*4, 64*4, 64*4)}, //Hadouken 3
@@ -1007,16 +1075,6 @@ namespace  Player1
 
 		BChara::DrawInfo imageTable[] =
 		{
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   , 0  , 64, 64)},//Stand　1番目
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  , 64 , 64, 64)},//ForwardWalk
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   , 64 , 64, 64)},//BackWalk
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(960 , 128, 64, 64)}, //Back jump fall
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1024, 128, 64, 64)}, //Natural jump fall 5番目
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(896 , 256, 64, 64)}, //Forward jump fall
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  , 192, 64, 64)}, //Guard
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(192 , 192, 64, 64)}, //Hurt
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 , 192, 64, 64)}, //KO
-			//{ML::Box2D(-128, -128, 256, 256), ML::Box2D(1088, 128, 64, 64)}, //JumpAtk 10番目
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   *4, 0  *4, 64*4, 64*4)},//Stand　1番目
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(64  *4, 64 *4, 64*4, 64*4)},//ForwardWalk
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(0   *4, 64 *4, 64*4, 64*4)},//BackWalk
@@ -1030,6 +1088,8 @@ namespace  Player1
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(640 *4, 192*4, 64*4, 64*4)}, //Standing
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(448 *4, 0  *4, 64*4, 64*4)}, //ForwardDash
 			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(128 *4, 0  *4, 64*4, 64*4)}, //BackDash
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(768 *4, 192*4, 64*4, 64*4)}, //AtkCharging
+			{ML::Box2D(-128, -128, 256, 256), ML::Box2D(832 *4, 192*4, 64*4, 64*4)}, //AtkChargeAtk 15番目
 		};
 		BChara::DrawInfo rtv;
 		int work;
@@ -1060,12 +1120,10 @@ namespace  Player1
 			rtv = imageTable[3];
 			break;
 		case Motion::AttackPunch:
-			//work = (this->animCnt / 20) % 3;
 			work = min(animCnt / 10, 2);
 			rtv = Punch[work];
 			break;
 		case Motion::AttackKick:
-			//work = (this->animCnt / 20) % 3;
 			work = min(animCnt / 10, 2);
 			rtv = Kick[work];
 			break;
@@ -1075,12 +1133,10 @@ namespace  Player1
 			rtv = imageTable[9];
 			break;
 		case Motion::Hadouken:
-			//work = (this->animCnt / 40) % 3;
 			work = min(animCnt / 10, 2);
 			rtv = Hadouken[work];
 			break;
 		case Motion::Shoryuken:
-			//work = (this->animCnt / 20) % 6;
 			work = min(animCnt / 15, 6);
 			rtv = Shoryuken[work];
 			break;
@@ -1104,6 +1160,12 @@ namespace  Player1
 			break;
 		case Motion::BackDash:
 			rtv = imageTable[12];
+			break;
+		case Motion::AttackCharging:
+			rtv = imageTable[13];
+			break;
+		case Motion::AttackChargeAtk:
+			rtv = imageTable[14];
 			break;
 		}
 		

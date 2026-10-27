@@ -148,15 +148,19 @@ namespace  Game
 		//向き変換
 		if (p1->CheckFoot() && p2->CheckFoot())
 		{
-			if (p2->pos.x - p1->pos.x >= 0)
+			bool isP1FacingRight = p1->pos.x <= p2->pos.x;
+			if (p1->motion == Player1::Object::Motion::AttackChargeAtk)
 			{
-				p1->angle = Player1::Object::Angle_LR::Right;
-				p2->angle = Player1::Object::Angle_LR::Left;
+				p2->angle = isP1FacingRight ? Player2::Object::Angle_LR::Left : Player2::Object::Angle_LR::Right;
+			}
+			else if (p2->motion == Player2::Object::Motion::AttackChargeAtk)
+			{
+				p1->angle = isP1FacingRight ? Player1::Object::Angle_LR::Right : Player1::Object::Angle_LR::Left;
 			}
 			else
 			{
-				p1->angle = Player1::Object::Angle_LR::Left;
-				p2->angle = Player1::Object::Angle_LR::Right;
+				p1->angle = isP1FacingRight ? Player1::Object::Angle_LR::Right : Player1::Object::Angle_LR::Left;
+				p2->angle = isP1FacingRight ? Player2::Object::Angle_LR::Left : Player2::Object::Angle_LR::Right;
 			}
 		}
 
@@ -164,7 +168,7 @@ namespace  Game
 		if (hasLastPos)
 		{
 			bool p1Dash = p1->motion == Player1::Object::Motion::ForwardDash || p1->motion == Player1::Object::Motion::BackDash;
-			bool p2Dash = p2->motion == Player1::Object::Motion::ForwardDash || p2->motion == Player1::Object::Motion::BackDash;
+			bool p2Dash = p2->motion == Player2::Object::Motion::ForwardDash || p2->motion == Player2::Object::Motion::BackDash;
 
 			// 前のフレームと左右の位置関係が逆転したか
 			bool crossed = (p1LastX < p2LastX && p1->pos.x >= p2->pos.x) || (p1LastX > p2LastX && p1->pos.x <= p2->pos.x);

@@ -90,9 +90,16 @@ namespace  AtkBox
 						sdm->playGuardSE();
 						game->startHitStop(4);
 					}
+					else if (p1->motion == Motion::AttackChargeAtk)
+					{
+						this->handle_ChargeAtkGuard(p1, (*it));
+						eff->p1guardEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
+						sdm->playGuardSE();
+						game->startHitStop(4);
+					}
 					else
 					{
-						handle_Guard(p1, (*it));
+						this->handle_Guard(p1, (*it));
 						eff->p1guardEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
 						sdm->playGuardSE();
 						game->startHitStop(4);
@@ -105,6 +112,13 @@ namespace  AtkBox
 					if (p1->motion == Motion::Shoryuken)
 					{
 						this->handle_ShoryuAtk(p1, (*it));
+						eff->p1hitEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
+						sdm->playHitSE();
+						game->startHitStop(6);
+					}
+					else if (p1->motion == Motion::AttackChargeAtk)
+					{
+						this->handle_ChargeAtk(p1, (*it));
 						eff->p1hitEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
 						sdm->playHitSE();
 						game->startHitStop(6);
@@ -137,6 +151,13 @@ namespace  AtkBox
 						sdm->playGuardSE();
 						game->startHitStop(4);
 					}
+					else if (p2->motion == Motion::AttackChargeAtk)
+					{
+						this->handle_ChargeAtkGuard(p2, (*it));
+						eff->p2guardEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
+						sdm->playGuardSE();
+						game->startHitStop(4);
+					}
 					else
 					{
 						this->handle_Guard(p2, (*it));
@@ -152,6 +173,13 @@ namespace  AtkBox
 					if (p2->motion == Motion::Shoryuken)
 					{
 						this->handle_ShoryuAtk(p2, (*it));
+						eff->p2hitEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
+						sdm->playHitSE();
+						game->startHitStop(6);
+					}
+					else if (p2->motion == Motion::AttackChargeAtk)
+					{
+						this->handle_ChargeAtk(p2, (*it));
 						eff->p2hitEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
 						sdm->playHitSE();
 						game->startHitStop(6);
@@ -246,6 +274,37 @@ namespace  AtkBox
 		}
 	}
 
+	void Object::handle_ChargeAtk(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target)
+	{
+		target->takeChargeAtkDamange(attackdmg);
+		attacker->moveCnt = 100;
+		if (attacker->angle == Angle_LR::Right)
+		{
+			attacker->moveVec.x = -5.0f;
+			target->moveVec.x = 50.0f;
+		}
+		else
+		{
+			attacker->moveVec.x = 5.0f;
+			target->moveVec.x = -50.0f;
+		}
+	}
+
+	void Object::handle_ChargeAtkGuard(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target)
+	{
+		target->takeGuardDamage(this->attackdmg, false);
+		attacker->moveCnt = 100;
+		if (attacker->angle == Angle_LR::Right)
+		{
+			attacker->moveVec.x = -5.0f;
+			target->moveVec.x = 25.0f;
+		}
+		else
+		{
+			attacker->moveVec.x = 5.0f;
+			target->moveVec.x = -25.0f;
+		}
+	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

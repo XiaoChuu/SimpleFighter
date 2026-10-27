@@ -141,9 +141,24 @@ void BChara::takeGuardDamage(int dmg, bool isSpecial)
 
 void BChara::takeShoryuDamage(int dmg)
 {
-	addGaugeBar(5.0f);
+	addGaugeBar(25.0f);
 	this->currentHp -= dmg;
 	this->moveVec.y = this->jumpPow;
+	this->shakeTimer = this->shakeMaxTime; //HPBarShake
+	this->delayHPTimer = this->delayHPMaxTime;
+	if (currentHp <= 0)
+	{
+		currentHp = 0;
+	}
+
+	this->UpdateMotion(Motion::Down);
+}
+
+void BChara::takeChargeAtkDamange(int dmg)
+{
+	addGaugeBar(100.0f);
+	this->currentHp -= dmg;
+	this->moveVec.y = this->jumpPow * 1.5;
 	this->shakeTimer = this->shakeMaxTime; //HPBarShake
 	this->delayHPTimer = this->delayHPMaxTime;
 	if (currentHp <= 0)
@@ -232,6 +247,11 @@ void BChara::addGaugeBar(float gaugevalue)
 void BChara::useGaugeBar()
 {
 	this->currentGauge = 0.0f;
+}
+
+bool BChara::isAtkCharging()
+{
+	return this->motion == Motion::AttackCharging;
 }
 
 void BChara::resetPlayer(int x, int y)

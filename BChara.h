@@ -36,6 +36,8 @@ public:
 		BackWalk,
 		AttackPunch,
 		AttackKick,
+		AttackCharging,
+		AttackChargeAtk,
 		NaturalJump,
 		ForwardJump,
 		BackJump,
@@ -127,6 +129,7 @@ public:
 	void takeDamage(int dmg);
 	void takeGuardDamage(int dmg, bool isSpecial);
 	void takeShoryuDamage(int dmg);
+	void takeChargeAtkDamange(int dmg);
 	int getAtkDamage(int basedmg);
 	void shakeHPBar(int& sx, int& sy);
 	void delayDamageHPBarUpdate();
@@ -135,6 +138,7 @@ public:
 	bool isGaugeBarFull();
 	void addGaugeBar(float gaugevalue);
 	void useGaugeBar();
+	bool isAtkCharging();
 
 	void resetPlayer(int x, int y);
 	

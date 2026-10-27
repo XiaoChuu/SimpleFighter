@@ -27,6 +27,8 @@ namespace  EffectManager
 		DG::Image::SP imgGuardEffect;
 		DG::Image::SP imgP1HadouEffect;
 		DG::Image::SP imgP2HadouEffect;
+		DG::Image::SP imgP1CExpodeEffect;
+		DG::Image::SP imgP2CExpodeEffect;
 		DG::Image::SP imgScoreEffect;
 	};
 	//-------------------------------------------------------------------
@@ -70,6 +72,7 @@ namespace  EffectManager
 		EffectInfo p1guardEffect, p2guardEffect;
 		EffectInfo p1FBEffect, p2FBEffect;
 		EffectInfo p1ScoreEffect, p2ScoreEffect;
+		EffectInfo p1CExpodeEffect, p2CExpodeEffect;
 
 		struct DrawInfo
 		{
@@ -81,6 +84,8 @@ namespace  EffectManager
 		DrawInfo guardEffectAnim(EffectInfo target);
 		DrawInfo p1FbEffectAnim();
 		DrawInfo p2FbEffectAnim();
+		DrawInfo p1CExpodeEffectAnim();
+		DrawInfo p2CExpodeEffectAnim();
 		DrawInfo scoreEffectAnim(EffectInfo target);
 
 		void effectDirection(Object::DrawInfo& rtv, bool isFaceRight);

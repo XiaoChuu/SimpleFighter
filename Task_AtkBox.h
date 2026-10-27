@@ -68,5 +68,7 @@ namespace  AtkBox
 		void handle_Guard(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target);
 		void handle_Atk(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target);
 		void handle_ShoryuAtk(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target);
+		void handle_ChargeAtk(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target);
+		void handle_ChargeAtkGuard(const std::shared_ptr<BChara> attacker, const std::shared_ptr<BChara> target);
 	};
 }
