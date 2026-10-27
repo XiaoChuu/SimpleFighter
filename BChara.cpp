@@ -127,6 +127,7 @@ void BChara::takeGuardDamage(int dmg, bool isSpecial)
 {
 	addGaugeBar(2.5f);
 	this->currentHp -= dmg / 5;
+	this->displayDelayHP = this->currentHp;
 	if (currentHp <= 0 && isSpecial == false)
 	{
 		currentHp = 1;
