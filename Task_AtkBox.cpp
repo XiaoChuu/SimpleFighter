@@ -63,6 +63,13 @@ namespace  AtkBox
 		auto sdm = ge->GetTask<SoundManager::Object>(SoundManager::defGroupName, SoundManager::defName);
 		auto game = ge->GetTask<Game::Object>("本編", "統括");
 
+		//仮p1p2真ん中pos
+		ML::Vec2 naka, naka2;
+		naka.x = (p1->pos.x + p2->pos.x) / 2;
+		naka.y = p1->pos.y;
+		naka2.x = (p1->pos.x + p2->pos.x) / 2;
+		naka2.y = p2->pos.y;
+
 		if (p1->motion == Motion::Stand && owner == Owner::Player1)
 		{
 			this->lifeTime = 0;
@@ -94,6 +101,7 @@ namespace  AtkBox
 					{
 						this->handle_ChargeAtkGuard(p1, (*it));
 						eff->p1guardEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
+						eff->p1CExpodeEffect.playEffect(naka);
 						sdm->playGuardSE();
 						game->startHitStop(4);
 					}
@@ -120,6 +128,7 @@ namespace  AtkBox
 					{
 						this->handle_ChargeAtk(p1, (*it));
 						eff->p1hitEffect.playEffect((*it)->pos, p1->pos.x < (*it)->pos.x);
+						eff->p1CExpodeEffect.playEffect(naka);
 						sdm->playHitSE();
 						game->startHitStop(6);
 					}
@@ -155,6 +164,7 @@ namespace  AtkBox
 					{
 						this->handle_ChargeAtkGuard(p2, (*it));
 						eff->p2guardEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
+						eff->p2CExpodeEffect.playEffect(naka2);
 						sdm->playGuardSE();
 						game->startHitStop(4);
 					}
@@ -181,6 +191,7 @@ namespace  AtkBox
 					{
 						this->handle_ChargeAtk(p2, (*it));
 						eff->p2hitEffect.playEffect((*it)->pos, p2->pos.x < (*it)->pos.x);
+						eff->p2CExpodeEffect.playEffect(naka2);
 						sdm->playHitSE();
 						game->startHitStop(6);
 					}

@@ -57,5 +57,7 @@ namespace  SoundManager
 		void playTimeoverSE();
 		void playHadouSE();
 		void playShoryuSE();
+		void playChargeSE();
+		void stopChargeSE();
 	};
 }

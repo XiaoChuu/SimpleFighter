@@ -137,7 +137,7 @@ namespace  EffectManager
 		if (p2CExpodeEffect.isPlaying)
 		{
 			p2CExpodeEffectDraw.draw.Offset(p2CExpodeEffect.pos);
-			this->res->imgP2CExpodeEffect->Draw(p2CExpodeEffectDraw.draw, p2CExpodeEffectDraw.src, ML::Color(1, 0, 0, 1));
+			this->res->imgP2CExpodeEffect->Draw(p2CExpodeEffectDraw.draw, p2CExpodeEffectDraw.src, ML::Color(1, 0, 1, 1));
 		}
 
 		//Score eff

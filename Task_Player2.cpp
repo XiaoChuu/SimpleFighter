@@ -316,6 +316,10 @@ namespace  Player2
 			}
 			break;
 		case Motion::AttackCharging:
+			if (inp.S5.off)
+			{
+				nm = Motion::Stand;
+			}
 			if (this->moveCnt >= 75)
 			{
 				nm = Motion::AttackChargeAtk;
@@ -501,7 +505,7 @@ namespace  Player2
 			{
 				nm = Motion::AttackKick;
 			}
-			else if (inp.S5.down)
+			else if (inp.S5.on)
 			{
 				nm = Motion::AttackCharging;
 			}
@@ -585,6 +589,7 @@ namespace  Player2
 		switch (nm)
 		{
 		case Motion::Stand:
+			sdm->stopChargeSE();
 			if (inp.LStick.BD.on) //防御の時移動しないように
 			{
 				this->moveVec.x = 0.0f;
@@ -691,8 +696,13 @@ namespace  Player2
 			}
 			break;
 		case Motion::AttackCharging:
+			if (this->moveCnt == 0)
+			{
+				sdm->playChargeSE();
+			}
 			break;
 		case Motion::AttackChargeAtk:
+			sdm->stopChargeSE();
 			if (this->moveCnt == 0)
 			{
 				auto AtkBox = AtkBox::Object::Create(true);
