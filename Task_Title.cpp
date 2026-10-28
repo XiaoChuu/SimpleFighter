@@ -143,7 +143,7 @@ namespace  Title
 		ML::Box2D  draw_Info(0, 0, 1280, 720);
 		ML::Box2D  src_Info(0, 0, 1672, 941);
 		if (true == info && infoTimer >= 45) {
-			ML::Box2D  draw_PRS2(457, 490, 398, 60);
+			ML::Box2D  draw_PRS2(457, 575, 398, 60);
 			ML::Box2D  src_PRS2(0, 0, 596, 91);
 			src_PRS2.Offset(0, srcSet);
 			this->res->ControlInfo->Draw(draw_Info, src_Info);

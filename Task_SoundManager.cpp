@@ -24,6 +24,7 @@ namespace  SoundManager
 		se::LoadFile("se_Hadou", "./data/sound/se/HadouSE.wav");
 		se::LoadFile("se_Shoryu", "./data/sound/se/ShoryuSE.wav");
 		se::LoadFile("se_Charge", "./data/sound/se/ChargeSE_long.wav");
+		se::LoadFile("se_Charge2", "./data/sound/se/ChargeSE_long.wav"); //仮
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -142,6 +143,17 @@ namespace  SoundManager
 	void Object::stopChargeSE()
 	{
 		se::Stop("se_Charge");
+	}
+
+	void Object::playChargeSE2()
+	{
+		se::SetVolume("se_Charge2", 50);
+		se::Play("se_Charge2");
+	}
+
+	void Object::stopChargeSE2()
+	{
+		se::Stop("se_Charge2");
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

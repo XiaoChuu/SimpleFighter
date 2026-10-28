@@ -59,5 +59,8 @@ namespace  SoundManager
 		void playShoryuSE();
 		void playChargeSE();
 		void stopChargeSE();
+		//仮
+		void playChargeSE2();
+		void stopChargeSE2();
 	};
 }

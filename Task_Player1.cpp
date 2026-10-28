@@ -586,10 +586,14 @@ namespace  Player1
 			break;
 		}
 
+		if (this->motion != Motion::AttackCharging)
+		{
+			sdm->stopChargeSE();
+		}
+
 		switch (nm)
 		{
 		case Motion::Stand:
-			sdm->stopChargeSE();
 			if (inp.ST.on) //防御の時移動しないように
 			{
 				this->moveVec.x = 0.0f;
@@ -702,7 +706,6 @@ namespace  Player1
 			}
 			break;
 		case Motion::AttackChargeAtk:
-			sdm->stopChargeSE();
 			if (this->moveCnt == 0)
 			{
 				auto AtkBox = AtkBox::Object::Create(true);
