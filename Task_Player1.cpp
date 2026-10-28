@@ -78,6 +78,7 @@ namespace  Player1
 	void  Object::UpDate()
 	{
 		auto game = ge->GetTask<Game::Object>("本編", "統括");
+		auto sdm = ge->GetTask<SoundManager::Object>(SoundManager::defGroupName, SoundManager::defName);
 
 		if (game == nullptr)
 		{
@@ -85,6 +86,11 @@ namespace  Player1
 		}
 
 		this->shakeHPBar(this->shakeX, this->shakeY);
+
+		if (this->motion != Motion::AttackCharging)
+		{
+			sdm->stopChargeSE();
+		}
 
 		if (game->isHitStop() || game->gamePhase == GamePhase::KO)
 		{
@@ -584,11 +590,6 @@ namespace  Player1
 				this->moveVec.x++;
 			}
 			break;
-		}
-
-		if (this->motion != Motion::AttackCharging)
-		{
-			sdm->stopChargeSE();
 		}
 
 		switch (nm)
