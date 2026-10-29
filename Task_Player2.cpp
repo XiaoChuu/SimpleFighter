@@ -441,14 +441,9 @@ namespace  Player2
 			}
 			break;
 		case Motion::Down:
-			if (this->CheckFoot())
+			if (this->downTimer >= 60)
 			{
-				this->downTimer++;
-				if (this->downTimer >= 60)
-				{
-					this->downTimer = 0;
-					nm = Motion::Standing;
-				}
+				nm = Motion::Standing;
 			}
 			break;
 		case Motion::Standing:
@@ -883,6 +878,14 @@ namespace  Player2
 		case Motion::Guard:
 			break;
 		case Motion::Down:
+			if (this->moveCnt == 0)
+			{
+				this->downTimer = 0;
+			}
+			if (this->CheckFoot())
+			{
+				this->downTimer++;	
+			}
 			break;
 		case Motion::Standing:
 			break;
